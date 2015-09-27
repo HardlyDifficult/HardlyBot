@@ -1,4 +1,6 @@
-﻿namespace Hardly.Games {
+﻿using System;
+
+namespace Hardly.Games {
 	public sealed class Blackjack<PlayerIdType> : CardGame<PlayerIdType, BlackjackPlayer<PlayerIdType>> {
       public BlackjackPlayerHand<PlayerIdType> dealer;
 		CardCollection lastDealerHand = null;
