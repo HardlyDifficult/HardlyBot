@@ -4,14 +4,24 @@ using System.Collections.Generic;
 namespace Hardly.Library.Twitch {
 	public class ChatCommand : TwitchCommandListener {
 		static Dictionary<SqlTwitchChannel, List<ChatCommand>> roomCommands = new Dictionary<SqlTwitchChannel, List<ChatCommand>>();
-		string commandName;
-		string description;
-		string[] aliases;
-		bool modOnly, throttlePerUser, enabled;
+		public readonly string commandName;
+        public readonly string description;
+        public readonly string[] aliases;
+        public readonly bool modOnly, throttlePerUser;
+        public bool enabled;
 		Action<SqlTwitchUser, string> action;
 		Throttle throttle;
 
-		public static ChatCommand Create(TwitchChatRoom room, string name, Action<SqlTwitchUser, string> action, string description, string[] aliases, bool modOnly, TimeSpan timeToThrottleFor, bool throttlePerUser, bool enabled = true) {
+        internal static List<ChatCommand> ForRoom(TwitchChatRoom room) {
+            List<ChatCommand> commands;
+            if(roomCommands.TryGetValue(room.twitchConnection.channel, out commands)) {
+                return commands;
+            }
+
+            return null;
+        }
+
+        public static ChatCommand Create(TwitchChatRoom room, string name, Action<SqlTwitchUser, string> action, string description, string[] aliases, bool modOnly, TimeSpan timeToThrottleFor, bool throttlePerUser, bool enabled = true) {
 			List<ChatCommand> commands;
 			if(roomCommands.TryGetValue(room.twitchConnection.channel, out commands)) {
 				foreach(var command in commands) {
@@ -21,6 +31,7 @@ namespace Hardly.Library.Twitch {
 				}
 			} else {
 				commands = new List<ChatCommand>(1);
+                roomCommands.Add(room.twitchConnection.channel, commands);
 			}
 
 			// TODO, ensure no name/alias conflicts

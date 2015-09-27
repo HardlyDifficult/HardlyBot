@@ -55,6 +55,7 @@
     <Compile Include="Commands\Games\Holdem\HoldemStatePlayTurn.cs" />
     <Compile Include="Commands\Games\Holdem\TwitchHoldem.cs" />
     <Compile Include="Commands\Games\NumberGames\TwitchPickANumber.cs" />
+    <Compile Include="Commands\System\AboutCommands.cs" />
     <Compile Include="Controllers\ChatCommand.cs" />
     <Compile Include="Library\TwitchCommandController.cs" />
     <Compile Include="Logic\States\GameState.cs" />

@@ -1,14 +1,12 @@
 ﻿using System;
 
 namespace Hardly.Library.Twitch {
-	class ViewPoints: TwitchCommandController {
-		ChatCommand pointCommand, bragCommand, leaderboardCommand, aboutpointsCommand;
-
+	class ViewPoints : TwitchCommandController {
 		public ViewPoints(TwitchChatRoom room) : base(room) {
-			pointCommand = ChatCommand.Create(room, "points", PointCommand, "View how many points you, or another user, has. !points <username>", new[] { "point", "kappas" }, false, TimeSpan.FromSeconds(30), true);
-			bragCommand = ChatCommand.Create(room, "brag", BragCommand, "Shows everyone how many points you have.  This costs 50 to run.", null, false, TimeSpan.FromMinutes(1), true);
-			leaderboardCommand = ChatCommand.Create(room, "leaderboard", LeaderboardCommand, "Displays the peeps with the most points.", null, false, TimeSpan.FromMinutes(2), false);
-			aboutpointsCommand = ChatCommand.Create(room, "aboutpoints", AboutPointsCommand, "Displays the point units and values.", null, false, TimeSpan.FromMinutes(2), true);
+            ChatCommand.Create(room, "points", PointCommand, "View how many points you, or another user, has. !points <username>", new[] { "point", "kappas" }, false, TimeSpan.FromSeconds(30), true);
+			ChatCommand.Create(room, "brag", BragCommand, "Shows everyone how many points you have.  This costs 50 to run.", null, false, TimeSpan.FromMinutes(1), true);
+			ChatCommand.Create(room, "leaderboard", LeaderboardCommand, "Displays the peeps with the most points.", null, false, TimeSpan.FromMinutes(2), false);
+			ChatCommand.Create(room, "aboutpoints", AboutPointsCommand, "Displays the point units and values.", null, false, TimeSpan.FromMinutes(2), true);
 		}
 
 		private void AboutPointsCommand(SqlTwitchUser speaker, string message) {
