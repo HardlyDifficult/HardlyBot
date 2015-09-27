@@ -18,9 +18,9 @@ namespace Hardly.Library.Twitch {
 
 		readonly SqlTwitchChannel channel;
 		readonly PointUnit[] units;
-		Dictionary<SqlTwitchUser, UserPointManager> userManagers = new Dictionary<SqlTwitchUser, UserPointManager>();
+		Dictionary<SqlTwitchUser, TwitchUserPointManager> userManagers = new Dictionary<SqlTwitchUser, TwitchUserPointManager>();
 
-		internal ChannelPointManager(SqlTwitchChannel channel) {
+		public ChannelPointManager(SqlTwitchChannel channel) {
 			this.channel = channel;
 			units = LoadUnits(channel);			
 		}
@@ -134,10 +134,10 @@ namespace Hardly.Library.Twitch {
 			return value;
 		}
 
-		public UserPointManager ForUser(SqlTwitchUser user) {
-			UserPointManager manager;
+		public TwitchUserPointManager ForUser(SqlTwitchUser user) {
+			TwitchUserPointManager manager;
 			if(!userManagers.TryGetValue(user, out manager)) {
-				manager = new UserPointManager(channel, user);
+				manager = new TwitchUserPointManager(channel, user);
 				userManagers.Add(user, manager);
 			}
 

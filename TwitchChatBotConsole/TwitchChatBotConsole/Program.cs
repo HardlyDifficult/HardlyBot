@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hardly.Library.Twitch;
+﻿using Hardly.Library.Twitch;
+using Hardly;
+using System.Windows.Forms;
 
 namespace TwitchChatBotConsole
 {
@@ -12,7 +9,8 @@ namespace TwitchChatBotConsole
         static void Main(string[] args)
         {
             TwitchChatBot chatBot = new TwitchChatBot();
-            chatBot.Run();
+            new Thread(chatBot.Run).Start();
+            Application.Run(new Hardly.Games.Holdem.Gui.Holdem());
         }
     }
 }

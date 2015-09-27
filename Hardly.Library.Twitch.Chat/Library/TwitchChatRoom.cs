@@ -5,12 +5,14 @@ namespace Hardly.Library.Twitch {
 		readonly TwitchIrcConnection chatIrcConnection, whisperIrcConnection;
 		public readonly SqlTwitchConnection twitchConnection;
 		public readonly TwitchCommandController[] commandControllers;
+        public readonly ChannelPointManager pointManager;
 
-		public TwitchChatRoom(TwitchIrcConnection chatConnection,
+        public TwitchChatRoom(TwitchIrcConnection chatConnection,
 			 TwitchIrcConnection whisperConnection, SqlTwitchConnection twitchConnection) {
 			this.chatIrcConnection = chatConnection;
 			this.whisperIrcConnection = whisperConnection;
 			this.twitchConnection = twitchConnection;
+            this.pointManager = new ChannelPointManager(twitchConnection.channel);
 
 			chatConnection.Join(this);
 

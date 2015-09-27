@@ -36,7 +36,7 @@ namespace Hardly.Library.Twitch {
 
 		private void SplitCommand(SqlTwitchUser speaker, string message) {
 			BlackjackPlayer player = GetPlayer(speaker);
-			UserPointManager userPoints = controller.pointManager.ForUser(speaker);
+			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
 			if(player.Split(controller.game, userPoints.ReserveBet(player.CurrentHand.bet, true) > 0)) {
 				if(player.CurrentHand.standing) {
 					controller.room.SendWhisper(speaker, "Hand split & standing with " + player.GetValueString());
@@ -75,9 +75,8 @@ namespace Hardly.Library.Twitch {
 				string chatMessage = "";
             if(!player.CurrentHand.standing && !player.CurrentHand.IsBust()) {
 					if(doubleDown) {
-						UserPointManager userPoints = controller.pointManager.ForUser(speaker);
-						if(userPoints.ReserveBet(player.CurrentHand.bet, true) > 0) {
-							player.CurrentHand.bet *= 2;
+						TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
+                        if(player.CurrentHand.placeBet(player.CurrentHand.bet, true)) {
 							chatMessage += "Doubled down! ";
 							player.CurrentHand.standing = true;
 						} else {
@@ -123,7 +122,7 @@ namespace Hardly.Library.Twitch {
 			string message = "Blackjack: Dealer ";
 			message += controller.game.dealer.hand.ViewCard(0).ToChatString();
 			message += " \uD83C\uDCA0 ";
-			foreach(var player in controller.game.players) {
+			foreach(var player in controller.game.GetPlayersAndObjects()) {
 				message += ", ";
 				message += (player.Key as SqlTwitchUser).name;
 				message += " ";
@@ -138,7 +137,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void TimeUp1() {
-			foreach(var player in controller.game.players) {
+			foreach(var player in controller.game.GetPlayersAndObjects()) {
 				if(!player.Value.CurrentHand.standing && !player.Value.CurrentHand.IsBust()) {
 					string chatMessage = "!Hit, !Stand or !DoubleDown?";
 					controller.room.SendWhisper(player.Key as SqlTwitchUser, chatMessage);
@@ -147,7 +146,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void TimeUp2() {
-			foreach(var player in controller.game.players) {
+			foreach(var player in controller.game.GetPlayersAndObjects()) {
 				if(!player.Value.CurrentHand.standing && !player.Value.CurrentHand.IsBust()) {
 					string chatMessage = "!Hit, !Stand or !DoubleDown?  You have only seconds to respond.";
 					controller.room.SendWhisper(player.Key as SqlTwitchUser, chatMessage);
@@ -162,7 +161,7 @@ namespace Hardly.Library.Twitch {
 		bool ReadyToEnd() {
 			bool allReady = true;
 
-			foreach(var player in controller.game.players) {
+			foreach(var player in controller.game.GetPlayersAndObjects()) {
 				if(!player.Value.CurrentHand.standing && !player.Value.CurrentHand.IsBust()) {
 					allReady = false;
 					break;
@@ -173,12 +172,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		BlackjackPlayer GetPlayer(SqlTwitchUser speaker) {
-			BlackjackPlayer player;
-			if(controller.game.players.TryGetValue(speaker, out player)) {
-				return player;
-			}
-
-			return null;
+			return controller.game.Get(speaker);
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace Hardly.Games.Tests {
     public class BlackjackPlayerHandTests {
         [TestMethod()]
         public void IsBustTest() {
-            BlackjackPlayerHand hand = new BlackjackPlayerHand(0, false);
+            BlackjackPlayerHand hand = new BlackjackPlayerHand(null, 0, false);
             hand.hand.GiveCard(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
             hand.hand.GiveCard(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
             hand.hand.GiveCard(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));

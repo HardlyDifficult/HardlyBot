@@ -3,7 +3,7 @@
 namespace Hardly.Games {
 	public abstract class Game<PlayerIdType, PlayerGameType> {
 		public readonly uint maxPlayers;
-		public Dictionary<PlayerIdType, PlayerGameType> players = new Dictionary<PlayerIdType, PlayerGameType>();
+		Dictionary<PlayerIdType, PlayerGameType> players = new Dictionary<PlayerIdType, PlayerGameType>();
 
 		public Game(uint maxPlayers) {
 			this.maxPlayers = maxPlayers;
@@ -16,8 +16,16 @@ namespace Hardly.Games {
 		public bool IsFull() {
 			return players.Count >= maxPlayers;
 		}
+        
+        public virtual bool CanStart() {
+            return NumberOfPlayers() >= 1;
+        }
 
-		public bool IsEmpty() {
+        public int NumberOfPlayers() {
+            return players.Count;
+        }
+
+        public bool IsEmpty() {
 			return players.Count == 0;
 		}
 
@@ -25,8 +33,36 @@ namespace Hardly.Games {
 			return players.ContainsKey(playerId);
 		}
 
-		public void Join(PlayerIdType playerId, PlayerGameType gameObject) {
-			players.Add(playerId, gameObject);
-		}
-	}
+        public Dictionary<PlayerIdType, PlayerGameType> GetPlayersAndObjects() {
+            return players;
+        }
+
+        public bool Join(PlayerIdType playerId, PlayerGameType gameObject) {
+            if(!IsFull()) {
+                players.Add(playerId, gameObject);
+                return true;
+            }
+
+            return false;
+        }
+
+        public int NumberOfOpenSpots() {
+            return (int)(maxPlayers - players.Count);
+        }
+        
+        public Dictionary<PlayerIdType, PlayerGameType>.ValueCollection PlayerObjects {
+            get {
+                return players.Values;
+            }
+        }
+
+        public PlayerGameType Get(PlayerIdType player) {
+            PlayerGameType results;
+            if(players.TryGetValue(player, out results)) {
+                return results;
+            }
+
+            return (PlayerGameType)typeof(PlayerGameType).GetDefaultValue();
+        }
+    }
 }

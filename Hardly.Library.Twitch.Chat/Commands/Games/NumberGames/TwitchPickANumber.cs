@@ -20,21 +20,21 @@ namespace Hardly.Library.Twitch {
 					message = message.GetAfter(" for");
 					ulong bet = 1;
 					if(message != null) {
-						bet = pointManager.GetPointsFromString(message);
+						bet = room.pointManager.GetPointsFromString(message);
 					}
 
-					UserPointManager userPoints = pointManager.ForUser(speaker);
+					TwitchUserPointManager userPoints = room.pointManager.ForUser(speaker);
 					bet = userPoints.ReserveBet(bet);
 					if(bet > 0) {
 						uint myNumber = Random.Uint.LessThan(11);
 						string chatMessage = "I guessed " + myNumber + "... ";
 						if(myNumber.Equals(pickedNumber)) {
 							userPoints.Award(bet, (long)bet * 10);
-							chatMessage += speaker.name + " won! " + pointManager.ToPointsString(bet * 10);
+							chatMessage += speaker.name + " won! " + room.pointManager.ToPointsString(bet * 10);
 							room.SendChatMessage(chatMessage);
 						} else {
 							userPoints.Award(bet, (long)bet * -1L);
-							chatMessage += "You lost... " + pointManager.ToPointsString(bet);
+							chatMessage += "You lost... " + room.pointManager.ToPointsString(bet);
 							room.SendWhisper(speaker, chatMessage);
 						}
 					} else {

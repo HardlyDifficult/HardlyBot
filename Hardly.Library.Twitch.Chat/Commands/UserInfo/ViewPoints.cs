@@ -10,7 +10,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void AboutPointsCommand(SqlTwitchUser speaker, string message) {
-			room.SendWhisper(speaker, pointManager.GetAboutPoints());
+			room.SendWhisper(speaker, room.pointManager.GetAboutPoints());
 		}
 
 		private void LeaderboardCommand(SqlTwitchUser speaker, string message) {
@@ -18,7 +18,7 @@ namespace Hardly.Library.Twitch {
 			if(leadersPoints != null) {
 				string chatMessage = "";
 				foreach(var points in leadersPoints) {
-					chatMessage += points.user.name + " has " + pointManager.ToPointsString(points.points, true) + "  ";
+					chatMessage += points.user.name + " has " + room.pointManager.ToPointsString(points.points, true) + "  ";
 				}
 
 				room.SendChatMessage(chatMessage);
@@ -26,10 +26,10 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void BragCommand(SqlTwitchUser speaker, string message) {
-			UserPointManager yourPoints = pointManager.ForUser(speaker);
-			if(yourPoints.points >= 50) {
+			TwitchUserPointManager yourPoints = room.pointManager.ForUser(speaker);
+			if(yourPoints.AvailablePoints >= 50) {
 				yourPoints.Award(0, -50);
-				string chatMessage = speaker.name + " has " + pointManager.ToPointsString(yourPoints.points);
+				string chatMessage = speaker.name + " has " + room.pointManager.ToPointsString(yourPoints.AvailablePoints);
 				room.SendChatMessage(chatMessage);
 			} else {
 				room.SendWhisper(speaker, "You can't afford a brag...");
@@ -44,14 +44,14 @@ namespace Hardly.Library.Twitch {
 			otherUserName = otherUserName?.Trim().ToLower();
 			SqlTwitchUser otherUser = SqlTwitchUser.GetFromName(otherUserName);
 
-			UserPointManager yourPoints = pointManager.ForUser(speaker);
+			TwitchUserPointManager yourPoints = room.pointManager.ForUser(speaker);
 			string chatMessage = "You have ";
-			chatMessage += pointManager.ToPointsString(yourPoints.points);
+			chatMessage += room.pointManager.ToPointsString(yourPoints.AvailablePoints);
 
 			if(otherUser != null && !otherUser.id.Equals(speaker.id)) {
-				UserPointManager otherPoints = pointManager.ForUser(otherUser);
+				TwitchUserPointManager otherPoints = room.pointManager.ForUser(otherUser);
 
-				chatMessage += " & " + otherUser.name + " has " + pointManager.ToPointsString(otherPoints.points);
+				chatMessage += " & " + otherUser.name + " has " + room.pointManager.ToPointsString(otherPoints.AvailablePoints);
 			}
 
 			room.SendWhisper(speaker, chatMessage);

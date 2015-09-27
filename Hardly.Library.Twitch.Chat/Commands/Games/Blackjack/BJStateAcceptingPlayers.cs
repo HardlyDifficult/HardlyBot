@@ -10,9 +10,9 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
-			BlackjackPlayer player;
-			if(controller.game.players.TryGetValue(speaker, out player)) {
-				UserPointManager userPoints = controller.pointManager.ForUser(speaker);
+			BlackjackPlayer player = controller.game.Get(speaker);
+			if(player != null) {
+				TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
 				userPoints.Award(player.totalBet, 0);
 				controller.room.SendWhisper(speaker, "You're out, later dude.");
 				if(controller.game.IsEmpty()) {
@@ -30,12 +30,11 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void PlayCommand(SqlTwitchUser speaker, string betMessage) {
-			ulong bet = controller.pointManager.GetPointsFromString(betMessage);
-			UserPointManager userPoints = controller.pointManager.ForUser(speaker);
-
-			bet = userPoints.ReserveBet(bet);
+			ulong bet = controller.room.pointManager.GetPointsFromString(betMessage);
+			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
+            
 			if(bet > 0) {
-				controller.game.Join(speaker, bet);
+				bet = controller.game.Join(speaker, userPoints, bet);
 				MinHit_StartWaitingForAdditionalPlayers();
 				SendJoinMessage(speaker, bet);
 				StartIfReady();
@@ -59,7 +58,7 @@ namespace Hardly.Library.Twitch {
 			string chatMessage = "You're in";
 			if(bet > 0) {
 				chatMessage += " for ";
-				chatMessage += controller.pointManager.ToPointsString(bet);
+				chatMessage += controller.room.pointManager.ToPointsString(bet);
 			}
 			chatMessage += ", sit tight we start ";
 			chatMessage += GetStartingInMessage();
@@ -69,7 +68,7 @@ namespace Hardly.Library.Twitch {
 		string GetStartingInMessage() {
 			TimeSpan timeRemaining = roundTimer.TimeRemaining();
 			string chatMessage;
-			int numberOfOpenSpots = (int)(controller.game.maxPlayers - controller.game.players.Count);
+			int numberOfOpenSpots = controller.game.NumberOfOpenSpots();
 			if(numberOfOpenSpots > 0 && timeRemaining > TimeSpan.FromSeconds(5)) {
 				chatMessage = "in " + timeRemaining.ToSimpleString();
 

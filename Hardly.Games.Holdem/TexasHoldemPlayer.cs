@@ -1,15 +1,8 @@
 ﻿namespace Hardly.Games {
 	public class TexasHoldemPlayer : CardPlayerHand {
-		ulong bet;
+        uint seat = 0;
 
-		public TexasHoldemPlayer(ulong ante) {
-			this.bet = ante;
-		}
-
-		public ulong totalBet {
-			get {
-				return bet;
-			}
+		public TexasHoldemPlayer(PointManager pointManager) : base(pointManager) {
 		}
 	}
 }

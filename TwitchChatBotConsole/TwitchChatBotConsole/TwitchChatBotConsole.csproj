@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,6 +62,10 @@
     <ProjectReference Include="..\..\Hardly\Hardly.csproj">
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly.Games.Holdem.Gui\Hardly.Games.Holdem.Gui.csproj">
+      <Project>{7885e4c8-136a-47ad-a936-cdcc297b3a4a}</Project>
+      <Name>Hardly.Games.Holdem.Gui</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

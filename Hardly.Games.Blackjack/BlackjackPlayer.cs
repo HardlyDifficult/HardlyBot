@@ -14,9 +14,10 @@
 			}
 		}
 
-		public BlackjackPlayer(ulong bet) {
-			mainHand = new BlackjackPlayerHand(bet, false);
+		public BlackjackPlayer(PointManager pointManager, ulong bet) {
+			mainHand = new BlackjackPlayerHand(pointManager, bet, false);
 			splitHand = null;
+            pointManager.ReserveBet(bet);
 		}
 
 		public BlackjackPlayerHand CurrentHand {
@@ -49,7 +50,7 @@
 
 		public bool Split<T>(Blackjack<T> controller, bool betReserved) {
 			if(mainHand.hand.cards.Count == 2 && mainHand.hand.cards[0].BlackjackValue().Equals(mainHand.hand.cards[1].BlackjackValue()) && splitHand == null && betReserved) {
-				splitHand = new BlackjackPlayerHand(mainHand.bet, true);
+				splitHand = new BlackjackPlayerHand(mainHand.pointManager, mainHand.bet, true);
 				mainHand.isSplit = true;
 				var card = mainHand.hand.TakeTopCard();
 				splitHand.hand.GiveCard(card);

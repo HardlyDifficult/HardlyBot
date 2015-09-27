@@ -1,9 +1,12 @@
-﻿namespace Hardly.Games {
+﻿using System;
+using System.Collections.Generic;
+
+namespace Hardly.Games {
 	public sealed class Blackjack<PlayerIdType> : CardGame<PlayerIdType, BlackjackPlayer> {
       public BlackjackPlayerHand dealer;
 		CardCollection lastDealerHand = null;
 
-		public Blackjack() : this(1, 6) {
+        public Blackjack() : this(1, 6) {
 		}
 
 		public Blackjack(uint numberOfDecks, uint maxPlayers) : base(numberOfDecks, maxPlayers) {
@@ -12,8 +15,8 @@
 
 		public void Deal() {
 			for(int numberOfCards = 0; numberOfCards < 2; numberOfCards++) {
-				foreach(var player in players) {
-					DealCard(player.Value.CurrentHand);
+				foreach(var player in PlayerObjects) {
+					DealCard(player.CurrentHand);
 				}
 				DealCard(dealer);
 			}
@@ -22,22 +25,27 @@
 		public override void Reset() {
 			lastDealerHand = dealer?.hand;
 			base.Reset();
-			dealer = new BlackjackPlayerHand(0, false);
+			dealer = new BlackjackPlayerHand(null, 0, false);
 		}
 
-		public void Join(PlayerIdType playerId, ulong bet) {
+		public ulong Join(PlayerIdType playerId, PointManager pointManager, ulong bet) {
 			if(!base.Contains(playerId)) {
-				base.Join(playerId, new BlackjackPlayer(bet));
+                var player = new BlackjackPlayer(pointManager, bet);
+                base.Join(playerId, player);
 				Log.info(playerId.ToString() + " joined");
+                return player.totalBet;
 			}
-		}
 
-		public CardCollection LastDealerHand() {
+            return 0;
+		}
+        
+        public CardCollection LastDealerHand() {
 			if(dealer?.hand != null && dealer.hand.cards.Count > 0) {
 				return dealer.hand;
 			} else {
 				return lastDealerHand;
 			}
       }
-	}
+
+    }
 }

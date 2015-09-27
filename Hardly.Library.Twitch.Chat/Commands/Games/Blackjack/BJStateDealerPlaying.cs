@@ -70,7 +70,7 @@ namespace Hardly.Library.Twitch {
 		private string GetPlayerList(bool? winnerOrLoser) {
 			string chatMessage = "";
 			bool first = true;
-			foreach(var player in controller.game.players) {
+			foreach(var player in controller.game.GetPlayersAndObjects()) {
 				if(player.Value.IsWinner(controller.game.dealer) == winnerOrLoser) {
 					if(!first) {
 						chatMessage += ", ";
@@ -92,7 +92,7 @@ namespace Hardly.Library.Twitch {
 
 		private long UpdatePoints(System.Collections.Generic.KeyValuePair<SqlTwitchUser, BlackjackPlayer> player) {
 			long changeInPoints = player.Value.GetWinningsOrLosings(controller.game.dealer);
-			UserPointManager userPoints = controller.pointManager.ForUser(player.Key);
+			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(player.Key);
 			userPoints.Award(player.Value.totalBet, changeInPoints);
 
 			return changeInPoints;

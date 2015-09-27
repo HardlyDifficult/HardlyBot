@@ -59,8 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\ChannelPointManager.cs" />
-    <Compile Include="Controller\PointManager.cs" />
-    <Compile Include="Controller\UserPointManager.cs" />
+    <Compile Include="Controller\TwitchUserPointManager.cs" />
     <Compile Include="Internal\TwitchHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controller\Twitch.cs" />
@@ -71,6 +70,10 @@
     <ProjectReference Include="..\Hardly.Data\Hardly.Data.csproj">
       <Project>{65f1c4f3-f108-4454-b4bd-d545f818e0ce}</Project>
       <Name>Hardly.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly.Games\Hardly.Games.csproj">
+      <Project>{64316fb2-3bfa-46e7-868a-faa53ee30261}</Project>
+      <Name>Hardly.Games</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hardly.Library.Network\Hardly.Library.Network.csproj">
       <Project>{57f110ff-a588-47ff-a1dd-f44b684dc42d}</Project>

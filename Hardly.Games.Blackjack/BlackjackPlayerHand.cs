@@ -3,11 +3,10 @@
 namespace Hardly.Games {
 	public class BlackjackPlayerHand : CardPlayerHand {
 		public bool standing = false;
-		public ulong bet;
 		public bool isSplit;
 		
-		public BlackjackPlayerHand(ulong bet, bool isSplit) {
-			this.bet = bet;
+		public BlackjackPlayerHand(PointManager pointManager, ulong bet, bool isSplit) : base(pointManager) {
+            placeBet(bet, false);
 			this.isSplit = isSplit;
 		}
 

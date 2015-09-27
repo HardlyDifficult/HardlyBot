@@ -10,12 +10,12 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
-			TexasHoldemPlayer player;
-			if(controller.game.players.TryGetValue(speaker, out player)) {
-				UserPointManager userPoints = controller.pointManager.ForUser(speaker);
-				userPoints.Award(player.totalBet, 0);
+			TexasHoldemPlayer player = controller.game.Get(speaker);
+			if(player != null) {
+				TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
+				userPoints.Award(player.bet, 0);
 				controller.room.SendWhisper(speaker, "You're out, later dude.");
-				if(controller.game.players.Count <= 1) {
+				if(!controller.game.CanStart()) {
 					StopTimers();
 				}
 			} else {
@@ -24,19 +24,18 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void StartCommand(SqlTwitchUser speaker, string additionalText) {
-			if(controller.game.players.Count > 1) {
+			if(controller.game.CanStart()) {
 				controller.SetState(this.GetType(), typeof(HoldemStatePlayPreFlop));
 			}
 		}
 
 		private void PlayCommand(SqlTwitchUser speaker, string additionalText) {
-			ulong bet = 10; // Ante
-			UserPointManager userPoints = controller.pointManager.ForUser(speaker);
-
-			bet = userPoints.ReserveBet(bet);
+			ulong bet = 10; // Ante?
+			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
+            
 			if(bet > 0) {
-				controller.game.Join(speaker, bet);
-				if(controller.game.players.Count > 1) {
+				controller.game.Join(speaker, userPoints);
+				if(controller.game.CanStart()) {
 					MinHit_StartWaitingForAdditionalPlayers();
 				}
 				SendJoinMessage(speaker, bet);
@@ -50,7 +49,7 @@ namespace Hardly.Library.Twitch {
 			string chatMessage = "You're in";
 			if(bet > 0) {
 				chatMessage += " for ";
-				chatMessage += controller.pointManager.ToPointsString(bet);
+				chatMessage += controller.room.pointManager.ToPointsString(bet);
 			}
 			chatMessage += ", sit tight we start ";
 			chatMessage += GetStartingInMessage();
@@ -71,7 +70,7 @@ namespace Hardly.Library.Twitch {
 		string GetStartingInMessage() {
 			TimeSpan timeRemaining = roundTimer.TimeRemaining();
 			string chatMessage;
-			int numberOfOpenSpots = (int)(controller.game.maxPlayers - controller.game.players.Count);
+            int numberOfOpenSpots = controller.game.NumberOfOpenSpots();
 			if(numberOfOpenSpots > 0 && timeRemaining > TimeSpan.FromSeconds(5)) {
 				chatMessage = "in " + timeRemaining.ToSimpleString();
 
