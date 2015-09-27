@@ -1,8 +1,6 @@
 ﻿namespace Hardly.Games {
-	public class TexasHoldemPlayer : CardPlayerHand {
-        uint seat = 0;
-
-		public TexasHoldemPlayer(PointManager pointManager) : base(pointManager) {
+	public class TexasHoldemPlayer<PlayerIdType> : CardPlayerHand<PlayerIdType> {
+		public TexasHoldemPlayer(PointManager pointManager, PlayerIdType playerIdObject) : base(pointManager, playerIdObject) {
 		}
 	}
 }

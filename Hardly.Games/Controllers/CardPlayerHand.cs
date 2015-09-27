@@ -1,7 +1,8 @@
 ﻿namespace Hardly.Games {
-	public class CardPlayerHand {
+	public class CardPlayerHand<PlayerIdType> {
 		public readonly CardCollection hand;
         public readonly PointManager pointManager;
+        public readonly PlayerIdType playerIdObject;
 
         public ulong bet {
             get;
@@ -18,9 +19,10 @@
             return false;
         }
 
-        public CardPlayerHand(PointManager pointManager) {
+        public CardPlayerHand(PointManager pointManager, PlayerIdType playerObject) {
 			hand = new CardCollection();
             this.pointManager = pointManager;
+            this.playerIdObject = playerObject;
 		}
 	}
 }

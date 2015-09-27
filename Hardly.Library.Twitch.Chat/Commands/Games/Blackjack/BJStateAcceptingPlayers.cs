@@ -10,7 +10,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
-			BlackjackPlayer player = controller.game.Get(speaker);
+			var player = controller.game.Get(speaker);
 			if(player != null) {
 				TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
 				userPoints.Award(player.totalBet, 0);

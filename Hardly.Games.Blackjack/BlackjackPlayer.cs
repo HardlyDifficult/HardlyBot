@@ -1,6 +1,6 @@
 ﻿namespace Hardly.Games {
-	public class BlackjackPlayer {
-		BlackjackPlayerHand mainHand, splitHand;
+	public class BlackjackPlayer<PlayerIdType> {
+		BlackjackPlayerHand<PlayerIdType> mainHand, splitHand;
 		bool currentHandIsMain = true;
 
 		public ulong totalBet {
@@ -14,19 +14,19 @@
 			}
 		}
 
-		public BlackjackPlayer(PointManager pointManager, ulong bet) {
-			mainHand = new BlackjackPlayerHand(pointManager, bet, false);
+		public BlackjackPlayer(PointManager pointManager, PlayerIdType playerIdObject, ulong bet) {
+			mainHand = new BlackjackPlayerHand<PlayerIdType>(pointManager, playerIdObject, bet, false);
 			splitHand = null;
             pointManager.ReserveBet(bet);
 		}
 
-		public BlackjackPlayerHand CurrentHand {
+		public BlackjackPlayerHand<PlayerIdType> CurrentHand {
 			get {
 				return currentHandIsMain ? mainHand : splitHand;
 			}
 		}
 
-		public bool? IsWinner(BlackjackPlayerHand dealer) {
+		public bool? IsWinner(BlackjackPlayerHand<PlayerIdType> dealer) {
 			long winnings = GetWinningsOrLosings(dealer);
          return winnings != 0 ? winnings > 0 : (bool?)null;
 		}
@@ -39,7 +39,7 @@
 			return valueString;
 		}
 
-		public long GetWinningsOrLosings(BlackjackPlayerHand dealer) {
+		public long GetWinningsOrLosings(BlackjackPlayerHand<PlayerIdType> dealer) {
 			long winnings = mainHand.GetWinningsOrLosings(dealer);
 			if(splitHand != null) {
 				winnings += splitHand.GetWinningsOrLosings(dealer);
@@ -48,9 +48,9 @@
 			return winnings;
 		}
 
-		public bool Split<T>(Blackjack<T> controller, bool betReserved) {
+		public bool Split(Blackjack<PlayerIdType> controller, bool betReserved) {
 			if(mainHand.hand.cards.Count == 2 && mainHand.hand.cards[0].BlackjackValue().Equals(mainHand.hand.cards[1].BlackjackValue()) && splitHand == null && betReserved) {
-				splitHand = new BlackjackPlayerHand(mainHand.pointManager, mainHand.bet, true);
+				splitHand = new BlackjackPlayerHand<PlayerIdType>(mainHand.pointManager, mainHand.playerIdObject, mainHand.bet, true);
 				mainHand.isSplit = true;
 				var card = mainHand.hand.TakeTopCard();
 				splitHand.hand.GiveCard(card);

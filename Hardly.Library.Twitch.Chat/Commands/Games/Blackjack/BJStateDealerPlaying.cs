@@ -90,7 +90,7 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		private long UpdatePoints(System.Collections.Generic.KeyValuePair<SqlTwitchUser, BlackjackPlayer> player) {
+		private long UpdatePoints(System.Collections.Generic.KeyValuePair<SqlTwitchUser, BlackjackPlayer<SqlTwitchUser>> player) {
 			long changeInPoints = player.Value.GetWinningsOrLosings(controller.game.dealer);
 			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(player.Key);
 			userPoints.Award(player.Value.totalBet, changeInPoints);

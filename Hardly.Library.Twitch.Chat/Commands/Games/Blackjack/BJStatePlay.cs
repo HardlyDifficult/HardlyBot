@@ -17,7 +17,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void StandCommand(SqlTwitchUser speaker, string message) {
-			BlackjackPlayer player = GetPlayer(speaker);
+			var player = GetPlayer(speaker);
 
 			if(player != null) {
 				if(!player.CurrentHand.standing && !player.CurrentHand.IsBust()) {
@@ -35,7 +35,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void SplitCommand(SqlTwitchUser speaker, string message) {
-			BlackjackPlayer player = GetPlayer(speaker);
+			var player = GetPlayer(speaker);
 			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
 			if(player.Split(controller.game, userPoints.ReserveBet(player.CurrentHand.bet, true) > 0)) {
 				if(player.CurrentHand.standing) {
@@ -56,7 +56,7 @@ namespace Hardly.Library.Twitch {
 			Hit(speaker, message);
 		}
 
-		string AnnounceSplitHand(BlackjackPlayer player) {
+		string AnnounceSplitHand(BlackjackPlayer<SqlTwitchUser> player) {
 			if(player.ReadyToSwitchHands()) {
 				string chatMessage = "";
 				if(!player.CurrentHand.standing) {
@@ -70,7 +70,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void Hit(SqlTwitchUser speaker, string message, bool doubleDown = false) {
-			BlackjackPlayer player = GetPlayer(speaker);
+			BlackjackPlayer<SqlTwitchUser> player = GetPlayer(speaker);
 			if(player != null) {
 				string chatMessage = "";
             if(!player.CurrentHand.standing && !player.CurrentHand.IsBust()) {
@@ -171,7 +171,7 @@ namespace Hardly.Library.Twitch {
 			return allReady;
 		}
 
-		BlackjackPlayer GetPlayer(SqlTwitchUser speaker) {
+		BlackjackPlayer<SqlTwitchUser> GetPlayer(SqlTwitchUser speaker) {
 			return controller.game.Get(speaker);
 		}
 	}

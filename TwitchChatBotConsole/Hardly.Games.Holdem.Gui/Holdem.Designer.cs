@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.aNumberPlayers = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.aNumberBigBlind = new System.Windows.Forms.NumericUpDown();
@@ -42,6 +43,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.aLabelBoardCards = new System.Windows.Forms.Label();
             this.aButtonFold = new System.Windows.Forms.Button();
+            this.aTimerRefresh = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.aNumberPlayers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBigBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBetOrRaiseAmount)).BeginInit();
@@ -263,6 +265,11 @@
             this.aButtonFold.UseVisualStyleBackColor = true;
             this.aButtonFold.Click += new System.EventHandler(this.aButtonFold_Click);
             // 
+            // aTimerRefresh
+            // 
+            this.aTimerRefresh.Enabled = true;
+            this.aTimerRefresh.Tick += new System.EventHandler(this.aTimerRefresh_Tick);
+            // 
             // Holdem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -318,6 +325,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label aLabelBoardCards;
         private System.Windows.Forms.Button aButtonFold;
+        private System.Windows.Forms.Timer aTimerRefresh;
     }
 }
 

@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Games.BlackjackTests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Games.Holdem.Gui", "Hardly.Games.Holdem.Gui\Hardly.Games.Holdem.Gui.csproj", "{7885E4C8-136A-47AD-A936-CDCC297B3A4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchChat.BasicTest", "..\TwitchChat.BasicTest\TwitchChat.BasicTest.csproj", "{7FA06D25-AF3A-4CFB-83C8-E1442EE8B842}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +142,14 @@ Global
 		{7885E4C8-136A-47AD-A936-CDCC297B3A4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7885E4C8-136A-47AD-A936-CDCC297B3A4A}.Release|x64.ActiveCfg = Release|Any CPU
 		{7885E4C8-136A-47AD-A936-CDCC297B3A4A}.Release|x64.Build.0 = Release|Any CPU
+		{7FA06D25-AF3A-4CFB-83C8-E1442EE8B842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FA06D25-AF3A-4CFB-83C8-E1442EE8B842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FA06D25-AF3A-4CFB-83C8-E1442EE8B842}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7FA06D25-AF3A-4CFB-83C8-E1442EE8B842}.Debug|x64.Build.0 = Debug|Any CPU
+		{7FA06D25-AF3A-4CFB-83C8-E1442EE8B842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FA06D25-AF3A-4CFB-83C8-E1442EE8B842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FA06D25-AF3A-4CFB-83C8-E1442EE8B842}.Release|x64.ActiveCfg = Release|Any CPU
+		{7FA06D25-AF3A-4CFB-83C8-E1442EE8B842}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

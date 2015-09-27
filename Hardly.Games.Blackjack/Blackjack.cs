@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 
 namespace Hardly.Games {
-	public sealed class Blackjack<PlayerIdType> : CardGame<PlayerIdType, BlackjackPlayer> {
-      public BlackjackPlayerHand dealer;
+	public sealed class Blackjack<PlayerIdType> : CardGame<PlayerIdType, BlackjackPlayer<PlayerIdType>> {
+      public BlackjackPlayerHand<PlayerIdType> dealer;
 		CardCollection lastDealerHand = null;
 
         public Blackjack() : this(1, 6) {
@@ -25,12 +25,12 @@ namespace Hardly.Games {
 		public override void Reset() {
 			lastDealerHand = dealer?.hand;
 			base.Reset();
-			dealer = new BlackjackPlayerHand(null, 0, false);
+			dealer = new BlackjackPlayerHand<PlayerIdType>(null, (PlayerIdType)typeof(PlayerIdType).GetDefaultValue(), 0, false);
 		}
 
 		public ulong Join(PlayerIdType playerId, PointManager pointManager, ulong bet) {
 			if(!base.Contains(playerId)) {
-                var player = new BlackjackPlayer(pointManager, bet);
+                var player = new BlackjackPlayer<PlayerIdType>(pointManager, playerId, bet);
                 base.Join(playerId, player);
 				Log.info(playerId.ToString() + " joined");
                 return player.totalBet;

@@ -12,7 +12,7 @@
 			deck = new Deck(numberOfDecks);
 		}
 
-		public void DealCard(CardPlayerHand player) {
+		public void DealCard(CardPlayerHand<PlayerIdType> player) {
 			PlayingCard card = deck.TakeTopCard();
 			player.hand.GiveCard(card);
 			Log.info("Dealt " + card.ToChatString());

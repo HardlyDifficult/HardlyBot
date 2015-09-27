@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Hardly.Games.Holdem.Gui {
     public partial class Holdem : Form {
-        TexasHoldem<int> game;
+        TexasHoldem<int> game = new TexasHoldem<int>();
 
         public Holdem() {
             InitializeComponent();
@@ -47,6 +47,15 @@ namespace Hardly.Games.Holdem.Gui {
 
         private void aButtonFold_Click(object sender, EventArgs e) {
 
+        }
+
+        private void aTimerRefresh_Tick(object sender, EventArgs e) {
+            var player = game.CurrentPlayer;
+            if(player != null) {
+                aLabelCurrentPlayer.Text = player.ToString();
+            } else {
+                aLabelCurrentPlayer.Text = "";
+            }
         }
     }
 }
