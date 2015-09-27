@@ -1,1 +1,3 @@
 # HardlyCode
+
+See the wiki.
