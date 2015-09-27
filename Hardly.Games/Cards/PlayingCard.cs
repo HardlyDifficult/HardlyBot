@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Hardly.Games {
-	public class PlayingCard {
+	public class PlayingCard : IComparable {
 		public enum Suit {
 			Clubs,
 			Diamonds,
@@ -10,7 +10,6 @@ namespace Hardly.Games {
 		}
 
 		public enum Value {
-			Ace,
 			Two,
 			Three,
 			Four,
@@ -23,6 +22,7 @@ namespace Hardly.Games {
 			Jack,
 			Queen,
 			King,
+            Ace,
             Joker
         }
         
@@ -365,5 +365,9 @@ namespace Hardly.Games {
 		public override int GetHashCode() {
 			return base.GetHashCode();
 		}
-	}
+
+        public int CompareTo(object obj) {
+            return value.CompareTo(obj);
+        }
+    }
 }
