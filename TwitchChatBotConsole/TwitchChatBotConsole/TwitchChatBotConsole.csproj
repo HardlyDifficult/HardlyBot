@@ -50,6 +50,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Hardly.Library.Twitch.Chat\Hardly.Library.Twitch.Chat.csproj">
+      <Project>{0e436bd2-c9d6-479d-9bb6-f58657270c3a}</Project>
+      <Name>Hardly.Library.Twitch.Chat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hardly.Library.Twitch\Hardly.Library.Twitch.csproj">
+      <Project>{7790f780-0088-4def-8a37-041b883c7549}</Project>
+      <Name>Hardly.Library.Twitch</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Hardly\Hardly.csproj">
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Hardly;
+using Hardly.Library.Twitch;
 
 namespace TwitchChatBotConsole
 {
@@ -11,9 +11,8 @@ namespace TwitchChatBotConsole
     {
         static void Main(string[] args)
         {
-            string test = "abcde";
-            System.Console.WriteLine(test.GetAfter("b"));
-            Console.ReadKey();
+            TwitchChatBot chatBot = new TwitchChatBot();
+            chatBot.Run();
         }
     }
 }
