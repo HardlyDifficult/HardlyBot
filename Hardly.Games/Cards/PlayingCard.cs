@@ -25,6 +25,13 @@ namespace Hardly.Games {
 			King
 		}
 
+		public enum SpecialCards {
+			Joker,
+			Joker,
+			Tarot_Card,
+			A_Slice_of_Cheese
+		}
+
 		public string ToChatString(bool showSymbols = false) {
 			string chatMessage = showSymbols ? "" : "[";
 			switch(value) {
