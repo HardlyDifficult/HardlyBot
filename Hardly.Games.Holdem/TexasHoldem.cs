@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Hardly.Games {
 	public class TexasHoldem<PlayerIdType> : CardGame<PlayerIdType, TexasHoldemPlayer<PlayerIdType>> {
@@ -79,7 +80,7 @@ namespace Hardly.Games {
                 DealToTable(1);
                 break;
             case Round.GameOver:
-
+                CalculateWinner();
                 break;
             default:
                 Debug.Fail();
@@ -87,6 +88,23 @@ namespace Hardly.Games {
             }
 
             currentPlayerId = StartingPlayerId;
+        }
+
+        private void CalculateWinner() {
+            uint bestHandValue = 0;
+            List<TexasHoldemPlayer<PlayerIdType>> bestHandPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
+
+            foreach(var player in seatedPlayers) {
+                if(player.HandValue > bestHandValue) {
+                    bestHandValue = player.HandValue;
+                    bestHandPlayers.Clear();
+                    bestHandPlayers.Add(player);
+                } else if(player.HandValue == bestHandValue) {
+                    bestHandPlayers.Add(player);
+                }
+            }
+
+
         }
 
         private void DealToTable(int numberOfCards) {

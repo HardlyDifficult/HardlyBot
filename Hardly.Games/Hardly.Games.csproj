@@ -47,6 +47,7 @@
     <Compile Include="Controllers\CardPlayerHand.cs" />
     <Compile Include="Controllers\Game.cs" />
     <Compile Include="Controllers\PointManager.cs" />
+    <Compile Include="Controllers\PokerPlayerHand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
