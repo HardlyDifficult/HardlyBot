@@ -60,6 +60,14 @@
   <ItemGroup>
     <Compile Include="Controller\ChannelPointManager.cs" />
     <Compile Include="Controller\TwitchUserPointManager.cs" />
+    <Compile Include="Data\SqlTwitchAlert.cs" />
+    <Compile Include="Data\SqlTwitchBot.cs" />
+    <Compile Include="Data\SqlTwitchChannel.cs" />
+    <Compile Include="Data\SqlTwitchChannelPointScale.cs" />
+    <Compile Include="Data\SqlTwitchConnection.cs" />
+    <Compile Include="Data\SqlTwitchFollower.cs" />
+    <Compile Include="Data\SqlTwitchUser.cs" />
+    <Compile Include="Data\SqlTwitchUserPoints.cs" />
     <Compile Include="Internal\TwitchHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controller\Twitch.cs" />
@@ -67,10 +75,6 @@
     <Compile Include="Internal\TwitchJson.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hardly.Data\Hardly.Data.csproj">
-      <Project>{65f1c4f3-f108-4454-b4bd-d545f818e0ce}</Project>
-      <Name>Hardly.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Hardly.Games\Hardly.Games.csproj">
       <Project>{64316fb2-3bfa-46e7-868a-faa53ee30261}</Project>
       <Name>Hardly.Games</Name>

@@ -64,10 +64,6 @@
     <Compile Include="TypeHelpers\ThreadHelpersTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hardly.Data\Hardly.Data.csproj">
-      <Project>{65f1c4f3-f108-4454-b4bd-d545f818e0ce}</Project>
-      <Name>Hardly.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Hardly\Hardly.csproj">
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>

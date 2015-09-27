@@ -14,11 +14,5 @@ namespace Hardly.Tests {
 			DBNull dbnull = DBNull.Value;
 			Assert.IsTrue(dbnull.IsDefaultValue());
 		}
-
-		[TestMethod()]
-		public void GetAllSubclassesTest() {
-			var classes = typeof(SqlAuthor).GetAllSubclassesInThisAssumbly<DataList>(true);
-			Assert.IsTrue(classes.Contains(typeof(SqlDomain)));
-		}
 	}
 }

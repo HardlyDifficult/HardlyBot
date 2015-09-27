@@ -74,10 +74,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hardly.Data\Hardly.Data.csproj">
-      <Project>{65f1c4f3-f108-4454-b4bd-d545f818e0ce}</Project>
-      <Name>Hardly.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Hardly.Games.Blackjack\Hardly.Games.Blackjack.csproj">
       <Project>{92e263b4-0b72-4d53-b32e-4ce821efd322}</Project>
       <Name>Hardly.Games.Blackjack</Name>
