@@ -21,7 +21,7 @@ namespace Hardly.Library.Twitch {
 		}
 		protected void StopTimers() {
 				roundTimer.Stop();
-				waitingToStartTimer.Start();
+				waitingToStartTimer.Stop();
 
 		}
 		protected void MinHit_StartWaitingForAdditionalPlayers() {
