@@ -28,7 +28,7 @@
 		public void Join(PlayerIdType playerId, ulong bet) {
 			if(!base.Contains(playerId)) {
 				base.Join(playerId, new BlackjackPlayer(bet));
-				Log.info(playerId.ToString() + " joined");
+				Log.info(playerId.ToString() + " joined the table.");
 			}
 		}
 
