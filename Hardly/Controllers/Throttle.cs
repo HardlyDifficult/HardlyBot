@@ -43,8 +43,8 @@ namespace Hardly {
 			return (int)timeBetweenActions - timeSpan;
 		}
 
-		public TimeSpan TimeRemaining() {
-			throw new NotImplementedException();
+		public TimeSpan TimeRemaining(ulong key) {
+            return TimeSpan.FromMilliseconds(TimeToSleepFor(key));
 		}
 	}
 }

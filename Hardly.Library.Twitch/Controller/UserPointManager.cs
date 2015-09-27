@@ -18,7 +18,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void GiveBonusIfTime() {
-			if(sqlPoints.points == 0 && (DateTime.Now - sqlPoints.timeOfLastBonus) > TimeSpan.FromDays(1)) {
+			if(sqlPoints.points == 0 && (DateTime.Now - sqlPoints.timeOfLastBonus) > TimeSpan.FromMinutes(1)) {
 				sqlPoints.points = 420;
 				sqlPoints.timeOfLastBonus = DateTime.Now;
 				sqlPoints.Save();
