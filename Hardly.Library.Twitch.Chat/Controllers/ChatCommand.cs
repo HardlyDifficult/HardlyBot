@@ -84,7 +84,7 @@ namespace Hardly.Library.Twitch {
 								string additionalText = message.GetAfter(" ")?.Trim();
 								action(speaker, additionalText);
 							} else {
-								room.SendWhisper(speaker, "Too soon... wait at least " + throttle.TimeRemaining().ToSimpleString() + " before running !" + commandName + " again.");
+								room.SendWhisper(speaker, "Too soon... wait at least " + throttle.TimeRemaining(id).ToSimpleString() + " before running !" + commandName + " again.");
 							}
 						} else {
 							room.SendWhisper(speaker, "Sorry, !" + commandName + " is for mods only.");
