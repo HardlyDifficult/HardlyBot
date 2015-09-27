@@ -22,16 +22,10 @@ namespace Hardly.Games {
 			Ten,
 			Jack,
 			Queen,
-			King
-		}
-
-		public enum SpecialCards {
-			Joker,
-			Joker,
-			Tarot_Card,
-			A_Slice_of_Cheese
-		}
-
+			King,
+            Joker
+        }
+        
 		public string ToChatString(bool showSymbols = false) {
 			string chatMessage = showSymbols ? "" : "[";
 			switch(value) {
@@ -275,27 +269,30 @@ namespace Hardly.Games {
 					}
 				}
 				break;
-			case Value.King:
-				if(!showSymbols) {
-					chatMessage += "K";
-				} else {
-					switch(suit) {
-					case Suit.Clubs:
-						chatMessage += "\uD83C\uDCDE";
-						break;
-					case Suit.Diamonds:
-						chatMessage += "\uD83C\uDCCE";
-						break;
-					case Suit.Hearts:
-						chatMessage += "\uD83C\uDCBE";
-						break;
-					case Suit.Spades:
-						chatMessage += "\uD83C\uDCAE";
-						break;
-					}
-				}
-				break;
-			}
+            case Value.King:
+                if(!showSymbols) {
+                    chatMessage += "K";
+                } else {
+                    switch(suit) {
+                    case Suit.Clubs:
+                        chatMessage += "\uD83C\uDCDE";
+                        break;
+                    case Suit.Diamonds:
+                        chatMessage += "\uD83C\uDCCE";
+                        break;
+                    case Suit.Hearts:
+                        chatMessage += "\uD83C\uDCBE";
+                        break;
+                    case Suit.Spades:
+                        chatMessage += "\uD83C\uDCAE";
+                        break;
+                    }
+                }
+                break;
+            case Value.Joker:
+                chatMessage += "Joker";
+                break;
+            }
 
 			if(!showSymbols) {
 				switch(suit) {

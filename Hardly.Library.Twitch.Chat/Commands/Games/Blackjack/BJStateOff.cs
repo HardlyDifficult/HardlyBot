@@ -10,11 +10,11 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void BjCommand(SqlTwitchUser speaker, string additionalText) {
-			controller.SetState(this, typeof(BJStateAcceptingPlayers));
+			controller.SetState(this.GetType(), typeof(BJStateAcceptingPlayers));
 		}
 
 		private void AutoStart() {
-			controller.SetState(this, typeof(BJStateAcceptingPlayers)); 
+			controller.SetState(this.GetType(), typeof(BJStateAcceptingPlayers)); 
 		}
 
 		internal override void Close() {

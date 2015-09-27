@@ -26,7 +26,7 @@ namespace Hardly.Library.Twitch {
 					chatMessage += AnnounceSplitHand(player);
 					controller.room.SendWhisper(speaker, chatMessage);
 					if(ReadyToEnd()) {
-						controller.SetState(this, typeof(BJStateDealerPlaying));
+						controller.SetState(this.GetType(), typeof(BJStateDealerPlaying));
 					}
 				}
 			} else {
@@ -101,7 +101,7 @@ namespace Hardly.Library.Twitch {
 					controller.room.SendWhisper(speaker, chatMessage);
 
 					if(ReadyToEnd()) {
-						controller.SetState(this, typeof(BJStateDealerPlaying));
+						controller.SetState(this.GetType(), typeof(BJStateDealerPlaying));
 					}
 				} else {
 					controller.room.SendWhisper(speaker, "Too late, you are standing with " + player.CurrentHand.hand.ToChatString());
@@ -156,7 +156,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void FinalTimeUp() {
-			controller.SetState(this, typeof(BJStateDealerPlaying));
+			controller.SetState(this.GetType(), typeof(BJStateDealerPlaying));
 		}
 
 		bool ReadyToEnd() {

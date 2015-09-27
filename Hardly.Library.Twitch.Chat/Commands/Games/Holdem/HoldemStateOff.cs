@@ -7,7 +7,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void HoldemCommand(SqlTwitchUser speaker, string additionalText) {
-			controller.SetState(this, typeof(HoldemStateAcceptingPlayers));
+			controller.SetState(this.GetType(), typeof(HoldemStateAcceptingPlayers));
 		}
 
 		internal override void Open() {

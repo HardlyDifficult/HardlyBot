@@ -25,7 +25,7 @@ namespace Hardly.Library.Twitch {
 
 		private void StartCommand(SqlTwitchUser speaker, string additionalText) {
 			if(controller.game.players.Count > 1) {
-				controller.SetState(this, typeof(HoldemStatePlayPreFlop));
+				controller.SetState(this.GetType(), typeof(HoldemStatePlayPreFlop));
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace Hardly.Library.Twitch {
 
 		private void StartIfReady() {
 			if(controller.game.IsFull()) {
-				controller.SetState(this, typeof(HoldemStatePlayPreFlop));
+				controller.SetState(this.GetType(), typeof(HoldemStatePlayPreFlop));
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		internal override void FinalTimeUp() {
-			controller.SetState(this, typeof(HoldemStatePlayPreFlop));
+			controller.SetState(this.GetType(), typeof(HoldemStatePlayPreFlop));
 		}
 
 		internal override void TimeUp() {

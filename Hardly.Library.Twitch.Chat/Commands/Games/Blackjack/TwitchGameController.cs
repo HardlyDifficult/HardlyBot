@@ -12,10 +12,10 @@ namespace Hardly.Library.Twitch {
 			myLock = new object();
 		}
 
-		public void SetState(GameState<TwitchController> startingState, Type nextStateType) {
+		public void SetState(Type startingState, Type nextStateType) {
 			bool changed = false;
 			lock (myLock) {
-				if(startingState == null || (state != null && state.Equals(startingState))) {
+				if(startingState == null || (state != null && state.GetType().Equals(startingState))) {
 					GameState<TwitchController> nextState = (GameState<TwitchController>)nextStateType.GetConstructor(new Type[] { this.GetType() }).Invoke(new object[] { this });
 					if(!nextState.Equals(state)) {
 						Log.debug("Twitch Game: Setting next state to " + nextState.GetType().ToString());

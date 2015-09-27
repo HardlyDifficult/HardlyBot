@@ -64,7 +64,7 @@ namespace Hardly.Library.Twitch {
 			
 			controller.room.SendChatMessage(chatMessage);
 
-			controller.SetState(this, typeof(BJStateOff));
+			controller.SetState(this.GetType(), typeof(BJStateOff));
 		}
 
 		private string GetPlayerList(bool? winnerOrLoser) {
