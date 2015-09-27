@@ -26,11 +26,13 @@ namespace Hardly.Games.Holdem.Gui {
                 game.Join(i, pointManager);
             }
 
-            game.StartGame();
+            if(game.CanStart()) {
+                game.StartGame();
+            }
         }
 
         private void aButtonCheck_Click(object sender, EventArgs e) {
-
+            game.Check();
         }
 
         private void aButtonCall_Click(object sender, EventArgs e) {
@@ -52,9 +54,13 @@ namespace Hardly.Games.Holdem.Gui {
         private void aTimerRefresh_Tick(object sender, EventArgs e) {
             var player = game.CurrentPlayer;
             if(player != null) {
-                aLabelCurrentPlayer.Text = player.ToString();
+                aLabelCurrentPlayer.Text = player.playerIdObject.ToString();
+                aLabelPlayerHand.Text = player.hand.ToChatString();
+                aLabelBoardCards.Text = game.table.hand.ToChatString();
             } else {
                 aLabelCurrentPlayer.Text = "";
+                aLabelPlayerHand.Text = "";
+                aLabelBoardCards.Text = "";
             }
         }
     }
