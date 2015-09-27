@@ -19,7 +19,7 @@ namespace Hardly.Tests {
 			writer.WriteLine(message);
 			writer.WriteLine(message);
 
-			string fileContents = File.ReadAllLines(filename);
+			string fileContents = File.ReadAllLines(filename)?.Trim();
 
 			Assert.IsTrue(fileContents.EndsWith(message));
 		}

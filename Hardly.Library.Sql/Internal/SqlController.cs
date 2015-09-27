@@ -4,7 +4,7 @@ using MySql.Data.MySqlClient;
 
 namespace Hardly {
 	internal static class SqlController {
-		static readonly string connectionString = "Server=10.0.1.9;Database=sobercode;" + File.ReadAllLines("UidAndPwd.txt") + ";useAffectedRows=true;";
+		static readonly string connectionString = File.ReadAllLines("UidAndPwd.txt") + ";useAffectedRows=true;";
 
 		internal static bool AddOrUpdatedAndGetAutoIncrementingKey(SqlTable table, ref object[] allColumnValues, bool lazy) {
 			if(table != null && allColumnValues != null && allColumnValues.Length > 1 && allColumnValues[0].IsDefaultValue()) {
