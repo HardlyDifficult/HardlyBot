@@ -93,16 +93,16 @@ namespace Hardly.Games {
         private void CalculateWinner() {
             uint bestHandValue = 0;
             List<TexasHoldemPlayer<PlayerIdType>> bestHandPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
-
-            foreach(var player in seatedPlayers) {
-                if(player.HandValue > bestHandValue) {
-                    bestHandValue = player.HandValue;
-                    bestHandPlayers.Clear();
-                    bestHandPlayers.Add(player);
-                } else if(player.HandValue == bestHandValue) {
-                    bestHandPlayers.Add(player);
-                }
-            }
+            // TODO
+            //foreach(var player in seatedPlayers) {
+            //    if(player.HandValue > bestHandValue) {
+            //        bestHandValue = player.HandValue;
+            //        bestHandPlayers.Clear();
+            //        bestHandPlayers.Add(player);
+            //    } else if(player.HandValue == bestHandValue) {
+            //        bestHandPlayers.Add(player);
+            //    }
+            //}
 
 
         }
