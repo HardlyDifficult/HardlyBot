@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0E436BD2-C9D6-479D-9BB6-F58657270C3A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hardly.Library.Twitch</RootNamespace>
+    <AssemblyName>Hardly.Library.Twitch.Chat</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\Games\Blackjack\BJStateAcceptingPlayers.cs" />
+    <Compile Include="Commands\Games\Blackjack\BJStateDealerPlaying.cs" />
+    <Compile Include="Commands\Games\Blackjack\BJStateOff.cs" />
+    <Compile Include="Commands\Games\Blackjack\BJStatePlay.cs" />
+    <Compile Include="Commands\Games\Blackjack\TwitchBlackjack.cs" />
+    <Compile Include="Commands\Games\Blackjack\TwitchGameController.cs" />
+    <Compile Include="Commands\Games\Holdem\HoldemStateAcceptingPlayers.cs" />
+    <Compile Include="Commands\Games\Holdem\HoldemStateEndOfGame.cs" />
+    <Compile Include="Commands\Games\Holdem\HoldemStateOff.cs" />
+    <Compile Include="Commands\Games\Holdem\HoldemStatePlayFlop.cs" />
+    <Compile Include="Commands\Games\Holdem\HoldemStatePlayPreFlop.cs" />
+    <Compile Include="Commands\Games\Holdem\HoldemStatePlayRiver.cs" />
+    <Compile Include="Commands\Games\Holdem\HoldemStatePlayTurn.cs" />
+    <Compile Include="Commands\Games\Holdem\TwitchHoldem.cs" />
+    <Compile Include="Commands\Games\NumberGames\TwitchPickANumber.cs" />
+    <Compile Include="Controllers\ChatCommand.cs" />
+    <Compile Include="Library\TwitchCommandController.cs" />
+    <Compile Include="Logic\States\GameState.cs" />
+    <Compile Include="ChatEvents\TwitchChatChannelEvent.cs" />
+    <Compile Include="ChatEvents\TwitchChatEvent.cs" />
+    <Compile Include="ChatEvents\TwitchChatMessage.cs" />
+    <Compile Include="ChatEvents\TwitchChatPing.cs" />
+    <Compile Include="ChatEvents\TwitchChatUnknownEvent.cs" />
+    <Compile Include="ChatEvents\TwitchChatWhisper.cs" />
+    <Compile Include="Controllers\TwitchChatBot.cs" />
+    <Compile Include="Library\TwitchChatRoom.cs" />
+    <Compile Include="Library\TwitchCommandListener.cs" />
+    <Compile Include="Library\TwitchIrcConnection.cs" />
+    <Compile Include="Logic\States\GameStateAcceptingPlayers.cs" />
+    <Compile Include="Commands\UserInfo\ViewPoints.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hardly.Data\Hardly.Data.csproj">
+      <Project>{65f1c4f3-f108-4454-b4bd-d545f818e0ce}</Project>
+      <Name>Hardly.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly.Games.Blackjack\Hardly.Games.Blackjack.csproj">
+      <Project>{92e263b4-0b72-4d53-b32e-4ce821efd322}</Project>
+      <Name>Hardly.Games.Blackjack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly.Games.Holdem\Hardly.Games.Holdem.csproj">
+      <Project>{d0eb0d1e-80e3-4d6f-94e5-14bec0d4a0ef}</Project>
+      <Name>Hardly.Games.Holdem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly.Games\Hardly.Games.csproj">
+      <Project>{64316fb2-3bfa-46e7-868a-faa53ee30261}</Project>
+      <Name>Hardly.Games</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly.Library.Network\Hardly.Library.Network.csproj">
+      <Project>{57f110ff-a588-47ff-a1dd-f44b684dc42d}</Project>
+      <Name>Hardly.Library.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly.Library.Sql\Hardly.Library.Sql.csproj">
+      <Project>{f84e492b-4aa6-4d7e-84a7-5432be992d52}</Project>
+      <Name>Hardly.Library.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly.Library.Twitch\Hardly.Library.Twitch.csproj">
+      <Project>{7790f780-0088-4def-8a37-041b883c7549}</Project>
+      <Name>Hardly.Library.Twitch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly\Hardly.csproj">
+      <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
+      <Name>Hardly</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Commands\Games\Blackjack\Blackjack.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
