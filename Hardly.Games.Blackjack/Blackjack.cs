@@ -32,7 +32,7 @@ namespace Hardly.Games {
 			if(!base.Contains(playerId)) {
                 var player = new BlackjackPlayer<PlayerIdType>(pointManager, playerId, bet);
                 base.Join(playerId, player);
-				Log.info(playerId.ToString() + " joined");
+				Log.info(playerId.ToString() + " joined.");
                 return player.totalBet;
 			}
 
