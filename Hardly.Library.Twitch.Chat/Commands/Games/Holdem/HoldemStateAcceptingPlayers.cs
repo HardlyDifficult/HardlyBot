@@ -25,44 +25,44 @@ namespace Hardly.Library.Twitch {
 
 		private void StartCommand(SqlTwitchUser speaker, string additionalText) {
 			if(controller.game.CanStart()) {
-				controller.SetState(this.GetType(), typeof(HoldemStatePlayPreFlop));
+                StartGame();
 			}
 		}
 
 		private void PlayCommand(SqlTwitchUser speaker, string additionalText) {
-			ulong bet = 10; // Ante?
 			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
-            
-			if(bet > 0) {
+
+            if(userPoints.AvailablePoints > controller.game.bigBlind) {
 				controller.game.Join(speaker, userPoints);
 				if(controller.game.CanStart()) {
 					MinHit_StartWaitingForAdditionalPlayers();
 				}
-				SendJoinMessage(speaker, bet);
+				SendJoinMessage(speaker);
 				StartIfReady();
 			} else {
 				controller.room.SendWhisper(speaker, "You flat broke, come back later.");
 			}
 		}
 
-		void SendJoinMessage(SqlTwitchUser speaker, ulong bet = 0) {
-			string chatMessage = "You're in";
-			if(bet > 0) {
-				chatMessage += " for ";
-				chatMessage += controller.room.pointManager.ToPointsString(bet);
-			}
-			chatMessage += ", sit tight we start ";
+		void SendJoinMessage(SqlTwitchUser speaker) {
+			string chatMessage = "You're in, sit tight we start ";
 			chatMessage += GetStartingInMessage();
 			controller.room.SendWhisper(speaker, chatMessage);
 		}
 
 		private void StartIfReady() {
 			if(controller.game.IsFull()) {
-				controller.SetState(this.GetType(), typeof(HoldemStatePlayPreFlop));
-			}
-		}
+                StartGame();
+            }
+        }
 
-		internal override void AnnounceGame() {
+        void StartGame() {
+            if(controller.game.StartGame()) {
+                controller.SetState(this.GetType(), typeof(HoldemStatePlayPreFlop));
+            }
+        }
+
+        internal override void AnnounceGame() {
 			controller.room.SendChatMessage("Holdem: !playholdem to join in.");
 			StartWaitingForSomeoneToJoin();
 		}
@@ -83,7 +83,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		internal override void FinalTimeUp() {
-			controller.SetState(this.GetType(), typeof(HoldemStatePlayPreFlop));
+            StartGame();
 		}
 
 		internal override void TimeUp() {

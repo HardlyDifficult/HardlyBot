@@ -13,6 +13,7 @@ namespace Hardly.Library.Twitch {
 		internal override void Open() {
 			base.Open();
 			controller.game.Reset();
-		}
+            controller.game.bigBlind = 2;
+        }
 	}
 }

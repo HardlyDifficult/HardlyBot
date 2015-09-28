@@ -25,7 +25,7 @@ namespace Hardly.Library.Twitch {
 		internal override void Open() {
 			base.Open();
 			controller.game.Reset();
-			timer.Start();
+			//timer.Start();
 		}
 	}
 }

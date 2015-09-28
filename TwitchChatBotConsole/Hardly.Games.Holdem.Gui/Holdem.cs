@@ -25,7 +25,7 @@ namespace Hardly.Games.Holdem.Gui {
 
         private void aButtonStartGame_Click(object sender, EventArgs e) {
             game.Reset();
-            game.SetBigBlind((ulong)aNumberBigBlind.Value);
+            game.bigBlind = ((ulong)aNumberBigBlind.Value);
 
             for(int i = 0; i < aNumberPlayers.Value; i++) {
                 game.Join(i, pointManagers[i]);

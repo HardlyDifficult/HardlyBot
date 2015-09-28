@@ -49,6 +49,7 @@
     <Compile Include="Commands\Games\Holdem\HoldemStateAcceptingPlayers.cs" />
     <Compile Include="Commands\Games\Holdem\HoldemStateEndOfGame.cs" />
     <Compile Include="Commands\Games\Holdem\HoldemStateOff.cs" />
+    <Compile Include="Commands\Games\Holdem\HoldemStatePlay.cs" />
     <Compile Include="Commands\Games\Holdem\HoldemStatePlayFlop.cs" />
     <Compile Include="Commands\Games\Holdem\HoldemStatePlayPreFlop.cs" />
     <Compile Include="Commands\Games\Holdem\HoldemStatePlayRiver.cs" />

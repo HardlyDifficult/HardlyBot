@@ -13,7 +13,7 @@ namespace Hardly {
 		}
 		
 		public static void Fail() {
-			System.Diagnostics.Debug.Assert(false);
+            Log.fatal("fail");
 		}
 
 		public static void Assert(bool result) {
