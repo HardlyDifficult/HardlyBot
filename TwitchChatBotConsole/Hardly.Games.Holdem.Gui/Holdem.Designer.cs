@@ -51,9 +51,15 @@
             this.aLabelLosers = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.aLabelPot = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.aLabelAccountBalance = new System.Windows.Forms.Label();
+            this.aNumberBalancePlayerId = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.aLabelViewAccountBalance = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberPlayers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBigBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBetOrRaiseAmount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.aNumberBalancePlayerId)).BeginInit();
             this.SuspendLayout();
             // 
             // aNumberPlayers
@@ -280,7 +286,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 333);
+            this.label4.Location = new System.Drawing.Point(12, 357);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 13);
             this.label4.TabIndex = 21;
@@ -289,7 +295,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(16, 350);
+            this.label5.Location = new System.Drawing.Point(15, 374);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(49, 13);
             this.label5.TabIndex = 22;
@@ -298,7 +304,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(19, 367);
+            this.label8.Location = new System.Drawing.Point(18, 391);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(41, 13);
             this.label8.TabIndex = 23;
@@ -307,7 +313,7 @@
             // aLabelWinners
             // 
             this.aLabelWinners.AutoSize = true;
-            this.aLabelWinners.Location = new System.Drawing.Point(71, 350);
+            this.aLabelWinners.Location = new System.Drawing.Point(70, 374);
             this.aLabelWinners.Name = "aLabelWinners";
             this.aLabelWinners.Size = new System.Drawing.Size(65, 13);
             this.aLabelWinners.TabIndex = 24;
@@ -316,7 +322,7 @@
             // aLabelLosers
             // 
             this.aLabelLosers.AutoSize = true;
-            this.aLabelLosers.Location = new System.Drawing.Point(71, 367);
+            this.aLabelLosers.Location = new System.Drawing.Point(70, 391);
             this.aLabelLosers.Name = "aLabelLosers";
             this.aLabelLosers.Size = new System.Drawing.Size(65, 13);
             this.aLabelLosers.TabIndex = 25;
@@ -340,11 +346,64 @@
             this.aLabelPot.TabIndex = 27;
             this.aLabelPot.Text = "0";
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(12, 328);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(115, 13);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "Your account balance:";
+            // 
+            // aLabelAccountBalance
+            // 
+            this.aLabelAccountBalance.AutoSize = true;
+            this.aLabelAccountBalance.Location = new System.Drawing.Point(127, 328);
+            this.aLabelAccountBalance.Name = "aLabelAccountBalance";
+            this.aLabelAccountBalance.Size = new System.Drawing.Size(25, 13);
+            this.aLabelAccountBalance.TabIndex = 29;
+            this.aLabelAccountBalance.Text = "100";
+            // 
+            // aNumberBalancePlayerId
+            // 
+            this.aNumberBalancePlayerId.Location = new System.Drawing.Point(303, 143);
+            this.aNumberBalancePlayerId.Name = "aNumberBalancePlayerId";
+            this.aNumberBalancePlayerId.Size = new System.Drawing.Size(120, 20);
+            this.aNumberBalancePlayerId.TabIndex = 30;
+            this.aNumberBalancePlayerId.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(300, 127);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(89, 13);
+            this.label12.TabIndex = 31;
+            this.label12.Text = "View balance for:";
+            // 
+            // aLabelViewAccountBalance
+            // 
+            this.aLabelViewAccountBalance.AutoSize = true;
+            this.aLabelViewAccountBalance.Location = new System.Drawing.Point(315, 166);
+            this.aLabelViewAccountBalance.Name = "aLabelViewAccountBalance";
+            this.aLabelViewAccountBalance.Size = new System.Drawing.Size(13, 13);
+            this.aLabelViewAccountBalance.TabIndex = 32;
+            this.aLabelViewAccountBalance.Text = "0";
+            // 
             // Holdem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(246, 386);
+            this.ClientSize = new System.Drawing.Size(447, 428);
+            this.Controls.Add(this.aLabelViewAccountBalance);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.aNumberBalancePlayerId);
+            this.Controls.Add(this.aLabelAccountBalance);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.aLabelPot);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.aLabelLosers);
@@ -376,6 +435,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.aNumberPlayers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBigBlind)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBetOrRaiseAmount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.aNumberBalancePlayerId)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -410,6 +470,11 @@
         private System.Windows.Forms.Label aLabelLosers;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label aLabelPot;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label aLabelAccountBalance;
+        private System.Windows.Forms.NumericUpDown aNumberBalancePlayerId;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label aLabelViewAccountBalance;
     }
 }
 

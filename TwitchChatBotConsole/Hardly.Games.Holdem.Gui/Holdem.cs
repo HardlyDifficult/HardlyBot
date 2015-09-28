@@ -11,9 +11,16 @@ using System.Windows.Forms;
 namespace Hardly.Games.Holdem.Gui {
     public partial class Holdem : Form {
         TexasHoldem<int> game = new TexasHoldem<int>();
+        PointManager[] pointManagers;
 
         public Holdem() {
             InitializeComponent();
+
+            pointManagers = new PointManager[100];
+            for(int i = 0; i < pointManagers.Length; i++) {
+                pointManagers[i] = new PointManager();
+                pointManagers[i].TotalPointsInAccount = 100000;
+            }
         }
 
         private void aButtonStartGame_Click(object sender, EventArgs e) {
@@ -21,9 +28,7 @@ namespace Hardly.Games.Holdem.Gui {
             game.SetBigBlind((ulong)aNumberBigBlind.Value);
 
             for(int i = 0; i < aNumberPlayers.Value; i++) {
-                var pointManager = new PointManager();
-                pointManager.TotalPointsInAccount = 100000;
-                game.Join(i, pointManager);
+                game.Join(i, pointManagers[i]);
             }
 
             if(game.CanStart()) {
@@ -57,10 +62,12 @@ namespace Hardly.Games.Holdem.Gui {
                 aLabelCurrentPlayer.Text = player.playerIdObject.ToString();
                 aLabelPlayerHand.Text = player.hand.ToChatString();
                 aLabelBoardCards.Text = game.table.hand.ToChatString();
+                aLabelAccountBalance.Text = player.pointManager.AvailablePoints.ToStringWithCommas();
             } else {
                 aLabelCurrentPlayer.Text = "";
                 aLabelPlayerHand.Text = "";
                 aLabelBoardCards.Text = "";
+                aLabelAccountBalance.Text = "";
             }
 
             string winners = null;
@@ -91,6 +98,8 @@ namespace Hardly.Games.Holdem.Gui {
 
             aLabelPot.Text = game.GetTotalPot().ToString();
             aLabelCallAmount.Text = game.GetCallAmount().ToString();
+
+            aLabelViewAccountBalance.Text = pointManagers[(int)aNumberBalancePlayerId.Value].AvailablePoints.ToStringWithCommas();
         }
     }
 }

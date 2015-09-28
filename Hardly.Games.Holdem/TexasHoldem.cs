@@ -10,12 +10,16 @@ namespace Hardly.Games {
 
         ulong bigBlind = 0, currentBet = 0;
         bool gameInProgress = false;
-        List<TexasHoldemPlayer<PlayerIdType>> seatedPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
+        List<TexasHoldemPlayer<PlayerIdType>> 
+            seatedPlayers = new List<TexasHoldemPlayer<PlayerIdType>>(), 
+            sidepotPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
         uint currentPlayerId = 0, endingPlayerId = 0;
         public TexasHoldemPlayer<PlayerIdType> table;
-        public List<TexasHoldemPlayer<PlayerIdType>> 
+        public List<TexasHoldemPlayer<PlayerIdType>>
             lastGameWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
-            lastGameLosers = new List<TexasHoldemPlayer<PlayerIdType>>();
+            lastGameLosers = new List<TexasHoldemPlayer<PlayerIdType>>(),
+            lastGameSidepotWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
+            lastGameSidepotLosers = new List<TexasHoldemPlayer<PlayerIdType>>();
 
         public TexasHoldemPlayer<PlayerIdType> CurrentPlayer {
             get {
@@ -49,7 +53,7 @@ namespace Hardly.Games {
                 }
             }
 
-            uint iBig = seatedPlayers.Count > 3 ? 2u : seatedPlayers.Count == 3 ? 1u : 0u;
+            uint iBig = seatedPlayers.Count >= 3 ? 2u : 0u;
             if(bigBlind > 0) {
                 ulong littleBlind = bigBlind / 2;
                 seatedPlayers[1].placeBet(littleBlind, true);
@@ -66,6 +70,8 @@ namespace Hardly.Games {
             if(seatedPlayers.Remove(CurrentPlayer)) {
                 if(currentPlayerId == endingPlayerId || seatedPlayers.Count == 1) {
                     NextRound();
+                } else if(currentPlayerId == seatedPlayers.Count) {
+                    currentPlayerId = 0;
                 }
 
                 return true;
@@ -82,6 +88,7 @@ namespace Hardly.Games {
                 ulong bet = currentBet - CurrentPlayer.bet + value;
                 if(CurrentPlayer.placeBet(bet, true)) {
                     currentBet = CurrentPlayer.bet;
+                    endingPlayerId = currentPlayerId > 0 ? currentPlayerId - 1 : (uint)seatedPlayers.Count - 1;
                     SelectNextPlayerOrNextRound();
                     return true;
                 }
@@ -97,6 +104,13 @@ namespace Hardly.Games {
                     currentBet = CurrentPlayer.bet;
                     SelectNextPlayerOrNextRound();
                     return true;
+                } else {
+                    CurrentPlayer.placeBet(bet, false);
+                    sidepotPlayers.Add(CurrentPlayer);
+                    seatedPlayers.Remove(CurrentPlayer);
+                    if(currentPlayerId == endingPlayerId || seatedPlayers.Count == 1) {
+                        NextRound();
+                    }
                 }
             }
 
@@ -179,6 +193,7 @@ namespace Hardly.Games {
             }
             
             currentPlayerId = StartingPlayerId;
+            endingPlayerId = seatedPlayers.Count >= 3 ? 2u : 0u;
         }
 
         public ulong GetCallAmount() {
@@ -200,33 +215,86 @@ namespace Hardly.Games {
 
         private void CalculateWinners() {
             lastGameWinners.Clear();
-            if(seatedPlayers.Count > 1) {
-                ulong bestHandValue = 0;
+            lastGameLosers.Clear();
+            lastGameSidepotWinners.Clear();
+            lastGameSidepotLosers.Clear();
 
-                foreach(var player in seatedPlayers) {
-                    CardCollection bestPlayerHand = PokerPlayerHand.GetBestHand(player.hand, table.hand);
-                    ulong playerHandValue = PokerPlayerHand.HandValue(bestPlayerHand);
+            lastGameWinners = GetWinners(seatedPlayers);
 
-                    if(playerHandValue > bestHandValue) {
-                        bestHandValue = playerHandValue;
-                        lastGameWinners.Clear();
-                        lastGameWinners.Add(player);
-                    } else if(playerHandValue == bestHandValue) {
-                        lastGameWinners.Add(player);
+            ulong sidepotTotalPayout = 0;
+            while(sidepotPlayers.Count > 0) {
+                ulong smallestSideBet = ulong.MaxValue;
+                foreach(var player in sidepotPlayers) {
+                    if(player.bet < smallestSideBet) {
+                        smallestSideBet = player.bet;
                     }
                 }
-            } else {
-                lastGameWinners.Add(seatedPlayers[0]);
+
+                var playersToTest = new List<TexasHoldemPlayer<PlayerIdType>>();
+                foreach(var player in seatedPlayers) {
+                    playersToTest.Add(player);
+                }
+                foreach(var player in sidepotPlayers) {
+                    if(player.bet >= smallestSideBet) {
+                        playersToTest.Add(player);
+                    }
+                }
+                var sidePotWinners = GetWinners(playersToTest);
+                ulong sidePayoutPerPerson = (ulong)(smallestSideBet * (ulong)playersToTest.Count) / (ulong)sidePotWinners.Count;
+                foreach(var player in sidePotWinners) {
+                    player.pointManager.Award(player.bet, (long)sidePayoutPerPerson - (long)player.bet);
+                    sidepotTotalPayout += sidePayoutPerPerson;
+                    sidePotWinners.Add(player);
+                }
+
+                foreach(var player in playersToTest) {
+                    if(player.bet == smallestSideBet) {
+                        sidepotPlayers.Remove(player);
+                    }
+                }
             }
 
-            lastGameLosers.Clear();
+            ulong payoutPerPerson = (ulong)(GetTotalPot() - sidepotTotalPayout / (ulong)lastGameWinners.Count);
+            foreach(var player in lastGameWinners) {
+                player.pointManager.Award(player.bet, (long)payoutPerPerson - (long)player.bet);
+            }
+
+            
             foreach(var player in seatedPlayers) {
                 if(!lastGameWinners.Contains(player)) {
                     lastGameLosers.Add(player);
                 }
             }
-
+            foreach(var player in sidepotPlayers) {
+                if(!lastGameSidepotWinners.Contains(player)) {
+                    lastGameSidepotLosers.Add(player);
+                }
+            }
             gameInProgress = false;
+        }
+
+        List<TexasHoldemPlayer<PlayerIdType>> GetWinners(List<TexasHoldemPlayer<PlayerIdType>> playersToCheck) {
+            List<TexasHoldemPlayer<PlayerIdType>> winners = new List<TexasHoldemPlayer<PlayerIdType>>();
+            if(playersToCheck.Count > 1) {
+                ulong bestHandValue = 0;
+
+                foreach(var player in playersToCheck) {
+                    CardCollection bestPlayerHand = PokerPlayerHand.GetBestHand(player.hand, table.hand);
+                    ulong playerHandValue = PokerPlayerHand.HandValue(bestPlayerHand);
+
+                    if(playerHandValue > bestHandValue) {
+                        bestHandValue = playerHandValue;
+                        winners.Clear();
+                        winners.Add(player);
+                    } else if(playerHandValue == bestHandValue) {
+                        winners.Add(player);
+                    }
+                }
+            } else {
+                winners.Add(playersToCheck[0]);
+            }
+
+            return winners;
         }
 
         private void DealToTable(int numberOfCards) {
@@ -253,6 +321,7 @@ namespace Hardly.Games {
 
         private void ShufflePlayerOrder() {
             seatedPlayers.Clear();
+            sidepotPlayers.Clear();
                 
             foreach(var player in PlayerObjects.ToArray().Shuffle()) {
                 seatedPlayers.Add(player);

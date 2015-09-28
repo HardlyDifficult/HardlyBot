@@ -8,8 +8,8 @@ namespace TwitchChatBotConsole
     {
         static void Main(string[] args)
         {
-            TwitchChatBot chatBot = new TwitchChatBot();
-            new Thread(chatBot.Run).Start();
+            //TwitchChatBot chatBot = new TwitchChatBot();
+            //new Thread(chatBot.Run).Start();
             Application.Run(new Hardly.Games.Holdem.Gui.Holdem());
         }
     }
