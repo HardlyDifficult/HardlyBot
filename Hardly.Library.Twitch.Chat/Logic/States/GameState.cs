@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Hardly.Library.Twitch {
 	public abstract class GameState<TwitchGameController> {

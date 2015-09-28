@@ -60,6 +60,10 @@
       <Project>{64316FB2-3BFA-46E7-868A-FAA53EE30261}</Project>
       <Name>Hardly.Games</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Hardly\Hardly.csproj">
+      <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
+      <Name>Hardly</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

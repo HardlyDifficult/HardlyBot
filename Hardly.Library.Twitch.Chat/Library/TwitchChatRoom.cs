@@ -4,7 +4,6 @@ namespace Hardly.Library.Twitch {
 	public class TwitchChatRoom {
 		readonly TwitchIrcConnection chatIrcConnection, whisperIrcConnection;
 		public readonly SqlTwitchConnection twitchConnection;
-		public readonly TwitchCommandController[] commandControllers;
         public readonly ChannelPointManager pointManager;
 
         public TwitchChatRoom(TwitchIrcConnection chatConnection,
@@ -16,8 +15,8 @@ namespace Hardly.Library.Twitch {
 
 			chatConnection.Join(this);
 
-			commandControllers = GetType().InstantiateEachSubclass<TwitchCommandController, TwitchChatRoom>(false, this);
-		}
+            GetType().InstantiateEachSubclassInMyAssembly<IAutoJoinTwitchRooms, TwitchChatRoom>(false, this);
+        }
 
 		#region Methods
 		internal void SendIrcMessage(string message) {

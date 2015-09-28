@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchChat.BasicTest", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Games.Poker", "..\Hardly.Games.Poker\Hardly.Games.Poker.csproj", "{D0EB0D1E-80E3-4D6F-94E5-14BEC0D4A0EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Disabled", "..\Hardly.Disabled\Hardly.Disabled.csproj", "{6404667E-E8B1-4E4D-8A66-0584E65657EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -150,6 +152,14 @@ Global
 		{D0EB0D1E-80E3-4D6F-94E5-14BEC0D4A0EF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D0EB0D1E-80E3-4D6F-94E5-14BEC0D4A0EF}.Release|x64.ActiveCfg = Release|Any CPU
 		{D0EB0D1E-80E3-4D6F-94E5-14BEC0D4A0EF}.Release|x64.Build.0 = Release|Any CPU
+		{6404667E-E8B1-4E4D-8A66-0584E65657EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6404667E-E8B1-4E4D-8A66-0584E65657EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6404667E-E8B1-4E4D-8A66-0584E65657EE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6404667E-E8B1-4E4D-8A66-0584E65657EE}.Debug|x64.Build.0 = Debug|Any CPU
+		{6404667E-E8B1-4E4D-8A66-0584E65657EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6404667E-E8B1-4E4D-8A66-0584E65657EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6404667E-E8B1-4E4D-8A66-0584E65657EE}.Release|x64.ActiveCfg = Release|Any CPU
+		{6404667E-E8B1-4E4D-8A66-0584E65657EE}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

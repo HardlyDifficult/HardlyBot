@@ -81,10 +81,10 @@ namespace Hardly {
 			string join = "join twitch_followers on twitch_followers.UserId=twitch_channels.UserId";
 			object[] vars = new object[] { channel.user.id, true };
 
-			object[][] results = _table.Select(join, null, where, vars, null, 0);
+			List<object[]> results = _table.Select(join, null, where, vars, null, 0);
 			if(results != null) {
-				SqlTwitchChannel[] channels = new SqlTwitchChannel[results.Length];
-				for(int i = 0; i < results.Length; i++) {
+				SqlTwitchChannel[] channels = new SqlTwitchChannel[results.Count];
+				for(int i = 0; i < results.Count; i++) {
 					channels[i] = FromSql(results[i]);
 				}
 
@@ -99,10 +99,10 @@ namespace Hardly {
 		}
 
 		public static SqlTwitchChannel[] GetAll() {
-			object[][] results = _table.Select(null, null, null, null, null, 0);
+			List<object[]> results = _table.Select(null, null, null, null, null, 0);
 			if(results != null) {
-				SqlTwitchChannel[] channels = new SqlTwitchChannel[results.Length];
-				for(int i = 0; i < results.Length; i++) {
+				SqlTwitchChannel[] channels = new SqlTwitchChannel[results.Count];
+				for(int i = 0; i < results.Count; i++) {
 					channels[i] = FromSql(results[i]);
 				}
 

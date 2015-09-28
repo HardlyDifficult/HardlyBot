@@ -87,7 +87,7 @@ namespace Hardly {
 				Debug.Assert(tableName.Length > 0 && tableName.IsLowercase() && tableName.IsTrimmed());
 
 				try {
-					object[][] columnObjects = Select("information_schema.columns",
+					List<object[]> columnObjects = Select("information_schema.columns",
 						null,
 						 "column_name, is_nullable='YES', character_maximum_length, column_type, column_key='PRI', column_key='UNI', extra='auto_increment'",
 						 "table_name=?a",
@@ -97,8 +97,8 @@ namespace Hardly {
 						 );
 
 					if(columnObjects != null) {
-						SqlColumnHeaders[] columns = new SqlColumnHeaders[columnObjects.Length];
-						for(int i = 0; i < columnObjects.Length; i++) {
+						SqlColumnHeaders[] columns = new SqlColumnHeaders[columnObjects.Count];
+						for(int i = 0; i < columnObjects.Count; i++) {
 							columns[i] = SqlColumnHeaders.FromSql((string)columnObjects[i][0],
 								 (long)columnObjects[i][1] > 0,
 								 columnObjects[i][2].GetType().Equals(typeof(DBNull)) ? 0 : (ulong)columnObjects[i][2],
@@ -119,7 +119,7 @@ namespace Hardly {
 			return null;
 		}
 
-		internal static object[][] Select(string tableName, string join, string what, string whereClause, object[] vars, string orderBy, uint limit) {
+		internal static List<object[]> Select(string tableName, string join, string what, string whereClause, object[] vars, string orderBy, uint limit) {
 			if(tableName != null) {
 				try {
 					List<object[]> resultsList = new List<object[]>();
@@ -142,7 +142,7 @@ namespace Hardly {
 					ExecuteReader(sql, vars, resultsList);
 
 					if(resultsList.Count > 0) {
-						return resultsList.ToArray();
+						return resultsList;
 					} 
 				} catch(Exception e) {
 					Log.exception(e);

@@ -4,11 +4,22 @@ namespace Hardly {
     public class List<ItemType> {
         #region Constructor
         public List(ItemType[] items = null) {
-            this.items = new System.Collections.Generic.List<ItemType>(items);
+            if(items != null) {
+                this.items = new System.Collections.Generic.List<ItemType>(items);
+            } else {
+                this.items = new System.Collections.Generic.List<ItemType>();
+            }
         }
 
         public List(List<ItemType> existingList) {
-            this.items = new System.Collections.Generic.List<ItemType>(existingList?.items);
+            if(items != null) {
+                this.items = new System.Collections.Generic.List<ItemType>(existingList?.items);
+            } else {
+                this.items = new System.Collections.Generic.List<ItemType>();
+            }
+        }
+
+        public List(ItemType existingItem) : this(new[] { existingItem }) {
         }
         #endregion
 
@@ -47,6 +58,10 @@ namespace Hardly {
             for(int i = 0; i < itemLength; i++) {
                 Add(itemsToAdd[i]);
             }
+        }
+
+        public bool Contains(ItemType item) {
+            return items.Contains(item);
         }
 
         public void DuplicateEntities(uint numberOfTimes) {

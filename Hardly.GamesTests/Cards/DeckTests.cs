@@ -1,10 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Hardly.Games;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hardly.Games.Tests {
     [TestClass()]
@@ -21,8 +15,8 @@ namespace Hardly.Games.Tests {
             Deck deckWithout = new Deck(1, false);
             Deck deckWith = new Deck(1, true);
 
-            Assert.IsTrue(deckWithout.cards.Count == 52);
-            Assert.IsTrue(deckWith.cards.Count == 54);
+            Assert.IsTrue(deckWithout.Count == 52);
+            Assert.IsTrue(deckWith.Count == 54);
         }
     }
 }

@@ -44,6 +44,7 @@
     <Compile Include="Cards\Deck.cs" />
     <Compile Include="Cards\PlayingCard.cs" />
     <Compile Include="Cards\PlayingCardList.cs" />
+    <Compile Include="Cards\PlayingCardListEvaluator.cs" />
     <Compile Include="Controllers\CardGame.cs" />
     <Compile Include="Controllers\Game.cs" />
     <Compile Include="Controllers\PlayerPointManager.cs" />

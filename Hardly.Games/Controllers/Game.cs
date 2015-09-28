@@ -60,5 +60,9 @@ namespace Hardly.Games {
         public virtual void Reset() {
             players.Clear();
         }
+
+        public virtual bool StartGame() {
+            return CanStart();
+        }
     }
 }

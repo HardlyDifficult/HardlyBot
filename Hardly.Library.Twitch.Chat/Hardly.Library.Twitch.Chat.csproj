@@ -40,22 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Games\Blackjack\BJStateAcceptingPlayers.cs" />
-    <Compile Include="Commands\Games\Blackjack\BJStateDealerPlaying.cs" />
-    <Compile Include="Commands\Games\Blackjack\BJStateOff.cs" />
-    <Compile Include="Commands\Games\Blackjack\BJStatePlay.cs" />
-    <Compile Include="Commands\Games\Blackjack\TwitchBlackjack.cs" />
-    <Compile Include="Commands\Games\Blackjack\TwitchGameController.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStateAcceptingPlayers.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStateEndOfGame.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStateOff.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlay.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlayFlop.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlayPreFlop.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlayRiver.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlayTurn.cs" />
-    <Compile Include="Commands\Games\Holdem\TwitchHoldem.cs" />
-    <Compile Include="Commands\Games\NumberGames\TwitchPickANumber.cs" />
+    <Compile Include="Commands\Games\DiceGames\TwitchPickANumber.cs" />
+    <Compile Include="Controllers\IAutoJoinTwitchRooms.cs" />
+    <Compile Include="Commands\Games\TwitchGame.cs" />
     <Compile Include="Commands\System\AboutCommands.cs" />
     <Compile Include="Commands\System\HelloCommand.cs" />
     <Compile Include="Controllers\ChatCommand.cs" />
@@ -100,9 +87,6 @@
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Commands\Games\Blackjack\Blackjack.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

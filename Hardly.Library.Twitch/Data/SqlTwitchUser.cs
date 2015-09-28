@@ -100,11 +100,11 @@ namespace Hardly
 
         public static SqlTwitchUser[] GetAll()
         {
-            object[][] results = _table.Select(null, null, null, null, null, 0);
+            List<object[]> results = _table.Select(null, null, null, null, null, 0);
             if (results != null)
             {
-                SqlTwitchUser[] users = new SqlTwitchUser[results.Length];
-                for (int i = 0; i < results.Length; i++)
+                SqlTwitchUser[] users = new SqlTwitchUser[results.Count];
+                for (int i = 0; i < results.Count; i++)
                 {
                     users[i] = new SqlTwitchUser(results[i][0].FromSql<uint>(), results[i][1].FromSql<string>(), results[i][2].FromSql<DateTime>(),
                         results[i][3].FromSql<string>(), results[i][4].FromSql<string>());

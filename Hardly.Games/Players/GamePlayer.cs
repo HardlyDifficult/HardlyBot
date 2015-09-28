@@ -1,4 +1,6 @@
-﻿namespace Hardly.Games {
+﻿using System;
+
+namespace Hardly.Games {
     /// <summary>
     /// Game Player object should live for the life of one full (e.g. one game of holdem, then new GamePlayers for the next)
     /// </summary>
@@ -16,14 +18,27 @@
             this.idObject = idObject;
         }
 
-        public bool placeBet(ulong amount, bool allIn) {
-            amount = pointManager?.ReserveBet(amount, allIn) ?? amount;
+        public bool PlaceBet(ulong amount, bool allOrNothing) {
+            amount = pointManager?.ReserveBet(amount, allOrNothing) ?? amount;
             if(pointManager != null && amount > 0) {
                 bet += amount;
                 return true;
             }
 
             return false;
+        }
+
+        public void CanelBet() {
+            pointManager?.Award(bet, 0);
+            bet = 0;
+        }
+
+        public void Award(long winningsOrLosings) {
+            pointManager?.Award(bet, winningsOrLosings);
+        }
+
+        public void LoseBet() {
+            pointManager?.Award(bet, (long)bet * -1L);
         }
     }
 }

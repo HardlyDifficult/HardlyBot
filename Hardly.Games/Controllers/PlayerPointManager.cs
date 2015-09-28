@@ -5,7 +5,7 @@ namespace Hardly.Games {
         ulong reservedPoints = 0;
         
         #region Public interface
-        public ulong Points {
+        public virtual ulong Points {
             get {
                 return TotalPointsInAccount - reservedPoints;
             }
