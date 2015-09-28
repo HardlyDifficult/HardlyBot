@@ -17,11 +17,11 @@ namespace Hardly.Games {
             sidepotPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
         uint currentPlayerId = 0, endingPlayerId = 0;
         public TexasHoldemPlayer<PlayerIdType> table;
-        public List<TexasHoldemPlayer<PlayerIdType>>
-            lastGameWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
-            lastGameLosers = new List<TexasHoldemPlayer<PlayerIdType>>(),
-            lastGameSidepotWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
-            lastGameSidepotLosers = new List<TexasHoldemPlayer<PlayerIdType>>();
+        public List<Tuple<TexasHoldemPlayer<PlayerIdType>, CardCollection>>
+            lastGameWinners = new List<Tuple<TexasHoldemPlayer<PlayerIdType>, CardCollection>>(),
+            lastGameLosers = new List<Tuple<TexasHoldemPlayer<PlayerIdType>, CardCollection>>(),
+            lastGameSidepotWinners = new List<Tuple<TexasHoldemPlayer<PlayerIdType>, CardCollection>>(),
+            lastGameSidepotLosers = new List<Tuple<TexasHoldemPlayer<PlayerIdType>, CardCollection>>();
 
         public TexasHoldemPlayer<PlayerIdType> CurrentPlayer {
             get {
@@ -250,7 +250,7 @@ namespace Hardly.Games {
                 var sidePotWinners = GetWinners(playersToTest);
                 ulong sidePayoutPerPerson = (ulong)(smallestSideBet * (ulong)playersToTest.Count) / (ulong)sidePotWinners.Count;
                 foreach(var player in sidePotWinners) {
-                    player.pointManager.Award(player.bet, (long)sidePayoutPerPerson - (long)player.bet);
+                    player.Item1.pointManager.Award(player.Item1.bet, (long)sidePayoutPerPerson - (long)player.Item1.bet);
                     sidepotTotalPayout += sidePayoutPerPerson;
                     sidePotWinners.Add(player);
                 }
@@ -264,25 +264,27 @@ namespace Hardly.Games {
 
             ulong payoutPerPerson = (ulong)(GetTotalPot() - sidepotTotalPayout / (ulong)lastGameWinners.Count);
             foreach(var player in lastGameWinners) {
-                player.pointManager.Award(player.bet, (long)payoutPerPerson - (long)player.bet);
+                player.Item1.pointManager.Award(player.Item1.bet, (long)payoutPerPerson - (long)player.Item1.bet);
             }
 
             
             foreach(var player in seatedPlayers) {
                 if(!lastGameWinners.Contains(player)) {
-                    lastGameLosers.Add(player);
+                    CardCollection bestPlayerHand = PokerPlayerHand.GetBestHand(player.hand, table.hand);
+                    lastGameLosers.Add(Tuple.Create(player, bestPlayerHand));
                 }
             }
             foreach(var player in sidepotPlayers) {
                 if(!lastGameSidepotWinners.Contains(player)) {
-                    lastGameSidepotLosers.Add(player);
+                    CardCollection bestPlayerHand = PokerPlayerHand.GetBestHand(player.hand, table.hand);
+                    lastGameSidepotLosers.Add(Tuple.Create(player, bestPlayerHand));
                 }
             }
             gameInProgress = false;
         }
 
-        List<TexasHoldemPlayer<PlayerIdType>> GetWinners(List<TexasHoldemPlayer<PlayerIdType>> playersToCheck) {
-            List<TexasHoldemPlayer<PlayerIdType>> winners = new List<TexasHoldemPlayer<PlayerIdType>>();
+        List<Tuple<TexasHoldemPlayer<PlayerIdType>, CardCollection>> GetWinners(List<TexasHoldemPlayer<PlayerIdType>> playersToCheck) {
+            var winners = new List<Tuple<TexasHoldemPlayer<PlayerIdType>, CardCollection>>();
             if(playersToCheck.Count > 1) {
                 ulong bestHandValue = 0;
 
@@ -293,13 +295,14 @@ namespace Hardly.Games {
                     if(playerHandValue > bestHandValue) {
                         bestHandValue = playerHandValue;
                         winners.Clear();
-                        winners.Add(player);
+                        winners.Add(Tuple.Create(player, bestPlayerHand));
                     } else if(playerHandValue == bestHandValue) {
-                        winners.Add(player);
+                        winners.Add(Tuple.Create(player, bestPlayerHand));
                     }
                 }
             } else {
-                winners.Add(playersToCheck[0]);
+                CardCollection bestPlayerHand = PokerPlayerHand.GetBestHand(playersToCheck[0].hand, table.hand);
+                winners.Add(Tuple.Create(playersToCheck[0], bestPlayerHand));
             }
 
             return winners;

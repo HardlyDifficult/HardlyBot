@@ -78,7 +78,7 @@ namespace Hardly.Games.Holdem.Gui {
                     } else {
                         winners += ", ";
                     }
-                    winners += winner.playerIdObject.ToString();
+                    winners += winner.Item1.playerIdObject.ToString();
                 }
             }
             aLabelWinners.Text = winners;
@@ -91,7 +91,7 @@ namespace Hardly.Games.Holdem.Gui {
                     } else {
                         losers += ", ";
                     }
-                    losers += loser.playerIdObject.ToString();
+                    losers += loser.Item1.playerIdObject.ToString();
                 }
             }
             aLabelLosers.Text = losers;

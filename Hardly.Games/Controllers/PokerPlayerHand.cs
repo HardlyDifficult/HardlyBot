@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hardly.Games {
     public static class PokerPlayerHand {
-        enum HandTypes {
+        public enum HandType {
             HighCard,
             OnePair,
             TwoPair,
@@ -63,6 +63,10 @@ namespace Hardly.Games {
             return bestHand;
         }
 
+        public static HandType GetHandType(CardCollection cards) {
+            return (HandType)(int)(HandValue(cards) / 100000000UL);
+        }
+
         public static ulong HandValue(CardCollection cards) {
             Debug.Assert(cards.cards.Count == 5);
 
@@ -74,39 +78,20 @@ namespace Hardly.Games {
             bool isFlush;
             CalcHandStats(cards, out isFlush, out firstPairValue, out secondPairValue, out firstPairCardCount, out secondPairCardCount, out isStraight);
 
-            HandTypes myHandType;
-            if(isStraight && isFlush) {
-                myHandType = HandTypes.StraightFlush;
-            } else if(firstPairCardCount == 4) {
-                myHandType = HandTypes.FourOfAKind;
-            } else if(secondPairCardCount == 3 ||
-                (secondPairCardCount == 2 && firstPairCardCount == 3)) {
-                myHandType = HandTypes.FullHouse;
-            } else if(isFlush) {
-                myHandType = HandTypes.Flush;
-            } else if(isStraight) {
-                myHandType = HandTypes.Straight;
-            } else if(firstPairCardCount == 3) {
-                myHandType = HandTypes.ThreeOfAKind;
-            } else if(secondPairCardCount == 2) {
-                myHandType = HandTypes.TwoPair;
-            } else if(firstPairCardCount == 2) {
-                myHandType = HandTypes.OnePair;
-            } else {
-                myHandType = HandTypes.HighCard;
-            }
+            HandType myHandType;
+            myHandType = GetHandType(firstPairCardCount, secondPairCardCount, isStraight, isFlush);
 
-            ulong myHandValue; 
+            ulong myHandValue;
             switch(myHandType) {
-            case HandTypes.StraightFlush:
-            case HandTypes.Flush:
-            case HandTypes.HighCard:
-            case HandTypes.Straight:
+            case HandType.StraightFlush:
+            case HandType.Flush:
+            case HandType.HighCard:
+            case HandType.Straight:
                 myHandValue = GetValue(cards.cards[4].value, cards.cards[3].value, cards.cards[2].value, cards.cards[1].value, cards.cards[0].value);
                 break;
-            case HandTypes.FourOfAKind:
-            case HandTypes.ThreeOfAKind:
-            case HandTypes.OnePair:
+            case HandType.FourOfAKind:
+            case HandType.ThreeOfAKind:
+            case HandType.OnePair:
                 int iStartOfPair = 0;
                 for(int i = 0; i < 5; i++) {
                     if(cards.cards[i].value == firstPairValue.Value) {
@@ -114,10 +99,10 @@ namespace Hardly.Games {
                         break;
                     }
                 }
-                myHandValue = GetValue(cards.cards[iStartOfPair].value, cards.cards[iStartOfPair + 1].value, 
+                myHandValue = GetValue(cards.cards[iStartOfPair].value, cards.cards[iStartOfPair + 1].value,
                     cards.cards[(iStartOfPair + 2) % 5].value, cards.cards[(iStartOfPair + 3) % 5].value, cards.cards[(iStartOfPair + 4) % 5].value);
                 break;
-            case HandTypes.FullHouse:
+            case HandType.FullHouse:
                 PlayingCard.Value largerValue = firstPairValue.Value;
                 PlayingCard.Value smallerValue = secondPairValue.Value;
                 if(secondPairCardCount > firstPairCardCount) {
@@ -126,7 +111,7 @@ namespace Hardly.Games {
                 }
                 myHandValue = GetValue(largerValue, largerValue, largerValue, smallerValue, smallerValue);
                 break;
-            case HandTypes.TwoPair:
+            case HandType.TwoPair:
                 PlayingCard.Value lastCard = 0;
                 foreach(var card in cards.cards) {
                     if(card.value != firstPairValue.Value && card.value != secondPairValue.Value) {
@@ -143,6 +128,32 @@ namespace Hardly.Games {
             }
 
             return (ulong)myHandType * 100000000 + myHandValue;
+        }
+        
+        private static HandType GetHandType(uint firstPairCardCount, uint secondPairCardCount, bool isStraight, bool isFlush) {
+            HandType myHandType;
+            if(isStraight && isFlush) {
+                myHandType = HandType.StraightFlush;
+            } else if(firstPairCardCount == 4) {
+                myHandType = HandType.FourOfAKind;
+            } else if(secondPairCardCount == 3 ||
+                (secondPairCardCount == 2 && firstPairCardCount == 3)) {
+                myHandType = HandType.FullHouse;
+            } else if(isFlush) {
+                myHandType = HandType.Flush;
+            } else if(isStraight) {
+                myHandType = HandType.Straight;
+            } else if(firstPairCardCount == 3) {
+                myHandType = HandType.ThreeOfAKind;
+            } else if(secondPairCardCount == 2) {
+                myHandType = HandType.TwoPair;
+            } else if(firstPairCardCount == 2) {
+                myHandType = HandType.OnePair;
+            } else {
+                myHandType = HandType.HighCard;
+            }
+
+            return myHandType;
         }
 
         private static ulong GetValue(PlayingCard.Value value1, PlayingCard.Value value2, PlayingCard.Value value3, PlayingCard.Value value4, PlayingCard.Value value5) {
