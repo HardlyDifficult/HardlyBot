@@ -40,15 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cards\CardPlayerHand.cs" />
     <Compile Include="Cards\Deck.cs" />
     <Compile Include="Cards\PlayingCard.cs" />
     <Compile Include="Cards\PlayingCardList.cs" />
     <Compile Include="Controllers\CardGame.cs" />
-    <Compile Include="Cards\CardPlayerHand.cs" />
-    <Compile Include="Players\CardPlayer.cs" />
     <Compile Include="Controllers\Game.cs" />
     <Compile Include="Controllers\PointManager.cs" />
     <Compile Include="Controllers\PokerPlayerHand.cs" />
+    <Compile Include="Players\CardPlayer.cs" />
     <Compile Include="Players\GamePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
