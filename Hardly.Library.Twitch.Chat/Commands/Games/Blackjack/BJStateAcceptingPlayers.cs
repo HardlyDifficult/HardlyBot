@@ -5,9 +5,10 @@ namespace Hardly.Library.Twitch {
 	public class BJStateAcceptingPlayers : GameStateAcceptingPlayers<TwitchBlackjack> {
 		public BJStateAcceptingPlayers(TwitchBlackjack controller) : base(controller) {
 			AddCommand(controller.room, "play", PlayCommand, "Joins a game of Blackjack, follow with your bet --- e.g. !play 10.", null, false, TimeSpan.FromSeconds(0), false);
-			AddCommand(controller.room, "start", StartCommand, "Starts a game of Blackjack if there is at least one player", null, true, TimeSpan.FromSeconds(0), false);
+            AddCommand(controller.room, "join", PlayCommand, "The other command to join a game.", null, false, TimeSpan.FromSeconds(0), false);// i made a thing!
+            AddCommand(controller.room, "start", StartCommand, "Starts a game of Blackjack if there is at least one player", null, true, TimeSpan.FromSeconds(0), false);
 			AddCommand(controller.room, "cancelplay", CancelPlayCommand, "Cancels a play, if it's not too late.", null, false, TimeSpan.FromSeconds(0), false);
-		}
+        }
 
 		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
 			var player = controller.game.Get(speaker);
