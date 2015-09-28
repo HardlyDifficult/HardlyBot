@@ -10,23 +10,23 @@ namespace Hardly.Games {
 
         ulong bigBlind = 0, currentBet = 0;
         bool gameInProgress = false;
-        TexasHoldemPlayer<PlayerIdType>[] seatedPlayers = null;
-        uint currentPlayerId = 0;
+        List<TexasHoldemPlayer<PlayerIdType>> seatedPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
+        uint currentPlayerId = 0, endingPlayerId = 0;
         public TexasHoldemPlayer<PlayerIdType> table;
         public List<TexasHoldemPlayer<PlayerIdType>> 
             lastGameWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
             lastGameLosers = new List<TexasHoldemPlayer<PlayerIdType>>();
-        bool canCheck = false;
 
         public TexasHoldemPlayer<PlayerIdType> CurrentPlayer {
             get {
-                if(seatedPlayers != null && currentPlayerId < seatedPlayers.Length) {
-                    return seatedPlayers[currentPlayerId];
+                if(seatedPlayers != null && currentPlayerId < seatedPlayers.Count) {
+                    return seatedPlayers[(int)currentPlayerId];
                 }
 
                 return null;
             }
         }
+
 
         public TexasHoldem() : this(1, 6) {
 		}
@@ -35,10 +35,46 @@ namespace Hardly.Games {
 			Reset();
 		}
 
+        public void StartGame() {
+            Debug.Assert(CanStart());
+
+            gameInProgress = true;
+            round = Round.PreFlop;
+
+            ShufflePlayerOrder();
+
+            for(int i = 0; i < 2; i++) {
+                foreach(var player in seatedPlayers) {
+                    DealCard(player);
+                }
+            }
+
+            uint iBig = seatedPlayers.Count > 3 ? 2u : seatedPlayers.Count == 3 ? 1u : 0u;
+            if(bigBlind > 0) {
+                ulong littleBlind = bigBlind / 2;
+                seatedPlayers[1].placeBet(littleBlind, true);
+                seatedPlayers[(int)iBig].placeBet(bigBlind, true);
+            }
+
+            currentBet = bigBlind;
+            currentPlayerId = StartingPlayerId;
+            endingPlayerId = iBig;
+            table = new TexasHoldemPlayer<PlayerIdType>(null, (PlayerIdType)typeof(PlayerIdType).GetDefaultValue());
+        }
+
+        public bool Fold() {
+            if(seatedPlayers.Remove(CurrentPlayer)) {
+                if(currentPlayerId == endingPlayerId || seatedPlayers.Count == 1) {
+                    NextRound();
+                }
+
+                return true;
+            }
+            return false;
+        }
+
         public override void Reset() {
             base.Reset();
-
-            table = new TexasHoldemPlayer<PlayerIdType>(null, (PlayerIdType)typeof(PlayerIdType).GetDefaultValue());
         }
 
         public bool Raise(ulong value) {
@@ -46,6 +82,20 @@ namespace Hardly.Games {
                 ulong bet = currentBet - CurrentPlayer.bet + value;
                 if(CurrentPlayer.placeBet(bet, true)) {
                     currentBet = CurrentPlayer.bet;
+                    SelectNextPlayerOrNextRound();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool Call() {
+            if(!canCheck) {
+                ulong bet = currentBet - CurrentPlayer.bet;
+                if(CurrentPlayer.placeBet(bet, true)) {
+                    currentBet = CurrentPlayer.bet;
+                    SelectNextPlayerOrNextRound();
                     return true;
                 }
             }
@@ -55,9 +105,10 @@ namespace Hardly.Games {
 
         public bool Bet(ulong value) {
             if(canCheck && value > 0) {
-                canCheck = false;
                 if(CurrentPlayer.placeBet(value, true)) {
                     currentBet = CurrentPlayer.bet;
+                    endingPlayerId = currentPlayerId > 0 ? currentPlayerId - 1 : (uint)seatedPlayers.Count - 1;
+                    SelectNextPlayerOrNextRound();
                     return true;
                 }
             }
@@ -74,27 +125,40 @@ namespace Hardly.Games {
             return false;
 		}
 
-        public void Check() {
-            Debug.Assert(CurrentPlayer != null);
+        public bool Check() {
+            if(canCheck) {
+                SelectNextPlayerOrNextRound();
+                return true;
+            }
 
-            SelectNextPlayerOrNextRound();
+            return false;
         }
 
         private void SelectNextPlayerOrNextRound() {
-            currentPlayerId++;
-            if(currentPlayerId >= seatedPlayers.Length) {
-                currentPlayerId = 0;
-            }
-
-            if(currentPlayerId == StartingPlayerId) {
+            if(currentPlayerId == endingPlayerId) {
                 NextRound();
+            } else {
+                currentPlayerId++;
+                if(currentPlayerId >= seatedPlayers.Count) {
+                    currentPlayerId = 0;
+                }
             }
         }
 
         private void NextRound() {
             Debug.Assert(round != Round.GameOver);
 
-            round++;
+            foreach(var player in PlayerObjects) {
+                if(player.bet < currentBet) {
+                    seatedPlayers.Remove(player);
+                }
+            }
+
+            if(seatedPlayers.Count <= 1) {
+                round = Round.GameOver;
+            } else {
+                round++;
+            }
 
             switch(round) {
             case Round.Flop:
@@ -113,9 +177,7 @@ namespace Hardly.Games {
                 Debug.Fail();
                 break;
             }
-
-            canCheck = true;
-            currentBet = 0;
+            
             currentPlayerId = StartingPlayerId;
         }
 
@@ -137,20 +199,24 @@ namespace Hardly.Games {
         }
 
         private void CalculateWinners() {
-            ulong bestHandValue = 0;
             lastGameWinners.Clear();
+            if(seatedPlayers.Count > 1) {
+                ulong bestHandValue = 0;
 
-            foreach(var player in seatedPlayers) {
-                CardCollection bestPlayerHand = PokerPlayerHand.GetBestHand(player.hand, table.hand);
-                ulong playerHandValue = PokerPlayerHand.HandValue(bestPlayerHand);
+                foreach(var player in seatedPlayers) {
+                    CardCollection bestPlayerHand = PokerPlayerHand.GetBestHand(player.hand, table.hand);
+                    ulong playerHandValue = PokerPlayerHand.HandValue(bestPlayerHand);
 
-                if(playerHandValue > bestHandValue) {
-                    bestHandValue = playerHandValue;
-                    lastGameWinners.Clear();
-                    lastGameWinners.Add(player);
-                } else if(playerHandValue == bestHandValue) {
-                    lastGameWinners.Add(player);
+                    if(playerHandValue > bestHandValue) {
+                        bestHandValue = playerHandValue;
+                        lastGameWinners.Clear();
+                        lastGameWinners.Add(player);
+                    } else if(playerHandValue == bestHandValue) {
+                        lastGameWinners.Add(player);
+                    }
                 }
+            } else {
+                lastGameWinners.Add(seatedPlayers[0]);
             }
 
             lastGameLosers.Clear();
@@ -159,6 +225,8 @@ namespace Hardly.Games {
                     lastGameLosers.Add(player);
                 }
             }
+
+            gameInProgress = false;
         }
 
         private void DealToTable(int numberOfCards) {
@@ -171,44 +239,23 @@ namespace Hardly.Games {
             bigBlind = blind;
         }
 
-        public void StartGame() {
-            Debug.Assert(CanStart());
-
-            gameInProgress = true;
-            round = Round.PreFlop;
-
-            ShufflePlayerOrder();
-
-            for(int i = 0; i < 2; i++) {
-                foreach(var player in seatedPlayers) {
-                    DealCard(player);
-                }
-            }
-
-            if(bigBlind > 0) {
-                ulong littleBlind = bigBlind / 2;
-                seatedPlayers[1].placeBet(bigBlind, true);
-                int iLittle = seatedPlayers.Length > 2 ? 2 : 0;
-                seatedPlayers[iLittle].placeBet(littleBlind, true);
-            }
-
-            currentBet = bigBlind;
-            currentPlayerId = StartingPlayerId;
-            canCheck = false;
-        }
-
         uint StartingPlayerId {
             get {
-                return seatedPlayers.Length > 2 ? 2u : 0u;
+                return seatedPlayers.Count > 3 ? 3u : seatedPlayers.Count == 3 ? 0u : 1u;
+            }
+        }
+
+        public bool canCheck {
+            get {
+                return GetCallAmount() == 0 && round != Round.GameOver;
             }
         }
 
         private void ShufflePlayerOrder() {
-            seatedPlayers = new TexasHoldemPlayer<PlayerIdType>[NumberOfPlayers()];
-
-            uint i = 0;
+            seatedPlayers.Clear();
+                
             foreach(var player in PlayerObjects.ToArray().Shuffle()) {
-                seatedPlayers[i++] = player;
+                seatedPlayers.Add(player);
             }
         }
 
