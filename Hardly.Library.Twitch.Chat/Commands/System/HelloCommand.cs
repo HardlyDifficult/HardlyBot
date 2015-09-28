@@ -45,7 +45,7 @@ namespace Hardly.Library.Twitch.Commands.System {
         private void BanYouBecauseYouAreStupidAndYouShouldntHaveDoneThat(SqlTwitchUser speaker, String lastWords) { //yay i changed my ide ti keep the brackets on this line!
             room.SendChatMessage(".ban " + speaker.userName); //if this line gets ran you deserve it.
             room.SendChatMessage(speaker.userName + " is now banned. Everyone in the chat should type 'F' or riPepperonis to pay respects."); //lol jk dont do this
-            lastWords = null; //noone cares 
+            lastWords = null; //noone cares so im deleting your words
         }//Oh GOD do i feel dirty....
 
 
