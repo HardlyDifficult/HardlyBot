@@ -16,25 +16,29 @@ namespace Hardly.Library.Twitch.Commands.System {
 
         private void EchoCommand(SqlTwitchUser speaker, String additionalText) {
             string message = "You said ";
-            if(additionalText == null) {
+            if (additionalText == null) {
                 message += "...nothing!";
-            } else {
-                if(additionalText.ToLower().Contains("fuck")) {
+            }
+            else {
+                if (additionalText.ToLower().Contains("fuck")) {
                     message = "Hey now.";
-                } else {
+                }
+                else {
                     message += additionalText;
                 }
             }
             room.SendWhisper(speaker, message);
         }
-        private void TimeMeOut(SqlTwitchUser speaker, String time){
+        private void TimeMeOut(SqlTwitchUser speaker, String time) {
             try {
                 if (time.IsEmpty()) {
-                    room.SendChatMessage(".timeout " + speaker.userName  + " " + randomTime(600));
-                } else {
+                    room.SendChatMessage(".timeout " + speaker.userName + " " + randomTime(600));
+                }
+                else {
                     room.SendChatMessage(".timeout " + speaker.userName + " " + Int32.Parse(time));
                 }
-            } catch (Exception){
+            }
+            catch (Exception) {
                 //*do nothing ever i want this to be (somewhat)secret*//
             }
         }
