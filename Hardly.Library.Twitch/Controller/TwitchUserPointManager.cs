@@ -2,17 +2,17 @@
 using Hardly.Games;
 
 namespace Hardly.Library.Twitch {
-	public class TwitchUserPointManager : PointManager {
+	public class TwitchUserPointManager : PlayerPointManager {
 		readonly SqlTwitchUserPoints sqlPoints;
 
 		public TwitchUserPointManager(SqlTwitchChannel channel, SqlTwitchUser user) {
 			sqlPoints = new SqlTwitchUserPoints(user, channel);
 		}
     
-        public override ulong AvailablePoints {
+        public override ulong Points {
             get {
                 GiveBonusIfTime();
-                return base.AvailablePoints;
+                return base.Points;
             }
         }
 

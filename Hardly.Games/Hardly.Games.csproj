@@ -46,8 +46,7 @@
     <Compile Include="Cards\PlayingCardList.cs" />
     <Compile Include="Controllers\CardGame.cs" />
     <Compile Include="Controllers\Game.cs" />
-    <Compile Include="Controllers\PointManager.cs" />
-    <Compile Include="Controllers\PokerPlayerHand.cs" />
+    <Compile Include="Controllers\PlayerPointManager.cs" />
     <Compile Include="Players\CardPlayer.cs" />
     <Compile Include="Players\GamePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

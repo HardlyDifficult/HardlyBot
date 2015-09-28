@@ -14,7 +14,7 @@
 			}
 		}
 
-		public BlackjackPlayer(PointManager pointManager, PlayerIdType playerIdObject, ulong bet) {
+		public BlackjackPlayer(PlayerPointManager pointManager, PlayerIdType playerIdObject, ulong bet) {
 			mainHand = new BlackjackPlayerHand<PlayerIdType>(pointManager, playerIdObject, bet, false);
 			splitHand = null;
             pointManager.ReserveBet(bet);

@@ -5,7 +5,7 @@ namespace Hardly.Games {
         public bool standing = false;
         public bool isSplit;
 
-        public BlackjackPlayerHand(PointManager pointManager, PlayerIdType playerIdObject, ulong bet, bool isSplit) : base(pointManager, playerIdObject) {
+        public BlackjackPlayerHand(PlayerPointManager pointManager, PlayerIdType playerIdObject, ulong bet, bool isSplit) : base(pointManager, playerIdObject) {
             placeBet(bet, false);
             this.isSplit = isSplit;
         }

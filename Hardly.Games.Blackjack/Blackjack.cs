@@ -14,7 +14,7 @@ namespace Hardly.Games {
 
 		public void Deal() {
 			for(int numberOfCards = 0; numberOfCards < 2; numberOfCards++) {
-				foreach(var player in PlayerObjects) {
+				foreach(var player in PlayerGameObjects) {
 					DealCard(player.CurrentHand);
 				}
 				DealCard(dealer);
@@ -27,7 +27,7 @@ namespace Hardly.Games {
 			dealer = new BlackjackPlayerHand<PlayerIdType>(null, (PlayerIdType)typeof(PlayerIdType).GetDefaultValue(), 0, false);
 		}
 
-		public ulong Join(PlayerIdType playerId, PointManager pointManager, ulong bet) {
+		public ulong Join(PlayerIdType playerId, PlayerPointManager pointManager, ulong bet) {
 			if(!base.Contains(playerId)) {
                 var player = new BlackjackPlayer<PlayerIdType>(pointManager, playerId, bet);
                 base.Join(playerId, player);

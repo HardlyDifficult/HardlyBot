@@ -3,17 +3,17 @@
     /// Game Player object should live for the life of one full (e.g. one game of holdem, then new GamePlayers for the next)
     /// </summary>
     public class GamePlayer<PlayerIdObjectType> {
-        public readonly PointManager pointManager;
-        public readonly PlayerIdObjectType playerIdObject;
+        readonly PlayerPointManager pointManager;
+        public readonly PlayerIdObjectType idObject;
 
         public ulong bet {
             get;
             internal set;
         }
 
-        public GamePlayer(PointManager pointManager, PlayerIdObjectType playerObject) {
+        public GamePlayer(PlayerPointManager pointManager, PlayerIdObjectType idObject) {
             this.pointManager = pointManager;
-            this.playerIdObject = playerObject;
+            this.idObject = idObject;
         }
 
         public bool placeBet(ulong amount, bool allIn) {

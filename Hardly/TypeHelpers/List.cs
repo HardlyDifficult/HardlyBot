@@ -62,6 +62,16 @@ namespace Hardly {
             return items.GetEnumerator();
         }
 
+        public ItemType Pop() {
+            if(!IsEmpty) {
+                ItemType item = items[0];
+                items.RemoveAt(0);
+                return item;
+            }
+
+            return (ItemType)typeof(ItemType).GetDefaultValue();
+        }
+
         public void Shuffle() {
             items = items.OrderBy(a => System.Guid.NewGuid()).ToList();
         }

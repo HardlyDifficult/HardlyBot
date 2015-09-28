@@ -9,7 +9,6 @@ CREATE TABLE `twitch_users` (
   UNIQUE KEY `Name_UNIQUE` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 CREATE TABLE `twitch_bots` (
   `UserId` int(10) unsigned NOT NULL,
   `OauthPassword` varchar(45) NOT NULL,
