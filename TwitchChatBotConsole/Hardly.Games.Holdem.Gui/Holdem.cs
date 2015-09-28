@@ -36,7 +36,7 @@ namespace Hardly.Games.Holdem.Gui {
         }
 
         private void aButtonCall_Click(object sender, EventArgs e) {
-
+            game.Call();
         }
 
         private void aButtonBet_Click(object sender, EventArgs e) {
@@ -48,7 +48,7 @@ namespace Hardly.Games.Holdem.Gui {
         }
 
         private void aButtonFold_Click(object sender, EventArgs e) {
-
+            game.Fold();
         }
 
         private void aTimerRefresh_Tick(object sender, EventArgs e) {
