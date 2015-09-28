@@ -62,6 +62,32 @@ namespace Hardly.Games.Holdem.Gui {
                 aLabelPlayerHand.Text = "";
                 aLabelBoardCards.Text = "";
             }
+
+            string winners = null;
+            if(game.lastGameWinners != null) {
+                foreach(var winner in game.lastGameWinners) {
+                    if(winners == null) {
+                        winners = "";
+                    } else {
+                        winners += ", ";
+                    }
+                    winners += winner.playerIdObject.ToString();
+                }
+            }
+            aLabelWinners.Text = winners;
+
+            string losers = null;
+            if(game.lastGameLosers != null) {
+                foreach(var loser in game.lastGameLosers) {
+                    if(losers == null) {
+                        losers = "";
+                    } else {
+                        losers += ", ";
+                    }
+                    losers += loser.playerIdObject.ToString();
+                }
+            }
+            aLabelLosers.Text = losers;
         }
     }
 }

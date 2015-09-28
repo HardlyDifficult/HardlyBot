@@ -44,6 +44,11 @@
             this.aLabelBoardCards = new System.Windows.Forms.Label();
             this.aButtonFold = new System.Windows.Forms.Button();
             this.aTimerRefresh = new System.Windows.Forms.Timer(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.aLabelWinners = new System.Windows.Forms.Label();
+            this.aLabelLosers = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberPlayers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBigBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBetOrRaiseAmount)).BeginInit();
@@ -270,11 +275,61 @@
             this.aTimerRefresh.Enabled = true;
             this.aTimerRefresh.Tick += new System.EventHandler(this.aTimerRefresh_Tick);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 333);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 13);
+            this.label4.TabIndex = 21;
+            this.label4.Text = "Last game:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(16, 350);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(49, 13);
+            this.label5.TabIndex = 22;
+            this.label5.Text = "Winners:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(19, 367);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 13);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Losers:";
+            // 
+            // aLabelWinners
+            // 
+            this.aLabelWinners.AutoSize = true;
+            this.aLabelWinners.Location = new System.Drawing.Point(71, 350);
+            this.aLabelWinners.Name = "aLabelWinners";
+            this.aLabelWinners.Size = new System.Drawing.Size(65, 13);
+            this.aLabelWinners.TabIndex = 24;
+            this.aLabelWinners.Text = "HardlySober";
+            // 
+            // aLabelLosers
+            // 
+            this.aLabelLosers.AutoSize = true;
+            this.aLabelLosers.Location = new System.Drawing.Point(71, 367);
+            this.aLabelLosers.Name = "aLabelLosers";
+            this.aLabelLosers.Size = new System.Drawing.Size(65, 13);
+            this.aLabelLosers.TabIndex = 25;
+            this.aLabelLosers.Text = "HardlySober";
+            // 
             // Holdem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(246, 332);
+            this.ClientSize = new System.Drawing.Size(246, 386);
+            this.Controls.Add(this.aLabelLosers);
+            this.Controls.Add(this.aLabelWinners);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.aButtonFold);
             this.Controls.Add(this.aLabelBoardCards);
             this.Controls.Add(this.label9);
@@ -326,6 +381,11 @@
         private System.Windows.Forms.Label aLabelBoardCards;
         private System.Windows.Forms.Button aButtonFold;
         private System.Windows.Forms.Timer aTimerRefresh;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label aLabelWinners;
+        private System.Windows.Forms.Label aLabelLosers;
     }
 }
 

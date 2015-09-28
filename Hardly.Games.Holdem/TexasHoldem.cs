@@ -13,6 +13,9 @@ namespace Hardly.Games {
         TexasHoldemPlayer<PlayerIdType>[] seatedPlayers = null;
         uint currentPlayerId = 0;
         public TexasHoldemPlayer<PlayerIdType> table;
+        public List<TexasHoldemPlayer<PlayerIdType>> 
+            lastGameWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
+            lastGameLosers = new List<TexasHoldemPlayer<PlayerIdType>>();
 
 
         public TexasHoldemPlayer<PlayerIdType> CurrentPlayer {
@@ -80,7 +83,7 @@ namespace Hardly.Games {
                 DealToTable(1);
                 break;
             case Round.GameOver:
-                CalculateWinner();
+                CalculateWinners();
                 break;
             default:
                 Debug.Fail();
@@ -90,21 +93,29 @@ namespace Hardly.Games {
             currentPlayerId = StartingPlayerId;
         }
 
-        private void CalculateWinner() {
-            uint bestHandValue = 0;
-            List<TexasHoldemPlayer<PlayerIdType>> bestHandPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
-            // TODO
-            //foreach(var player in seatedPlayers) {
-            //    if(player.HandValue > bestHandValue) {
-            //        bestHandValue = player.HandValue;
-            //        bestHandPlayers.Clear();
-            //        bestHandPlayers.Add(player);
-            //    } else if(player.HandValue == bestHandValue) {
-            //        bestHandPlayers.Add(player);
-            //    }
-            //}
+        private void CalculateWinners() {
+            ulong bestHandValue = 0;
+            lastGameWinners.Clear();
 
+            foreach(var player in seatedPlayers) {
+                CardCollection bestPlayerHand = PokerPlayerHand.GetBestHand(player.hand, table.hand);
+                ulong playerHandValue = PokerPlayerHand.HandValue(bestPlayerHand);
 
+                if(playerHandValue > bestHandValue) {
+                    bestHandValue = playerHandValue;
+                    lastGameWinners.Clear();
+                    lastGameWinners.Add(player);
+                } else if(playerHandValue == bestHandValue) {
+                    lastGameWinners.Add(player);
+                }
+            }
+
+            lastGameLosers.Clear();
+            foreach(var player in seatedPlayers) {
+                if(!lastGameWinners.Contains(player)) {
+                    lastGameLosers.Add(player);
+                }
+            }
         }
 
         private void DealToTable(int numberOfCards) {
