@@ -8,7 +8,7 @@ namespace Hardly.Games {
         }
         Round round = Round.PreFlop;
 
-        ulong bigBlind = 0;
+        ulong bigBlind = 0, currentBet = 0;
         bool gameInProgress = false;
         TexasHoldemPlayer<PlayerIdType>[] seatedPlayers = null;
         uint currentPlayerId = 0;
@@ -16,7 +16,7 @@ namespace Hardly.Games {
         public List<TexasHoldemPlayer<PlayerIdType>> 
             lastGameWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
             lastGameLosers = new List<TexasHoldemPlayer<PlayerIdType>>();
-
+        bool canCheck = false;
 
         public TexasHoldemPlayer<PlayerIdType> CurrentPlayer {
             get {
@@ -39,6 +39,30 @@ namespace Hardly.Games {
             base.Reset();
 
             table = new TexasHoldemPlayer<PlayerIdType>(null, (PlayerIdType)typeof(PlayerIdType).GetDefaultValue());
+        }
+
+        public bool Raise(ulong value) {
+            if(!canCheck) {
+                ulong bet = currentBet - CurrentPlayer.bet + value;
+                if(CurrentPlayer.placeBet(bet, true)) {
+                    currentBet = CurrentPlayer.bet;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool Bet(ulong value) {
+            if(canCheck && value > 0) {
+                canCheck = false;
+                if(CurrentPlayer.placeBet(value, true)) {
+                    currentBet = CurrentPlayer.bet;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool Join(PlayerIdType playerId, PointManager pointManager) {
@@ -90,7 +114,26 @@ namespace Hardly.Games {
                 break;
             }
 
+            canCheck = true;
+            currentBet = 0;
             currentPlayerId = StartingPlayerId;
+        }
+
+        public ulong GetCallAmount() {
+            if(CurrentPlayer != null) {
+                return currentBet - CurrentPlayer.bet;
+            } else {
+                return 0;
+            }
+        }
+
+        public ulong GetTotalPot() {
+            ulong totalBet = 0;
+            foreach(var player in PlayerObjects) {
+                totalBet += player.bet;
+            }
+
+            return totalBet;
         }
 
         private void CalculateWinners() {
@@ -149,7 +192,9 @@ namespace Hardly.Games {
                 seatedPlayers[iLittle].placeBet(littleBlind, true);
             }
 
+            currentBet = bigBlind;
             currentPlayerId = StartingPlayerId;
+            canCheck = false;
         }
 
         uint StartingPlayerId {

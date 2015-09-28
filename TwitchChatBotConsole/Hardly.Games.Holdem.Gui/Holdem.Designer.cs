@@ -49,6 +49,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.aLabelWinners = new System.Windows.Forms.Label();
             this.aLabelLosers = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.aLabelPot = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberPlayers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBigBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aNumberBetOrRaiseAmount)).BeginInit();
@@ -320,11 +322,31 @@
             this.aLabelLosers.TabIndex = 25;
             this.aLabelLosers.Text = "HardlySober";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 67);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(26, 13);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "Pot:";
+            // 
+            // aLabelPot
+            // 
+            this.aLabelPot.AutoSize = true;
+            this.aLabelPot.Location = new System.Drawing.Point(44, 67);
+            this.aLabelPot.Name = "aLabelPot";
+            this.aLabelPot.Size = new System.Drawing.Size(13, 13);
+            this.aLabelPot.TabIndex = 27;
+            this.aLabelPot.Text = "0";
+            // 
             // Holdem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(246, 386);
+            this.Controls.Add(this.aLabelPot);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.aLabelLosers);
             this.Controls.Add(this.aLabelWinners);
             this.Controls.Add(this.label8);
@@ -386,6 +408,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label aLabelWinners;
         private System.Windows.Forms.Label aLabelLosers;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label aLabelPot;
     }
 }
 

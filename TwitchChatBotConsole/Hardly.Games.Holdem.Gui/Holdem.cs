@@ -40,11 +40,11 @@ namespace Hardly.Games.Holdem.Gui {
         }
 
         private void aButtonBet_Click(object sender, EventArgs e) {
-
+            game.Bet((ulong)aNumberBetOrRaiseAmount.Value);
         }
 
         private void aButtonRaise_Click(object sender, EventArgs e) {
-
+            game.Raise((ulong)aNumberBetOrRaiseAmount.Value);
         }
 
         private void aButtonFold_Click(object sender, EventArgs e) {
@@ -88,6 +88,9 @@ namespace Hardly.Games.Holdem.Gui {
                 }
             }
             aLabelLosers.Text = losers;
+
+            aLabelPot.Text = game.GetTotalPot().ToString();
+            aLabelCallAmount.Text = game.GetCallAmount().ToString();
         }
     }
 }
