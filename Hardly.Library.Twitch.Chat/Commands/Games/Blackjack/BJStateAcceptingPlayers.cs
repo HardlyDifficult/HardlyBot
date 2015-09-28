@@ -6,7 +6,7 @@ namespace Hardly.Library.Twitch {
 		public BJStateAcceptingPlayers(TwitchBlackjack controller) : base(controller) {
 			AddCommand(controller.room, "play", PlayCommand, "Joins a game of Blackjack, follow with your bet --- e.g. !play 10.", new[] { "join" }, false, TimeSpan.FromSeconds(0), false);
 			AddCommand(controller.room, "start", StartCommand, "Starts a game of Blackjack if there is at least one player", null, true, TimeSpan.FromSeconds(0), false);
-			AddCommand(controller.room, "cancelplay", CancelPlayCommand, "Cancels a play, if it's not too late.", null, false, TimeSpan.FromSeconds(0), false);
+			AddCommand(controller.room, "cancelplay", CancelPlayCommand, "Cancels a play, if it's not too late.", new[] { "leave" }, false, TimeSpan.FromSeconds(0), false);
 		}
 
 		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
