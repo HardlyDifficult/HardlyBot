@@ -367,7 +367,12 @@ namespace Hardly.Games {
 		}
 
         public int CompareTo(object obj) {
-            return value.CompareTo(obj);
+            if(obj != null && obj.GetType().Equals(typeof(PlayingCard))) {
+                PlayingCard other = obj as PlayingCard;
+                return ((int)value).CompareTo((int)other.value);
+            }
+
+            return -1;
         }
     }
 }

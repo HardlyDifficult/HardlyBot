@@ -40,11 +40,11 @@ namespace Hardly.Games.Holdem.Gui {
         }
 
         private void aButtonBet_Click(object sender, EventArgs e) {
-
+            game.Bet((ulong)aNumberBetOrRaiseAmount.Value);
         }
 
         private void aButtonRaise_Click(object sender, EventArgs e) {
-
+            game.Raise((ulong)aNumberBetOrRaiseAmount.Value);
         }
 
         private void aButtonFold_Click(object sender, EventArgs e) {
@@ -62,6 +62,35 @@ namespace Hardly.Games.Holdem.Gui {
                 aLabelPlayerHand.Text = "";
                 aLabelBoardCards.Text = "";
             }
+
+            string winners = null;
+            if(game.lastGameWinners != null) {
+                foreach(var winner in game.lastGameWinners) {
+                    if(winners == null) {
+                        winners = "";
+                    } else {
+                        winners += ", ";
+                    }
+                    winners += winner.playerIdObject.ToString();
+                }
+            }
+            aLabelWinners.Text = winners;
+
+            string losers = null;
+            if(game.lastGameLosers != null) {
+                foreach(var loser in game.lastGameLosers) {
+                    if(losers == null) {
+                        losers = "";
+                    } else {
+                        losers += ", ";
+                    }
+                    losers += loser.playerIdObject.ToString();
+                }
+            }
+            aLabelLosers.Text = losers;
+
+            aLabelPot.Text = game.GetTotalPot().ToString();
+            aLabelCallAmount.Text = game.GetCallAmount().ToString();
         }
     }
 }

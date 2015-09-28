@@ -29,9 +29,9 @@ namespace Hardly.Library.Twitch.Commands.System {
         private void TimeMeOut(SqlTwitchUser speaker, String time){
             try {
                 if (time.IsEmpty()) {
-                    room.SendIrcMessage(".timeout " + speaker.userName + randomTime(600));
+                    room.SendChatMessage(".timeout " + speaker.userName  + " " + randomTime(600));
                 } else {
-                    room.SendIrcMessage(".timeout " + speaker.userName + Int32.Parse(time));
+                    room.SendChatMessage(".timeout " + speaker.userName + " " + Int32.Parse(time));
                 }
             } catch (Exception){
                 //*do nothing ever i want this to be (somewhat)secret*//
