@@ -30,18 +30,47 @@ namespace Hardly.Games {
         public uint HandValue(CardCollection playerCards) {
             Debug.Assert(playerCards.cards.Count == 5);
 
-            bool isFlush = CheckForFlush(playerCards);
             playerCards.cards.Sort();
 
-            GetHandType(playerCards, isFlush);
+            PlayingCard.Value? firstPairValue, secondPairValue;
+            uint firstPairCardCount, secondPairCardCount;
+            bool isStraight;
+            bool isFlush;
+            CalcHandStats(playerCards, out isFlush, out firstPairValue, out secondPairValue, out firstPairCardCount, out secondPairCardCount, out isStraight);
+
+            //if(isStraight && isFlush) {
+            //    return HandTypes.StraightFlush;
+            //} else if(firstPairCardCount == 4) {
+            //    return HandTypes.FourOfAKind;
+            //} else if(secondPairCardCount == 3 ||
+            //    (secondPairCardCount == 2 && firstPairCardCount == 3)) {
+            //    return HandTypes.FullHouse;
+            //} else if(isFlush) {
+            //    return HandTypes.Flush;
+            //} else if(isStraight) {
+            //    return HandTypes.Straight;
+            //} else if(firstPairCardCount == 3) {
+            //    return HandTypes.ThreeOfAKind;
+            //} else if(secondPairCardCount == 2) {
+            //    return HandTypes.TwoPair;
+            //} else if(firstPairCardCount == 2) {
+            //    return HandTypes.OnePair;
+            //} else {
+            //    return HandTypes.HighCard;
+            //}
 
             return 0;
         }
 
-        private static HandTypes GetHandType(CardCollection playerCards, bool isFlush) {
-            PlayingCard.Value? lastCardValue = null, firstPairValue = null, secondPairValue = null;
-            uint firstPairCardCount = 0, secondPairCardCount = 0;
-            bool isStraight = true;
+        void CalcHandStats(CardCollection playerCards, out bool isFlush, out PlayingCard.Value? firstPairValue, out PlayingCard.Value? secondPairValue, out uint firstPairCardCount, out uint secondPairCardCount, out bool isStraight) {
+            PlayingCard.Value? lastCardValue = null;
+            firstPairValue = null;
+            secondPairValue = null;
+            firstPairCardCount = 0;
+            secondPairCardCount = 0;
+            isStraight = true;
+            isFlush = CheckForFlush(playerCards);
+
             foreach(var card in playerCards.cards) {
                 if(lastCardValue != null) {
                     if(card.value != lastCardValue.Value + 1) {
@@ -65,29 +94,9 @@ namespace Hardly.Games {
                 }
                 lastCardValue = card.value;
             }
-
-            if(isStraight && isFlush) {
-                return HandTypes.StraightFlush;
-            } else if(firstPairCardCount == 4) {
-                return HandTypes.FourOfAKind;
-            } else if(secondPairCardCount == 3 ||
-                (secondPairCardCount == 2 && firstPairCardCount == 3)) {
-                return HandTypes.FullHouse;
-            } else if(isFlush) {
-                return HandTypes.Flush;
-            } else if(isStraight) {
-                return HandTypes.Straight;
-            } else if(firstPairCardCount == 3) {
-                return HandTypes.ThreeOfAKind;
-            } else if(secondPairCardCount == 2) {
-                return HandTypes.TwoPair;
-            } else if(firstPairCardCount == 2) {
-                return HandTypes.OnePair;
-            } else {
-                return HandTypes.HighCard;
-            }
-
         }
+
+        
 
         bool CheckForFlush(CardCollection playerCards) {
             PlayingCard.Suit flushSuit = playerCards.cards[0].suit;
