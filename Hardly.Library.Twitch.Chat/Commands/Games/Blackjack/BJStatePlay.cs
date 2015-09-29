@@ -72,14 +72,17 @@ namespace Hardly.Library.Twitch {
 			if(player != null) {
 				string chatMessage = "";
                 if(!player.CurrentHandEvaluator.isDone) {
-					if(doubleDown) {
+                    if(doubleDown) {
                         if(player.DoubleDown()) {
-							chatMessage += "Doubled down! ";
-						} else {
-							chatMessage += "Can't afford a double, so you hit instead. ";
-							doubleDown = false;
-						}
-					}
+                            chatMessage += "Doubled down! ";
+                        } else {
+                            chatMessage += "Can't afford a double, so you hit instead. ";
+                            doubleDown = false;
+                            player.Hit();
+                        }
+                    } else {
+                        player.Hit();
+                    }
 
 					chatMessage += "Dealt a " + player.hand.cards.Last.ToString();
 
