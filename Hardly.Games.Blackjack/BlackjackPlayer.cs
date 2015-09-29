@@ -21,19 +21,19 @@ namespace Hardly.Games {
 			}
 		}
 
-		public bool? IsWinner(BlackjackCardListEvaluator dealer) {
-			long winnings = GetWinningsOrLosings(dealer);
+		public bool? IsWinner() {
+			long winnings = GetWinningsOrLosings();
             return winnings != 0 ? winnings > 0 : (bool?)null;
 		}
 
-        public long GetWinningsOrLosings(BlackjackCardListEvaluator dealer) {
+        internal long GetWinningsOrLosings() {
             long winningsOrLosings;
 
-            winningsOrLosings = GetWinnings(dealer, mainHandEvaluator, bet);
+            winningsOrLosings = GetWinnings(controller.dealer, mainHandEvaluator, bet);
 
             if(splitHandEvaluator != null) {
                 winningsOrLosings -= (long)amountBetOnSplitHand;
-                winningsOrLosings += GetWinnings(dealer, splitHandEvaluator, amountBetOnSplitHand);
+                winningsOrLosings += GetWinnings(controller.dealer, splitHandEvaluator, amountBetOnSplitHand);
             }
 
             return winningsOrLosings;

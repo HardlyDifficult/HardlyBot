@@ -41,8 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blackjack.cs" />
-    <Compile Include="BlackjackPlayer.cs" />
     <Compile Include="BlackjackCardListEvaluator.cs" />
+    <Compile Include="BlackjackPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
