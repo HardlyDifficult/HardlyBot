@@ -71,7 +71,7 @@ namespace Hardly.Library.Twitch {
 			string chatMessage = "";
 			bool first = true;
 			foreach(var player in controller.game.PlayerGameObjects) {
-				if(player.IsWinner(controller.game.dealer) == winnerOrLoser) {
+				if(player.IsWinner() == winnerOrLoser) {
 					if(!first) {
 						chatMessage += ", ";
 					}

@@ -25,8 +25,62 @@ namespace Hardly.Games {
             Ace,
             Joker
         }
-        
-		public string ToChatString(bool showSymbols = false) {
+
+        public static readonly PlayingCard
+            c2 = new PlayingCard(Suit.Clubs, Value.Two),
+            d2 = new PlayingCard(Suit.Diamonds, Value.Two),
+            h2 = new PlayingCard(Suit.Hearts, Value.Two),
+            s2 = new PlayingCard(Suit.Spades, Value.Two),
+            c3 = new PlayingCard(Suit.Clubs, Value.Three),
+            d3 = new PlayingCard(Suit.Diamonds, Value.Three),
+            h3 = new PlayingCard(Suit.Hearts, Value.Three),
+            s3 = new PlayingCard(Suit.Spades, Value.Three),
+            c4 = new PlayingCard(Suit.Clubs, Value.Four),
+            d4 = new PlayingCard(Suit.Diamonds, Value.Four),
+            h4 = new PlayingCard(Suit.Hearts, Value.Four),
+            s4 = new PlayingCard(Suit.Spades, Value.Four),
+            c5 = new PlayingCard(Suit.Clubs, Value.Five),
+            d5 = new PlayingCard(Suit.Diamonds, Value.Five),
+            h5 = new PlayingCard(Suit.Hearts, Value.Five),
+            s5 = new PlayingCard(Suit.Spades, Value.Five),
+            c6 = new PlayingCard(Suit.Clubs, Value.Six),
+            d6 = new PlayingCard(Suit.Diamonds, Value.Six),
+            h6 = new PlayingCard(Suit.Hearts, Value.Six),
+            s6 = new PlayingCard(Suit.Spades, Value.Six),
+            c7 = new PlayingCard(Suit.Clubs, Value.Seven),
+            d7 = new PlayingCard(Suit.Diamonds, Value.Seven),
+            h7 = new PlayingCard(Suit.Hearts, Value.Seven),
+            s7 = new PlayingCard(Suit.Spades, Value.Seven),
+            c8 = new PlayingCard(Suit.Clubs, Value.Eight),
+            d8 = new PlayingCard(Suit.Diamonds, Value.Eight),
+            h8 = new PlayingCard(Suit.Hearts, Value.Eight),
+            s8 = new PlayingCard(Suit.Spades, Value.Eight),
+            c9 = new PlayingCard(Suit.Clubs, Value.Nine),
+            d9 = new PlayingCard(Suit.Diamonds, Value.Nine),
+            h9 = new PlayingCard(Suit.Hearts, Value.Nine),
+            s9 = new PlayingCard(Suit.Spades, Value.Nine),
+            c0 = new PlayingCard(Suit.Clubs, Value.Ten),
+            d0 = new PlayingCard(Suit.Diamonds, Value.Ten),
+            h0 = new PlayingCard(Suit.Hearts, Value.Ten),
+            s0 = new PlayingCard(Suit.Spades, Value.Ten),
+            cj = new PlayingCard(Suit.Clubs, Value.Jack),
+            dj = new PlayingCard(Suit.Diamonds, Value.Jack),
+            hj = new PlayingCard(Suit.Hearts, Value.Jack),
+            sj = new PlayingCard(Suit.Spades, Value.Jack),
+            cq = new PlayingCard(Suit.Clubs, Value.Queen),
+            dq = new PlayingCard(Suit.Diamonds, Value.Queen),
+            hq = new PlayingCard(Suit.Hearts, Value.Queen),
+            sq = new PlayingCard(Suit.Spades, Value.Queen),
+            ck = new PlayingCard(Suit.Clubs, Value.King),
+            dk = new PlayingCard(Suit.Diamonds, Value.King),
+            hk = new PlayingCard(Suit.Hearts, Value.King),
+            sk = new PlayingCard(Suit.Spades, Value.King),
+            ca = new PlayingCard(Suit.Clubs, Value.Ace),
+            da = new PlayingCard(Suit.Diamonds, Value.Ace),
+            ha = new PlayingCard(Suit.Hearts, Value.Ace),
+            sa = new PlayingCard(Suit.Spades, Value.Ace);
+
+        public string ToChatString(bool showSymbols = false) {
 			string chatMessage = showSymbols ? "" : "[";
 			switch(value) {
 			case Value.Ace:

@@ -72,6 +72,10 @@ namespace Hardly {
             }
         }
 
+        public void Clear() {
+            items.Clear();
+        }
+
         public bool Contains(ItemType item) {
             return items.Contains(item);
         }
@@ -99,8 +103,16 @@ namespace Hardly {
             return (ItemType)typeof(ItemType).GetDefaultValue();
         }
 
+        public bool Remove(ItemType item) {
+            return items.Remove(item);
+        }
+
         public void Shuffle() {
             items = items.OrderBy(a => System.Guid.NewGuid()).ToList();
+        }
+
+        public void Sort() {
+            items.Sort();
         }
 
         public override string ToString() {
