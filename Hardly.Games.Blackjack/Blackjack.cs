@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Hardly.Games {
+﻿namespace Hardly.Games {
 	public sealed class Blackjack<PlayerIdType> : CardGame<PlayerIdType, BlackjackPlayer<PlayerIdType>> {
         public BlackjackCardListEvaluator dealer {
             get;
@@ -64,7 +62,7 @@ namespace Hardly.Games {
 
         public override void EndGame() {
             foreach(var player in PlayerGameObjects) {
-                player.Award(player.GetWinningsOrLosings(dealer));
+                player.Award(player.GetWinningsOrLosings());
             }
         }
     }
