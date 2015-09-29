@@ -15,18 +15,18 @@ namespace Hardly.Library.Twitch {
 
 		internal override void Open() {
 			string chatMessage = "Blackjack: Dealer has ";
-			chatMessage += controller.game.dealer.hand.ToChatString();
+			chatMessage += controller.game.dealer.cards.ToString();
 			CheckDone(chatMessage);
 		}
 
 		void CheckDone(string chatMessage) {
-			if(controller.game.dealer.IsBust()) {
+			if(controller.game.dealer.isBust) {
 				chatMessage += " and busts.";
 				
 				Announce(chatMessage);
-			} else if(controller.game.dealer.HandValue() > 17 || (controller.game.dealer.HandValue() == 17 && controller.game.dealer.hand.cards.Count == 2)) {
-				controller.game.dealer.standing = true;
-				chatMessage += " and stands with " + controller.game.dealer.GetValueString() + ".";
+			} else if(controller.game.dealer.handValue > 17 || (controller.game.dealer.handValue == 17 && controller.game.dealer.cards.Count == 2)) {
+				controller.game.dealer.isStanding = true;
+				chatMessage += " and stands with " + controller.game.dealer.cards.ToString() + ".";
 
 				Announce(chatMessage);
 			} else {
@@ -38,16 +38,16 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void DrawCard() {
-			PlayingCard card = controller.game.deck.TakeTopCard();
-			controller.game.dealer.hand.GiveCard(card);
-
+            var card = controller.game.DealCard(controller.game.dealer.cards);
 			string chatMessage = "Blackjack: Dealer hits, gets ";
 			chatMessage += card.ToChatString();
 			CheckDone(chatMessage);
 		}
 
 		void Announce(string chatMessage) {
-			chatMessage += " ";
+            controller.game.EndGame();
+
+            chatMessage += " ";
 			
 			string winners = GetPlayerList(true);
 			string tied = GetPlayerList(null);
@@ -63,21 +63,20 @@ namespace Hardly.Library.Twitch {
 			}
 			
 			controller.room.SendChatMessage(chatMessage);
-
-			controller.SetState(this.GetType(), typeof(BJStateOff));
+            
+            controller.SetState(this.GetType(), typeof(BJStateOff));
 		}
 
 		private string GetPlayerList(bool? winnerOrLoser) {
 			string chatMessage = "";
 			bool first = true;
-			foreach(var player in controller.game.GetPlayersAndObjects()) {
-				if(player.Value.IsWinner(controller.game.dealer) == winnerOrLoser) {
+			foreach(var player in controller.game.PlayerGameObjects) {
+				if(player.IsWinner(controller.game.dealer) == winnerOrLoser) {
 					if(!first) {
 						chatMessage += ", ";
 					}
-					chatMessage += (player.Key as SqlTwitchUser).name;
-					chatMessage += " (" + player.Value.GetValueString() + ")";
-					UpdatePoints(player);
+					chatMessage += player.idObject.name;
+					chatMessage += " (" + player.hand.ToString() + ")";
 
 					first = false;
 				}
@@ -88,14 +87,6 @@ namespace Hardly.Library.Twitch {
 			} else {
 				return chatMessage;
 			}
-		}
-
-		private long UpdatePoints(System.Collections.Generic.KeyValuePair<SqlTwitchUser, BlackjackPlayer<SqlTwitchUser>> player) {
-			long changeInPoints = player.Value.GetWinningsOrLosings(controller.game.dealer);
-			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(player.Key);
-			userPoints.Award(player.Value.totalBet, changeInPoints);
-
-			return changeInPoints;
 		}
 	}
 }

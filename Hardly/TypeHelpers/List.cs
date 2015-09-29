@@ -12,7 +12,7 @@ namespace Hardly {
         }
 
         public List(List<ItemType> existingList) {
-            if(items != null) {
+            if(existingList != null) {
                 this.items = new System.Collections.Generic.List<ItemType>(existingList?.items);
             } else {
                 this.items = new System.Collections.Generic.List<ItemType>();
@@ -44,6 +44,18 @@ namespace Hardly {
         public bool IsEmpty {
             get {
                 return items.Count == 0;
+            }
+        }
+
+        public ItemType First {
+            get {
+                return Count > 0 ? items[0] : (ItemType)typeof(ItemType).GetDefaultValue();
+            }
+        }
+
+        public ItemType Last {
+            get {
+                return Count > 0 ? items[Count - 1] : (ItemType)typeof(ItemType).GetDefaultValue();
             }
         }
         #endregion

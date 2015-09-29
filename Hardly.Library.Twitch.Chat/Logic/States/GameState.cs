@@ -1,11 +1,16 @@
 ﻿using System;
 
 namespace Hardly.Library.Twitch {
-	public abstract class GameState<TwitchGameController> {
-		protected TwitchGameController controller;
+    public abstract class GameState {
+        internal abstract void Close();
+        internal abstract void Open();
+    }
+
+	public abstract class GameState<GameLogicController> : GameState {
+		protected GameLogicController controller;
 		List<ChatCommand> commands = new List<ChatCommand>();
 
-		public GameState(TwitchGameController controller) {
+		public GameState(GameLogicController controller) {
 			this.controller = controller;
 		}
 
@@ -18,13 +23,13 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 		
-		internal virtual void Close() {
+		internal override void Close() {
 			foreach(var command in commands) {
 				command.Disable();
 			}
 		}
 
-		internal virtual void Open() {
+		internal override void Open() {
 			foreach(var command in commands) {
 				command.Enable();
 			}

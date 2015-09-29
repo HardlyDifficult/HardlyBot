@@ -2,16 +2,16 @@
 using Hardly.Games;
 
 namespace Hardly.Library.Twitch {
-	public class TwitchPickANumber : TwitchGame<GamePlayer<SqlTwitchUser>> {
-		public TwitchPickANumber(TwitchChatRoom room) : base(room, 1) {
+	public class TwitchPickANumber : TwitchGame<DiceGame<SqlTwitchUser>> {
+		public TwitchPickANumber(TwitchChatRoom room) : base(room) {
 			ChatCommand.Create(room, "pick", PickCommand, "Pick a number 1-10... !pick <guess> for <bet amount>.", null, false, TimeSpan.FromSeconds(10), true);
 		}
         
         void PickCommand(SqlTwitchUser speaker, string message) {
             var playerObject = new GamePlayer<SqlTwitchUser>(room.pointManager.ForUser(speaker), speaker);
 
-            if(Join(speaker, playerObject)) {
-                if(StartGame()) {
+            if(game.Join(speaker, playerObject)) {
+                if(game.StartGame()) {
                     uint pickedNumber;
                     string numberString = message.GetBefore(" ");
                     if(numberString == null) {

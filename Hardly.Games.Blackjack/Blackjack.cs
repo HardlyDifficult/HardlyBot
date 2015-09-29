@@ -1,4 +1,6 @@
-﻿namespace Hardly.Games {
+﻿using System;
+
+namespace Hardly.Games {
 	public sealed class Blackjack<PlayerIdType> : CardGame<PlayerIdType, BlackjackPlayer<PlayerIdType>> {
         public BlackjackCardListEvaluator dealer {
             get;
@@ -20,7 +22,7 @@
 
         public ulong Join(PlayerIdType playerId, PlayerPointManager pointManager, ulong bet) {
             if(!base.Contains(playerId)) {
-                var player = new BlackjackPlayer<PlayerIdType>(pointManager, playerId);
+                var player = new BlackjackPlayer<PlayerIdType>(this, pointManager, playerId);
                 if(player.PlaceBet(bet, false)) {
                     base.Join(playerId, player);
                     Log.info(playerId.ToString() + " joined Blackjack!");
@@ -59,5 +61,11 @@
 
             return false;
 		}
+
+        public override void EndGame() {
+            foreach(var player in PlayerGameObjects) {
+                player.Award(player.GetWinningsOrLosings(dealer));
+            }
+        }
     }
 }

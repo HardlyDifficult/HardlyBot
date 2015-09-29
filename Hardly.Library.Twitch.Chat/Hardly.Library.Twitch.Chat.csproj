@@ -40,6 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Games\Blackjack\BJStateAcceptingPlayers.cs" />
+    <Compile Include="Commands\Games\Blackjack\BJStateDealerPlaying.cs" />
+    <Compile Include="Commands\Games\Blackjack\BJStateOff.cs" />
+    <Compile Include="Commands\Games\Blackjack\BJStatePlay.cs" />
+    <Compile Include="Commands\Games\Blackjack\TwitchBlackjack.cs" />
+    <Compile Include="Commands\Games\TwitchGameStateMachine.cs" />
     <Compile Include="Commands\Games\DiceGames\TwitchPickANumber.cs" />
     <Compile Include="Controllers\IAutoJoinTwitchRooms.cs" />
     <Compile Include="Commands\Games\TwitchGame.cs" />
@@ -87,6 +93,9 @@
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Commands\Games\Blackjack\Blackjack.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

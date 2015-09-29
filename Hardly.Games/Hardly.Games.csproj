@@ -48,6 +48,7 @@
     <Compile Include="Controllers\CardGame.cs" />
     <Compile Include="Controllers\Game.cs" />
     <Compile Include="Controllers\PlayerPointManager.cs" />
+    <Compile Include="Dice\DiceGame.cs" />
     <Compile Include="Players\CardPlayer.cs" />
     <Compile Include="Players\GamePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

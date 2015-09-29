@@ -1,11 +1,15 @@
-﻿namespace Hardly.Games {
+﻿using System;
+
+namespace Hardly.Games {
 	public class BlackjackPlayer<PlayerIdType> : CardPlayer<PlayerIdType> {
+        Blackjack<PlayerIdType> controller;
         BlackjackCardListEvaluator mainHandEvaluator, splitHandEvaluator;
         ulong amountBetOnSplitHand;
 		bool currentHandIsMain = true;
         
-		public BlackjackPlayer(PlayerPointManager pointManager, PlayerIdType playerIdObject)
+		public BlackjackPlayer(Blackjack<PlayerIdType> controller, PlayerPointManager pointManager, PlayerIdType playerIdObject)
             : base(pointManager, playerIdObject) {
+            this.controller = controller;
             mainHandEvaluator = new BlackjackCardListEvaluator(hand.cards);
             splitHandEvaluator = null;
             amountBetOnSplitHand = 0;
@@ -22,7 +26,7 @@
             return winnings != 0 ? winnings > 0 : (bool?)null;
 		}
 
-        long GetWinningsOrLosings(BlackjackCardListEvaluator dealer) {
+        public long GetWinningsOrLosings(BlackjackCardListEvaluator dealer) {
             long winningsOrLosings;
 
             winningsOrLosings = GetWinnings(dealer, mainHandEvaluator, bet);
@@ -33,6 +37,15 @@
             }
 
             return winningsOrLosings;
+        }
+
+        public bool Stand() {
+            if(!CurrentHandEvaluator.isStanding && !CurrentHandEvaluator.isBust) {
+                CurrentHandEvaluator.isStanding = true;
+                return true;
+            }
+
+            return false;
         }
 
         static long GetWinnings(BlackjackCardListEvaluator dealer, BlackjackCardListEvaluator cardListEvaluator, ulong bet) {
@@ -58,7 +71,7 @@
             }
         }
 
-        public bool Split(Blackjack<PlayerIdType> controller) {
+        public bool Split() {
 			if(CanSplit) {
                 splitHandEvaluator = new BlackjackCardListEvaluator(new PlayingCardList(hand.cards.Pop()));
                 amountBetOnSplitHand = bet;
@@ -84,7 +97,22 @@
 			return false;
 		}
 
-		public bool ReadyToSwitchHands() {
+        public bool DoubleDown() {
+            ulong amount = bet;
+            if(PlaceBet(amount, true)) {
+                if(CurrentHandEvaluator.Equals(splitHandEvaluator)) {
+                    amountBetOnSplitHand += amount;
+                }
+                CurrentHandEvaluator.isStanding = true;
+                controller.DealCard(hand.cards);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool ReadyToSwitchHands() {
 			if(splitHandEvaluator != null && mainHandEvaluator.isDone) {
 				currentHandIsMain = false;
 				return true;

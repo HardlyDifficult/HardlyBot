@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 
 namespace Hardly.Games {
-	public abstract class Game<PlayerIdType, PlayerGameType> {
+    public abstract class Game {
+    }
+
+	public abstract class Game<PlayerIdType, PlayerGameType> : Game {
 		public readonly uint maxPlayers;
 		Dictionary<PlayerIdType, PlayerGameType> players = new Dictionary<PlayerIdType, PlayerGameType>();
 
@@ -16,6 +19,8 @@ namespace Hardly.Games {
         public bool Contains(PlayerIdType playerId) {
             return players.ContainsKey(playerId);
         }
+
+        public abstract void EndGame();
 
         public PlayerGameType Get(PlayerIdType player) {
             PlayerGameType results;

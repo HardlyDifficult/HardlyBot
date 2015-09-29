@@ -12,9 +12,11 @@
 			deck = new Deck(numberOfDecks);
 		}
 
-		public void DealCard(PlayingCardList playerCards) {
+		public PlayingCard DealCard(PlayingCardList playerCards) {
             PlayingCard card = deck.Pop();
 			playerCards.Add(card);
+
+            return card;
 		}
 	}
 }
