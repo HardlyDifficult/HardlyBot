@@ -57,12 +57,12 @@ namespace Hardly.Games.Holdem.Gui {
         }
 
         private void aTimerRefresh_Tick(object sender, EventArgs e) {
-            var player = game.CurrentPlayer;
+            var player = game.currentPlayer;
             if(player != null) {
-                aLabelCurrentPlayer.Text = player.playerIdObject.ToString();
-                aLabelPlayerHand.Text = player.hand.ToChatString();
-                aLabelBoardCards.Text = game.table.hand.ToChatString();
-                aLabelAccountBalance.Text = player.pointManager.AvailablePoints.ToStringWithCommas();
+                aLabelCurrentPlayer.Text = player.idObject.ToString();
+                aLabelPlayerHand.Text = player.hand.cards.ToString();
+                aLabelBoardCards.Text = game.tableCards.ToString();
+                aLabelAccountBalance.Text = pointManagers[player.idObject].Points.ToStringWithCommas();
             } else {
                 aLabelCurrentPlayer.Text = "";
                 aLabelPlayerHand.Text = "";

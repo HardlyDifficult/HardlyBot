@@ -12,8 +12,9 @@ namespace Hardly.Games {
         List<TexasHoldemPlayer<PlayerIdType>>
             // Players = players which may be seated or in the sidepot (not both, if neither they folded)
             seatedPlayers = new List<TexasHoldemPlayer<PlayerIdType>>(),
-            sidepotPlayers = new List<TexasHoldemPlayer<PlayerIdType>>(), // BUG: fold doesn't put you in the sidepot yet.
+            sidepotPlayers = new List<TexasHoldemPlayer<PlayerIdType>>(); // BUG: fold doesn't put you in the sidepot yet.
 
+        public List<TexasHoldemPlayer<PlayerIdType>>
             // Last game
             lastGameWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
             lastGameLosers = new List<TexasHoldemPlayer<PlayerIdType>>(),
