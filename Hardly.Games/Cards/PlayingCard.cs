@@ -337,11 +337,8 @@ namespace Hardly.Games {
 			case Value.Nine:
 				return 9;
 			case Value.Ten:
-				return 10;
 			case Value.Jack:
-				return 10;
 			case Value.Queen:
-				return 10;
 			case Value.King:
 				return 10;
 			default:
@@ -359,13 +356,9 @@ namespace Hardly.Games {
 		}
 
 		public override string ToString() {
-			return suit.ToString() + value.ToString();
+            return ToChatString();
 		}
-
-		public override int GetHashCode() {
-			return base.GetHashCode();
-		}
-
+        
         public int CompareTo(object obj) {
             if(obj != null && obj.GetType().Equals(typeof(PlayingCard))) {
                 PlayingCard other = obj as PlayingCard;

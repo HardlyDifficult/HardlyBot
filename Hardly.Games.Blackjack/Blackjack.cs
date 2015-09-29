@@ -2,49 +2,70 @@
 
 namespace Hardly.Games {
 	public sealed class Blackjack<PlayerIdType> : CardGame<PlayerIdType, BlackjackPlayer<PlayerIdType>> {
-      public BlackjackPlayerHand<PlayerIdType> dealer;
-		CardCollection lastDealerHand = null;
+        public BlackjackCardListEvaluator dealer {
+            get;
+            private set;
+        }
+		public PlayingCardList lastDealerHand {
+            get;
+            private set;
+        }
 
         public Blackjack() : this(1, 6) {
 		}
 
 		public Blackjack(uint numberOfDecks, uint maxPlayers) : base(numberOfDecks, maxPlayers) {
-			Reset();
+            dealer = null;
+            lastDealerHand = null;
+            Reset();
 		}
 
-		public void Deal() {
-			for(int numberOfCards = 0; numberOfCards < 2; numberOfCards++) {
-				foreach(var player in PlayerObjects) {
-					DealCard(player.CurrentHand);
-				}
-				DealCard(dealer);
-			}
-		}
-
-		public override void Reset() {
-			lastDealerHand = dealer?.hand;
-			base.Reset();
-			dealer = new BlackjackPlayerHand<PlayerIdType>(null, (PlayerIdType)typeof(PlayerIdType).GetDefaultValue(), 0, false);
-		}
-
-		public ulong Join(PlayerIdType playerId, PointManager pointManager, ulong bet) {
-			if(!base.Contains(playerId)) {
-                var player = new BlackjackPlayer<PlayerIdType>(pointManager, playerId, bet);
-                base.Join(playerId, player);
-				Log.info(playerId.ToString() + " joined!");
-                return player.totalBet;
-			}
+        public ulong Join(PlayerIdType playerId, PlayerPointManager pointManager, ulong bet) {
+            if(!base.Contains(playerId)) {
+                var player = new BlackjackPlayer<PlayerIdType>(this, pointManager, playerId);
+                if(player.PlaceBet(bet, false)) {
+                    base.Join(playerId, player);
+                    Log.info(playerId.ToString() + " joined Blackjack!");
+                    return player.bet;
+                } 
+            } else {
+                var player = Get(playerId);
+                player.CanelBet();
+                if(player.PlaceBet(bet, false)) {
+                    Log.info(playerId.ToString() + " changed their Blackjack bet.");
+                    return player.bet;
+                }
+            }
 
             return 0;
-		}
-        
-        public CardCollection LastDealerHand() {
-			if(dealer?.hand != null && dealer.hand.cards.Count > 0) {
-				return dealer.hand;
-			} else {
-				return lastDealerHand;
-			}
-      }
+        }
 
+        public override void Reset() {
+            base.Reset();
+
+            lastDealerHand = dealer?.cards;
+            dealer = new BlackjackCardListEvaluator(new PlayingCardList());
+        }
+
+        public override bool StartGame() {
+            if(CanStart()) {
+                for(int numberOfCards = 0; numberOfCards < 2; numberOfCards++) {
+                    foreach(var player in PlayerGameObjects) {
+                        DealCard(player.CurrentHandEvaluator.cards);
+                    }
+                    DealCard(dealer.cards);
+                }
+
+                return true;
+            }
+
+            return false;
+		}
+
+        public override void EndGame() {
+            foreach(var player in PlayerGameObjects) {
+                player.Award(player.GetWinningsOrLosings(dealer));
+            }
+        }
     }
 }

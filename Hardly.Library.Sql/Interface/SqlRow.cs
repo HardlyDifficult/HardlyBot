@@ -117,8 +117,8 @@ namespace Hardly {
 
 		private bool RefreshColumnsByUniqueKey(uint value) {
 			string whereClause = table.additionalKeyHeaders[value - (table.primaryKeyHeaders?.Length ?? 0)].name + "=?a";
-			object[][] newValues = SqlController.Select(table.tableName, null, "*", whereClause, new[] { values[value] }, null, 1);
-			if(newValues != null && newValues.Length > 0) {
+			List<object[]> newValues = SqlController.Select(table.tableName, null, "*", whereClause, new[] { values[value] }, null, 1);
+			if(newValues != null && newValues.Count > 0) {
 				return Set(newValues[0]);
 			}
 

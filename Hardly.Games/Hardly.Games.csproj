@@ -40,24 +40,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cards\CardCollection.cs" />
+    <Compile Include="Cards\CardPlayerHand.cs" />
     <Compile Include="Cards\Deck.cs" />
     <Compile Include="Cards\PlayingCard.cs" />
+    <Compile Include="Cards\PlayingCardList.cs" />
+    <Compile Include="Cards\PlayingCardListEvaluator.cs" />
     <Compile Include="Controllers\CardGame.cs" />
-    <Compile Include="Controllers\CardPlayerHand.cs" />
     <Compile Include="Controllers\Game.cs" />
-    <Compile Include="Controllers\PointManager.cs" />
-    <Compile Include="Controllers\PokerPlayerHand.cs" />
+    <Compile Include="Controllers\PlayerPointManager.cs" />
+    <Compile Include="Dice\DiceGame.cs" />
+    <Compile Include="Players\CardPlayer.cs" />
+    <Compile Include="Players\GamePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NumberGames\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Hardly\Hardly.csproj">
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

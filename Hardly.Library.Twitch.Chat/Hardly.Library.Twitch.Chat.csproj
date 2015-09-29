@@ -45,17 +45,10 @@
     <Compile Include="Commands\Games\Blackjack\BJStateOff.cs" />
     <Compile Include="Commands\Games\Blackjack\BJStatePlay.cs" />
     <Compile Include="Commands\Games\Blackjack\TwitchBlackjack.cs" />
-    <Compile Include="Commands\Games\Blackjack\TwitchGameController.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStateAcceptingPlayers.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStateEndOfGame.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStateOff.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlay.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlayFlop.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlayPreFlop.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlayRiver.cs" />
-    <Compile Include="Commands\Games\Holdem\HoldemStatePlayTurn.cs" />
-    <Compile Include="Commands\Games\Holdem\TwitchHoldem.cs" />
-    <Compile Include="Commands\Games\NumberGames\TwitchPickANumber.cs" />
+    <Compile Include="Commands\Games\TwitchGameStateMachine.cs" />
+    <Compile Include="Commands\Games\DiceGames\TwitchPickANumber.cs" />
+    <Compile Include="Controllers\IAutoJoinTwitchRooms.cs" />
+    <Compile Include="Commands\Games\TwitchGame.cs" />
     <Compile Include="Commands\System\AboutCommands.cs" />
     <Compile Include="Commands\System\HelloCommand.cs" />
     <Compile Include="Controllers\ChatCommand.cs" />
@@ -79,10 +72,6 @@
     <ProjectReference Include="..\Hardly.Games.Blackjack\Hardly.Games.Blackjack.csproj">
       <Project>{92e263b4-0b72-4d53-b32e-4ce821efd322}</Project>
       <Name>Hardly.Games.Blackjack</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Hardly.Games.Holdem\Hardly.Games.Holdem.csproj">
-      <Project>{d0eb0d1e-80e3-4d6f-94e5-14bec0d4a0ef}</Project>
-      <Name>Hardly.Games.Holdem</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hardly.Games\Hardly.Games.csproj">
       <Project>{64316fb2-3bfa-46e7-868a-faa53ee30261}</Project>

@@ -40,10 +40,10 @@ namespace Hardly {
 		}
 
 		public static SqlTwitchConnection[] GetAllAutoConnectingConnections(SqlTwitchBot bot) {
-			object[][] results = _table.Select(null, null, "BotUserId=?a and AutoConnectToChat=?b", new object[] { bot.user.id, true }, null, 0);
-			if(results != null && results.Length > 0) {
-				SqlTwitchConnection[] connections = new SqlTwitchConnection[results.Length];
-				for(int i = 0; i < results.Length; i++) {
+			List<object[]> results = _table.Select(null, null, "BotUserId=?a and AutoConnectToChat=?b", new object[] { bot.user.id, true }, null, 0);
+			if(results != null && results.Count > 0) {
+				SqlTwitchConnection[] connections = new SqlTwitchConnection[results.Count];
+				for(int i = 0; i < results.Count; i++) {
 					connections[i] = new SqlTwitchConnection(bot, new SqlTwitchChannel(new SqlTwitchUser((uint)results[i][1])), (ulong)results[i][2] != 0);
 				}
 

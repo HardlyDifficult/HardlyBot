@@ -1,11 +1,12 @@
 
-CREATE TABLE `twitch_alerts` (
-  `BotUserId` int(10) unsigned NOT NULL,
-  `ChannelUserId` int(10) unsigned NOT NULL,
-  `AlertGuid` varchar(45) NOT NULL,
-  `LastFollowerNotification` datetime NOT NULL,
-  PRIMARY KEY (`BotUserId`,`ChannelUserId`,`AlertGuid`),
-  CONSTRAINT `ConnectionToAlerts` FOREIGN KEY (`BotUserId`, `ChannelUserId`) REFERENCES `twitch_connections` (`BotUserId`, `ChannelUserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+CREATE TABLE `twitch_users` (
+  `Id` int(10) unsigned NOT NULL,
+  `Name` varchar(30) NOT NULL,
+  `CreatedAt` datetime NOT NULL,
+  `Logo` varchar(150) DEFAULT NULL,
+  `Bio` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `Name_UNIQUE` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `twitch_bots` (
@@ -14,14 +15,6 @@ CREATE TABLE `twitch_bots` (
   PRIMARY KEY (`UserId`),
   UNIQUE KEY `OauthPassword_UNIQUE` (`OauthPassword`),
   CONSTRAINT `UserIdToBots` FOREIGN KEY (`UserId`) REFERENCES `twitch_users` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `twitch_channel_point_scale` (
-  `ChannelUserId` int(10) unsigned NOT NULL,
-  `UnitValue` bigint(20) unsigned NOT NULL,
-  `UnitName` varchar(45) NOT NULL,
-  PRIMARY KEY (`ChannelUserId`,`UnitValue`),
-  CONSTRAINT `ScaleToChannel` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_channels` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `twitch_channels` (
@@ -47,6 +40,23 @@ CREATE TABLE `twitch_connections` (
   CONSTRAINT `ChannelUserIdToConnection` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_channels` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `twitch_alerts` (
+  `BotUserId` int(10) unsigned NOT NULL,
+  `ChannelUserId` int(10) unsigned NOT NULL,
+  `AlertGuid` varchar(45) NOT NULL,
+  `LastFollowerNotification` datetime NOT NULL,
+  PRIMARY KEY (`BotUserId`,`ChannelUserId`,`AlertGuid`),
+  CONSTRAINT `ConnectionToAlerts` FOREIGN KEY (`BotUserId`, `ChannelUserId`) REFERENCES `twitch_connections` (`BotUserId`, `ChannelUserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `twitch_channel_point_scale` (
+  `ChannelUserId` int(10) unsigned NOT NULL,
+  `UnitValue` bigint(20) unsigned NOT NULL,
+  `UnitName` varchar(45) NOT NULL,
+  PRIMARY KEY (`ChannelUserId`,`UnitValue`),
+  CONSTRAINT `ScaleToChannel` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_channels` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `twitch_followers` (
   `UserId` int(10) unsigned NOT NULL,
   `ChannelUserId` int(10) unsigned NOT NULL,
@@ -67,14 +77,4 @@ CREATE TABLE `twitch_user_points` (
   KEY `Channel_idx` (`ChannelUserId`),
   CONSTRAINT `Channel` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_channels` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `User` FOREIGN KEY (`UserId`) REFERENCES `twitch_users` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `twitch_users` (
-  `Id` int(10) unsigned NOT NULL,
-  `Name` varchar(30) NOT NULL,
-  `CreatedAt` datetime NOT NULL,
-  `Logo` varchar(150) DEFAULT NULL,
-  `Bio` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Name_UNIQUE` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

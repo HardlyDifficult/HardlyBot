@@ -12,8 +12,7 @@ namespace Hardly.Library.Twitch {
 		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
 			var player = controller.game.Get(speaker);
 			if(player != null) {
-				TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
-				userPoints.Award(player.totalBet, 0);
+                player.CanelBet();
 				controller.room.SendWhisper(speaker, "You're out, later dude.");
 				if(controller.game.IsEmpty()) {
 					StopTimers();

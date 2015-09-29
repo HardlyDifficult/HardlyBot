@@ -50,11 +50,11 @@ namespace Hardly {
 		}
 
 		public static SqlTwitchUserPoints[] GetTopUsersForChannel(SqlTwitchChannel channel, uint count) {
-			object[][] results = _table.Select(null, null, "ChannelUserId=?a", new object[] { channel.user.id }, "Points Desc", count);
+			List<object[]> results = _table.Select(null, null, "ChannelUserId=?a", new object[] { channel.user.id }, "Points Desc", count);
 
-			if(results != null && results.Length > 0) {
-				SqlTwitchUserPoints[] points = new SqlTwitchUserPoints[results.Length];
-				for(int i = 0; i < results.Length; i++) {
+			if(results != null && results.Count > 0) {
+				SqlTwitchUserPoints[] points = new SqlTwitchUserPoints[results.Count];
+				for(int i = 0; i < results.Count; i++) {
 					points[i] = new SqlTwitchUserPoints(new SqlTwitchUser((uint)results[i][0]), channel, (ulong)results[i][2], (DateTime)results[i][3]);
 				}
 

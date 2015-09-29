@@ -138,8 +138,8 @@ namespace Hardly.Games {
             return false;
         }
 
-        public bool Join(PlayerIdType playerId, PointManager pointManager) {
-			if(!gameInProgress && !base.Contains(playerId) && pointManager.AvailablePoints > bigBlind) {
+        public bool Join(PlayerIdType playerId, PlayerPointManager pointManager) {
+			if(!gameInProgress && !base.Contains(playerId) && pointManager.Points > bigBlind) {
                 Log.info(playerId.ToString() + " joined");
                 return base.Join(playerId, new TexasHoldemPlayer<PlayerIdType>(pointManager, playerId));
 			}
@@ -170,7 +170,7 @@ namespace Hardly.Games {
         private void NextRound() {
             Debug.Assert(round != Round.GameOver);
 
-            foreach(var player in PlayerObjects) {
+            foreach(var player in PlayerGameObjects) {
                 if(player.bet < currentBet) {
                     seatedPlayers.Remove(player);
                 }
@@ -214,7 +214,7 @@ namespace Hardly.Games {
 
         public ulong GetTotalPot() {
             ulong totalBet = 0;
-            foreach(var player in PlayerObjects) {
+            foreach(var player in PlayerGameObjects) {
                 totalBet += player.bet;
             }
 
@@ -330,7 +330,7 @@ namespace Hardly.Games {
             seatedPlayers.Clear();
             sidepotPlayers.Clear();
                 
-            foreach(var player in PlayerObjects.ToArray().Shuffle()) {
+            foreach(var player in PlayerGameObjects.ToArray().Shuffle()) {
                 seatedPlayers.Add(player);
             }
         }

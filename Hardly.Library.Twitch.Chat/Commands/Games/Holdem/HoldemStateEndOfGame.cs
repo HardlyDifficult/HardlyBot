@@ -11,6 +11,7 @@ namespace Hardly.Library.Twitch {
             string chatMassege = "Holdem: ";
 
             chatMassege += BuildMessage(true, "won!") ?? "";
+            chatMassege += " ";
             chatMassege += BuildMessage(false, "lost.") ?? "";
             string sideWinners = BuildMessage(true, "won the sidepot", true);
             string sideLosers = BuildMessage(false, "lost the sidepot", true);

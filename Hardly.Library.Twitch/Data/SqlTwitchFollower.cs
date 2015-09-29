@@ -63,10 +63,10 @@ namespace Hardly {
 
 		public static SqlTwitchFollower[] GetAllWithUsernames(SqlTwitchChannel channel) {
 			try {
-				object[][] results = _table.Select("join twitch_users on id=" + _table.tableName + ".UserId", _table.tableName + ".*, name", "ChannelUserId=?a", new object[] { channel.user.id }, null, 0);
+				List<object[]> results = _table.Select("join twitch_users on id=" + _table.tableName + ".UserId", _table.tableName + ".*, name", "ChannelUserId=?a", new object[] { channel.user.id }, null, 0);
 
 				if(results != null) {
-					SqlTwitchFollower[] followers = new SqlTwitchFollower[results.Length];
+					SqlTwitchFollower[] followers = new SqlTwitchFollower[results.Count];
 					for(int i = 0; i < followers.Length; i++) {
 						followers[i] = FromSql(channel, results[i]);
 					}
@@ -90,11 +90,11 @@ namespace Hardly {
 			try {
 				DateTime latestCreatedAt = twitchAlerts.lastFollowerNotification;
 
-				object[][] results = _table.Select(null, null, "ChannelUserId=?a AND CreatedAt>?b", 
+				List<object[]> results = _table.Select(null, null, "ChannelUserId=?a AND CreatedAt>?b", 
 						new object[] { twitchAlerts.connection.channel.user.id, twitchAlerts.lastFollowerNotification }, null, 3);
 
-				if(results != null && results.Length > 0) {
-					SqlTwitchFollower[] followers = new SqlTwitchFollower[results.Length];
+				if(results != null && results.Count > 0) {
+					SqlTwitchFollower[] followers = new SqlTwitchFollower[results.Count];
 					for(int i = 0; i < followers.Length; i++) {
 						followers[i] = FromSql(twitchAlerts.connection.channel, results[i]);
 						if(latestCreatedAt < followers[i].createdAt) {

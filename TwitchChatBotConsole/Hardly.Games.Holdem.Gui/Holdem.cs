@@ -11,14 +11,14 @@ using System.Windows.Forms;
 namespace Hardly.Games.Holdem.Gui {
     public partial class Holdem : Form {
         TexasHoldem<int> game = new TexasHoldem<int>();
-        PointManager[] pointManagers;
+        PlayerPointManager[] pointManagers;
 
         public Holdem() {
             InitializeComponent();
 
-            pointManagers = new PointManager[100];
+            pointManagers = new PlayerPointManager[100];
             for(int i = 0; i < pointManagers.Length; i++) {
-                pointManagers[i] = new PointManager();
+                pointManagers[i] = new PlayerPointManager();
                 pointManagers[i].TotalPointsInAccount = 100000;
             }
         }
@@ -99,7 +99,7 @@ namespace Hardly.Games.Holdem.Gui {
             aLabelPot.Text = game.GetTotalPot().ToString();
             aLabelCallAmount.Text = game.GetCallAmount().ToString();
 
-            aLabelViewAccountBalance.Text = pointManagers[(int)aNumberBalancePlayerId.Value].AvailablePoints.ToStringWithCommas();
+            aLabelViewAccountBalance.Text = pointManagers[(int)aNumberBalancePlayerId.Value].Points.ToStringWithCommas();
         }
     }
 }

@@ -1,80 +1,134 @@
-﻿namespace Hardly.Games {
-	public class BlackjackPlayer<PlayerIdType> {
-		BlackjackPlayerHand<PlayerIdType> mainHand, splitHand;
+﻿using System;
+
+namespace Hardly.Games {
+	public class BlackjackPlayer<PlayerIdType> : CardPlayer<PlayerIdType> {
+        Blackjack<PlayerIdType> controller;
+        BlackjackCardListEvaluator mainHandEvaluator, splitHandEvaluator;
+        ulong amountBetOnSplitHand;
 		bool currentHandIsMain = true;
+        
+		public BlackjackPlayer(Blackjack<PlayerIdType> controller, PlayerPointManager pointManager, PlayerIdType playerIdObject)
+            : base(pointManager, playerIdObject) {
+            this.controller = controller;
+            mainHandEvaluator = new BlackjackCardListEvaluator(hand.cards);
+            splitHandEvaluator = null;
+            amountBetOnSplitHand = 0;
+		}
 
-		public ulong totalBet {
+		public BlackjackCardListEvaluator CurrentHandEvaluator {
 			get {
-				ulong bet = mainHand.bet;
-				if(splitHand != null) {
-					bet += splitHand.bet;
-				}
-
-				return bet;
+				return currentHandIsMain ? mainHandEvaluator : splitHandEvaluator;
 			}
 		}
 
-		public BlackjackPlayer(PointManager pointManager, PlayerIdType playerIdObject, ulong bet) {
-			mainHand = new BlackjackPlayerHand<PlayerIdType>(pointManager, playerIdObject, bet, false);
-			splitHand = null;
-            pointManager.ReserveBet(bet);
-		}
-
-		public BlackjackPlayerHand<PlayerIdType> CurrentHand {
-			get {
-				return currentHandIsMain ? mainHand : splitHand;
-			}
-		}
-
-		public bool? IsWinner(BlackjackPlayerHand<PlayerIdType> dealer) {
+		public bool? IsWinner(BlackjackCardListEvaluator dealer) {
 			long winnings = GetWinningsOrLosings(dealer);
-         return winnings != 0 ? winnings > 0 : (bool?)null;
+            return winnings != 0 ? winnings > 0 : (bool?)null;
 		}
 
-		public string GetValueString() {
-			string valueString = mainHand.GetValueString();
-			if(splitHand != null) {
-				valueString += "/" + splitHand.GetValueString();
-			}
-			return valueString;
-		}
+        public long GetWinningsOrLosings(BlackjackCardListEvaluator dealer) {
+            long winningsOrLosings;
 
-		public long GetWinningsOrLosings(BlackjackPlayerHand<PlayerIdType> dealer) {
-			long winnings = mainHand.GetWinningsOrLosings(dealer);
-			if(splitHand != null) {
-				winnings += splitHand.GetWinningsOrLosings(dealer);
-			}
+            winningsOrLosings = GetWinnings(dealer, mainHandEvaluator, bet);
 
-			return winnings;
-		}
+            if(splitHandEvaluator != null) {
+                winningsOrLosings -= (long)amountBetOnSplitHand;
+                winningsOrLosings += GetWinnings(dealer, splitHandEvaluator, amountBetOnSplitHand);
+            }
 
-		public bool Split(Blackjack<PlayerIdType> controller, bool betReserved) {
-			if(mainHand.hand.cards.Count == 2 && mainHand.hand.cards[0].BlackjackValue().Equals(mainHand.hand.cards[1].BlackjackValue()) && splitHand == null && betReserved) {
-				splitHand = new BlackjackPlayerHand<PlayerIdType>(mainHand.pointManager, mainHand.playerIdObject, mainHand.bet, true);
-				mainHand.isSplit = true;
-				var card = mainHand.hand.TakeTopCard();
-				splitHand.hand.GiveCard(card);
+            return winningsOrLosings;
+        }
 
-				controller.DealCard(mainHand);
-				controller.DealCard(splitHand);
+        public bool Stand() {
+            if(!CurrentHandEvaluator.isStanding && !CurrentHandEvaluator.isBust) {
+                CurrentHandEvaluator.isStanding = true;
+                return true;
+            }
 
-				if(mainHand.hand.cards[0].value.Equals(PlayingCard.Value.Ace)) {
-					mainHand.standing = true;
-					splitHand.standing = true;
-				}
-				return true;
+            return false;
+        }
+
+        static long GetWinnings(BlackjackCardListEvaluator dealer, BlackjackCardListEvaluator cardListEvaluator, ulong bet) {
+            long winningsOrLosings;
+            switch(cardListEvaluator.IsWinner(dealer)) {
+            case true:
+                winningsOrLosings = cardListEvaluator.isBlackjack ? (long)(bet * 1.5): (long)bet;
+                break;
+            case false:
+                winningsOrLosings = (long)bet * -1L;
+                break;
+            default:
+                winningsOrLosings = 0;
+                break;
+            }
+
+            return winningsOrLosings;
+        }
+
+        public bool CanSplit {
+            get {
+                return hand.cards.Count == 2 && hand.cards[0].BlackjackValue().Equals(hand.cards[1].BlackjackValue()) && splitHandEvaluator == null;
+            }
+        }
+
+        public bool Split() {
+			if(CanSplit) {
+                splitHandEvaluator = new BlackjackCardListEvaluator(new PlayingCardList(hand.cards.Pop()));
+                amountBetOnSplitHand = bet;
+
+                if(PlaceBet(bet, true)) {
+                    mainHandEvaluator.isSplit = true;
+                    splitHandEvaluator.isSplit = true;
+                    controller.DealCard(hand.cards);
+                    controller.DealCard(splitHandEvaluator.cards);
+
+                    if(hand.cards[0].value.Equals(PlayingCard.Value.Ace)) {
+                        mainHandEvaluator.isStanding = true;
+                        splitHandEvaluator.isStanding = true;
+                    }
+
+                    return true;
+                } else {
+                    splitHandEvaluator = null;
+                    amountBetOnSplitHand = 0;
+                }
 			}
 
 			return false;
 		}
 
-		public bool ReadyToSwitchHands() {
-			if(splitHand != null && (mainHand.IsBust() || mainHand.standing)) {
+        public bool DoubleDown() {
+            ulong amount = bet;
+            if(PlaceBet(amount, true)) {
+                if(CurrentHandEvaluator.Equals(splitHandEvaluator)) {
+                    amountBetOnSplitHand += amount;
+                }
+                CurrentHandEvaluator.isStanding = true;
+                controller.DealCard(hand.cards);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool ReadyToSwitchHands() {
+			if(splitHandEvaluator != null && mainHandEvaluator.isDone) {
 				currentHandIsMain = false;
 				return true;
 			}
 
 			return false;
 		}
-	}
+
+        public override string ToString() {
+            string valueString = mainHandEvaluator.cards.ToString();
+            if(splitHandEvaluator != null) {
+                valueString += "/" + splitHandEvaluator.cards.ToString();
+            }
+
+            return valueString;
+        }
+
+    }
 }

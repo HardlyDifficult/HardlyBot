@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7885E4C8-136A-47AD-A936-CDCC297B3A4A}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Hardly.Games.Holdem.Gui</RootNamespace>
     <AssemblyName>Hardly.Games.Holdem.Gui</AssemblyName>
@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,17 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Holdem.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Holdem.Designer.cs">
-      <DependentUpon>Holdem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Holdem.resx">
-      <DependentUpon>Holdem.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -80,10 +73,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Hardly.Games.Holdem\Hardly.Games.Holdem.csproj">
-      <Project>{d0eb0d1e-80e3-4d6f-94e5-14bec0d4a0ef}</Project>
-      <Name>Hardly.Games.Holdem</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Hardly.Games\Hardly.Games.csproj">
       <Project>{64316fb2-3bfa-46e7-868a-faa53ee30261}</Project>
       <Name>Hardly.Games</Name>

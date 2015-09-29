@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hardly.Games {
-    public class PointManager {
+    public class PlayerPointManager {
         ulong reservedPoints = 0;
-
-        public PointManager() {
-        }
-
-        public virtual ulong TotalPointsInAccount {
-            get;
-            set;
-        }
-
-        public virtual ulong AvailablePoints {
+        
+        #region Public interface
+        public virtual ulong Points {
             get {
                 return TotalPointsInAccount - reservedPoints;
             }
@@ -32,19 +21,11 @@ namespace Hardly.Games {
             }
         }
 
-        void FreeUp(ulong reservation) {
-            if(reservedPoints >= reservation) {
-                reservedPoints -= reservation;
-            } else {
-                reservedPoints = 0;
-            }
-        }
-
         public ulong ReserveBet(ulong bet, bool allOrNothing = false) {
             if(!allOrNothing) {
-                bet = Math.Min(AvailablePoints, bet);
+                bet = Math.Min(Points, bet);
             } else {
-                if(bet > AvailablePoints) {
+                if(bet > Points) {
                     bet = 0;
                 }
             }
@@ -53,5 +34,23 @@ namespace Hardly.Games {
 
             return bet;
         }
+        #endregion
+
+        #region Protected interface
+        protected virtual ulong TotalPointsInAccount {
+            get;
+            set;
+        }
+        #endregion
+
+        #region Private helpers
+        void FreeUp(ulong reservation) {
+            if(reservedPoints >= reservation) {
+                reservedPoints -= reservation;
+            } else {
+                reservedPoints = 0;
+            }
+        }
+        #endregion
     }
 }

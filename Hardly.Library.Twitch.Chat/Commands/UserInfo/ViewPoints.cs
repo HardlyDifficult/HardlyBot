@@ -27,9 +27,9 @@ namespace Hardly.Library.Twitch {
 
 		private void BragCommand(SqlTwitchUser speaker, string message) {
 			TwitchUserPointManager yourPoints = room.pointManager.ForUser(speaker);
-			if(yourPoints.AvailablePoints >= 50) {
+			if(yourPoints.Points >= 50) {
 				yourPoints.Award(0, -50);
-				string chatMessage = speaker.name + " has " + room.pointManager.ToPointsString(yourPoints.AvailablePoints);
+				string chatMessage = speaker.name + " has " + room.pointManager.ToPointsString(yourPoints.Points);
 				room.SendChatMessage(chatMessage);
 			} else {
 				room.SendWhisper(speaker, "You can't afford a brag...");
@@ -46,12 +46,12 @@ namespace Hardly.Library.Twitch {
 
 			TwitchUserPointManager yourPoints = room.pointManager.ForUser(speaker);
 			string chatMessage = "You have ";
-			chatMessage += room.pointManager.ToPointsString(yourPoints.AvailablePoints);
+			chatMessage += room.pointManager.ToPointsString(yourPoints.Points);
 
 			if(otherUser != null && !otherUser.id.Equals(speaker.id)) {
 				TwitchUserPointManager otherPoints = room.pointManager.ForUser(otherUser);
 
-				chatMessage += " & " + otherUser.name + " has " + room.pointManager.ToPointsString(otherPoints.AvailablePoints);
+				chatMessage += " & " + otherUser.name + " has " + room.pointManager.ToPointsString(otherPoints.Points);
 			}
 
 			room.SendWhisper(speaker, chatMessage);

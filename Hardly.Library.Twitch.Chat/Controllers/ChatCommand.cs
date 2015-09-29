@@ -30,7 +30,7 @@ namespace Hardly.Library.Twitch {
 				//	}
 				//}
 			} else {
-				commands = new List<ChatCommand>(1);
+				commands = new List<ChatCommand>();
                 roomCommands.Add(room.twitchConnection.channel, commands);
 			}
 

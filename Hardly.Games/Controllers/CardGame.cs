@@ -1,7 +1,7 @@
 ﻿namespace Hardly.Games {
 	public abstract class CardGame<PlayerIdType, PlayerGameType> : Game<PlayerIdType, PlayerGameType> {
 		uint numberOfDecks = 1;
-		public Deck deck;
+		Deck deck;
 
 		public CardGame(uint numberOfDecks, uint maxPlayers) : base(maxPlayers) {
 			this.numberOfDecks = numberOfDecks;
@@ -12,10 +12,11 @@
 			deck = new Deck(numberOfDecks);
 		}
 
-		public void DealCard(CardPlayerHand<PlayerIdType> player) {
-			PlayingCard card = deck.TakeTopCard();
-			player.hand.GiveCard(card);
-			Log.info("Dealt " + card.ToChatString());
+		public PlayingCard DealCard(PlayingCardList playerCards) {
+            PlayingCard card = deck.Pop();
+			playerCards.Add(card);
+
+            return card;
 		}
 	}
 }

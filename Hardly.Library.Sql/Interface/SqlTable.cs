@@ -74,7 +74,7 @@ namespace Hardly {
 			return Select(join, what, whereClause, vars, orderBy, 1)?[0];
 		}
 
-		public object[][] Select(string join, string what, string whereClause, object[] vars, string orderBy, uint limit) {
+		public List<object[]> Select(string join, string what, string whereClause, object[] vars, string orderBy, uint limit) {
 			return SqlController.Select(tableName,
 				join,
 				what ?? (join == null ? "*" : tableName + ".*"),

@@ -36,7 +36,7 @@ namespace Hardly {
 			return null;
 		}
 
-		public static BaseType[] InstantiateEachSubclass<BaseType, ArgType>(this Type assemblyWithThisType, bool inSameNamespace, ArgType arg) {
+		public static BaseType[] InstantiateEachSubclassInMyAssembly<BaseType, ArgType>(this Type assemblyWithThisType, bool inSameNamespace, ArgType arg) {
 			Type[] subclassTypes = assemblyWithThisType.GetAllSubclassesInThisAssumbly<BaseType>(inSameNamespace);
 			if(subclassTypes != null) {
 				BaseType[] subclassObjects = new BaseType[subclassTypes.Length];

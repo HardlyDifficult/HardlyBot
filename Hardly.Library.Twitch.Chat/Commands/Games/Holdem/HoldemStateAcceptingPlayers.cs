@@ -32,7 +32,7 @@ namespace Hardly.Library.Twitch {
 		private void PlayCommand(SqlTwitchUser speaker, string additionalText) {
 			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
 
-            if(userPoints.AvailablePoints > controller.game.bigBlind) {
+            if(userPoints.Points > controller.game.bigBlind) {
 				controller.game.Join(speaker, userPoints);
 				if(controller.game.CanStart()) {
 					MinHit_StartWaitingForAdditionalPlayers();

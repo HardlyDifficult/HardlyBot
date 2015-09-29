@@ -10,7 +10,7 @@ namespace TwitchChatBotConsole
         {
             TwitchChatBot chatBot = new TwitchChatBot();
             new Thread(chatBot.Run).Start();
-            Application.Run(new Hardly.Games.Holdem.Gui.Holdem());
+            //Application.Run(new Hardly.Games.Holdem.Gui.Holdem());
         }
     }
 }
