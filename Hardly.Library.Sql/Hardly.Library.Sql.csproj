@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DBSchema.txt" />
+    <Content Include="PreBuild_DataPopulation_Tables.txt" />
     <Content Include="SAMPLE_Place_in_bin_dir-UidAndPwd.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
