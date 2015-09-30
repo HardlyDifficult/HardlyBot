@@ -164,7 +164,7 @@ namespace Hardly.Games {
             return myHandType;
         }
 
-        public static ulong GetValue(PlayingCard.Value value1, PlayingCard.Value value2, PlayingCard.Value value3, PlayingCard.Value value4, PlayingCard.Value value5) {
+        static ulong GetValue(PlayingCard.Value value1, PlayingCard.Value value2, PlayingCard.Value value3, PlayingCard.Value value4, PlayingCard.Value value5) {
             return (ulong)((ulong)value1 * Math.Pow(13,4) + (ulong)value2 * Math.Pow(13, 3) + (ulong)value3 * Math.Pow(13,2) + (ulong)value4 * 13 + (ulong)value5);
         }
 
