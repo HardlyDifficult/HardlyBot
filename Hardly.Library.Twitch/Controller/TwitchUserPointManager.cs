@@ -16,7 +16,7 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        protected override ulong TotalPointsInAccount {
+        public override ulong TotalPointsInAccount {
             get {
                 return sqlPoints.points;
             }

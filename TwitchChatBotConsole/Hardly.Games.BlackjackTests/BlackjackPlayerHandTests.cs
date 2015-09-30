@@ -11,12 +11,12 @@ namespace Hardly.Games.Tests {
     public class BlackjackPlayerHandTests {
         [TestMethod()]
         public void IsBustTest() {
-            var hand = new BlackjackPlayerHand<int>(null, 0, 0, false);
-            hand.hand.GiveCard(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
-            hand.hand.GiveCard(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
-            hand.hand.GiveCard(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
-            hand.hand.GiveCard(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
-            Assert.IsTrue(hand.IsBust());
+            var hand = new BlackjackCardListEvaluator(new PlayingCardList());
+            hand.cards.Add(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
+            hand.cards.Add(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
+            hand.cards.Add(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
+            hand.cards.Add(new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.King));
+            Assert.IsTrue(hand.isBust);
         }
     }
 }

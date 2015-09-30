@@ -164,8 +164,8 @@ namespace Hardly.Games {
             return myHandType;
         }
 
-        static ulong GetValue(PlayingCard.Value value1, PlayingCard.Value value2, PlayingCard.Value value3, PlayingCard.Value value4, PlayingCard.Value value5) {
-            return (ulong)value1 * 13 ^ 4 + (ulong)value2 * 13 ^ 3 + (ulong)value3 * 13 ^ 2 + (ulong)value4 * 13 ^ 1 + (ulong)value5;
+        public static ulong GetValue(PlayingCard.Value value1, PlayingCard.Value value2, PlayingCard.Value value3, PlayingCard.Value value4, PlayingCard.Value value5) {
+            return (ulong)((ulong)value1 * Math.Pow(13,4) + (ulong)value2 * Math.Pow(13, 3) + (ulong)value3 * Math.Pow(13,2) + (ulong)value4 * 13 + (ulong)value5);
         }
 
         static void CalcHandStats(PlayingCardList playerCards, out bool isFlush, out PlayingCard.Value? firstPairValue, out PlayingCard.Value? secondPairValue, out uint firstPairCardCount, out uint secondPairCardCount, out bool isStraight) {
