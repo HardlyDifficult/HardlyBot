@@ -1,0 +1,47 @@
+insert
+
+into twitch_users
+
+-- first add the bot ID and botuser name second run your Id and username--
+
+set Id=1234,Name="Botname", CreatedAt="1900-12-31 00:00:00",Logo=Null ,Bio=Null
+;
+
+insert 
+
+into twitch_bots
+
+-- oauth:+ botcode --
+
+Set UserId=1234,OauthPassword="oauth:"
+;
+
+
+
+insert
+
+into twitch_channels
+set	
+
+-- channel you want the bot to join --
+
+UserId=123
+;
+
+insert
+
+into twitch_channel_point_scale
+
+-- channeluserid is your id , unitvalue must be at least 1 , unitname is the name you want to give the money/points --
+
+set	ChannelUserId=123,UnitValue=1,UnitName="points"
+;
+
+insert
+
+into twitch_connections
+
+-- autoconnect 1=True 0=false --
+
+set	BotUserId=1234,ChannelUserId=123,AutoConnectToChat=1
+;
