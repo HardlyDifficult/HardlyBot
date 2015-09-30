@@ -95,7 +95,11 @@ namespace Hardly.Games {
             case HandType.Flush:
             case HandType.HighCard:
             case HandType.Straight:
-                myHandValue = GetValue(cards[4].value, cards[3].value, cards[2].value, cards[1].value, cards[0].value);
+                if(myHandType == HandType.Straight && cards[4].value == PlayingCard.Value.Ace) {
+                    myHandValue = 0;
+                } else {
+                    myHandValue = GetValue(cards[4].value, cards[3].value, cards[2].value, cards[1].value, cards[0].value);
+                }
                 break;
             case HandType.FourOfAKind:
             case HandType.ThreeOfAKind:
@@ -169,6 +173,8 @@ namespace Hardly.Games {
         }
 
         static void CalcHandStats(PlayingCardList playerCards, out bool isFlush, out PlayingCard.Value? firstPairValue, out PlayingCard.Value? secondPairValue, out uint firstPairCardCount, out uint secondPairCardCount, out bool isStraight) {
+            Debug.Assert(playerCards.Count == 5);
+
             PlayingCard.Value? lastCardValue = null;
             firstPairValue = null;
             secondPairValue = null;
@@ -179,7 +185,7 @@ namespace Hardly.Games {
 
             foreach(var card in playerCards) {
                 if(lastCardValue != null) {
-                    if(card.value != lastCardValue.Value + 1) {
+                    if(!((card.value == lastCardValue.Value + 1) || (card.value == PlayingCard.Value.Ace && lastCardValue.Value == PlayingCard.Value.Five))) {
                         isStraight = false;
                     }
 
