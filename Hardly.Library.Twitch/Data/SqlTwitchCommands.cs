@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace Hardly.Library.Twitch.Data
 {
-    class SqlTwitchCommand : SqlRow {
-        SqlTwitchChannel channel; 
-        // creating the varibles you what to use
-        public SqlTwitchCommand( uint id, SqlTwitchChannel channel, string Command, string Description = null, string Aliases = null, bool Mod = true, int TimeCooldownInSeconds = 0)
-                : base(new object[] { id, channel.user.id, Command, Description, Aliases, Mod, TimeCooldownInSeconds })
+    public class SqlTwitchCommand : SqlRow
+    {
+        public readonly SqlTwitchUser user;
+        //
+        public SqlTwitchCommand(uint id,SqlTwitchChannel channel , string Command, string Description = null, bool Mod = true, int Time = 0)
+                : base(new object[] { id, channel.user.id, Command, Description, Mod, Time })
         {
-            this.channel = channel;
+
         }
-        // Sellecting the table you want to interact with
-        internal static readonly SqlTable _table = new SqlTable("twitch_commands");
-        
+        // 
+        internal static readonly SqlTable _table = new SqlTable("twitch_Command");
+
         //
         public override SqlTable table
         {
@@ -24,8 +25,9 @@ namespace Hardly.Library.Twitch.Data
             {
                 return _table;
             }
+
         }
-        //get the data from the DB or write it to the DB
+        //get the data from the DB
         public uint id
         {
             get
@@ -37,8 +39,7 @@ namespace Hardly.Library.Twitch.Data
                 Set(0, value);
             }
         }
-
-        public uint ChannelUserId
+        public uint ChannelId
         {
             get
             {
@@ -49,9 +50,6 @@ namespace Hardly.Library.Twitch.Data
                 Set(1, value);
             }
         }
-
-
-
         public string Command
         {
             get
@@ -76,11 +74,13 @@ namespace Hardly.Library.Twitch.Data
             }
         }
 
-        public string Aliases
+
+
+        public bool Mod
         {
             get
             {
-                return Get<string>(4);
+                return Get<bool>(4);
             }
             set
             {
@@ -88,27 +88,15 @@ namespace Hardly.Library.Twitch.Data
             }
         }
 
-        public bool Mod
+        public int CoolDownInSeconds
         {
             get
             {
-                return Get<bool>(5);
+                return Get<int>(5);
             }
             set
             {
                 Set(5, value);
-            }
-        }
-
-        public int TimeCooldownInSeconds
-        {
-            get
-            {
-                return Get<int>(6);
-            }
-            set
-            {
-                Set(6, value);
             }
         }
 
@@ -121,9 +109,9 @@ namespace Hardly.Library.Twitch.Data
                 SqlTwitchCommand[] commands = new SqlTwitchCommand[results.Count];
                 for (int i = 0; i < results.Count; i++)
                 {
-                    //uint id[0], string Command[1], string Discription = null[2], string Aliases = null[3], bool Mod = true[4], int Time = 0[5]
-                    commands[i] = new SqlTwitchCommand(results[i][0].FromSql<uint>(),/*this one gives me an error*/results[i][1].FromSql<uint>(), results[i][2].FromSql<string>(), results[i][3].FromSql<string>(), results[i][4].FromSql<string>(),
-                        results[i][5].FromSql<bool>(), results[i][6].FromSql<int>());
+                    //uint id[0], string ChannelId = null[1], string Command[2], string Discription = null[3], string Aliases = null[4], bool Mod = true[5], int CoolDownInSeconds = 0[6]
+                    commands[i] = new SqlTwitchCommand(results[i][0].FromSql<uint>(), results[i][1].FromSql<uint>(), results[i][1].FromSql<string>(), results[i][3].FromSql<string>(),
+                        results[i][4].FromSql<bool>(), results[i][5].FromSql<int>());
                 }
 
                 return commands;
