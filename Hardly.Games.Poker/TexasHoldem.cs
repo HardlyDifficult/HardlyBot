@@ -7,19 +7,21 @@ namespace Hardly.Games {
         }
         public Round round = Round.GameOver;
         public ulong bigBlind = 0;
-        uint currentPlayerId = 0, endingPlayerId = 0;
+        public TexasHoldemPlayer<PlayerIdType> currentPlayer = null;
+        TexasHoldemPlayer<PlayerIdType> endingPlayer = null, firstToAct = null;
         public PlayingCardList tableCards = new PlayingCardList();
-        List<TexasHoldemPlayer<PlayerIdType>>
+        public readonly List<TexasHoldemPlayer<PlayerIdType>>
             // Players = players which may be seated or in the sidepot (not both, if neither they folded)
-            seatedPlayers = new List<TexasHoldemPlayer<PlayerIdType>>(),
-            sidepotPlayers = new List<TexasHoldemPlayer<PlayerIdType>>(); // BUG: fold doesn't put you in the sidepot yet.
+            seatedPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
 
         public List<TexasHoldemPlayer<PlayerIdType>>
-            // Last game
-            lastGameWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
-            lastGameLosers = new List<TexasHoldemPlayer<PlayerIdType>>(),
-            lastGameSidepotWinners = new List<TexasHoldemPlayer<PlayerIdType>>(),
-            lastGameSidepotLosers = new List<TexasHoldemPlayer<PlayerIdType>>();
+            lastGameEndedInSeatPlayers = new List<TexasHoldemPlayer<PlayerIdType>>(),
+            lastGameEndedInSidepotPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
+
+        public List<Tuple<TexasHoldemPlayer<PlayerIdType>, ulong>>
+            sidepotPlayers = new List<Tuple<TexasHoldemPlayer<PlayerIdType>, ulong>>(),
+            lastGameWinners = new List<Tuple<TexasHoldemPlayer<PlayerIdType>, ulong>>(),
+            lastGameSidepotWinners = new List<Tuple<TexasHoldemPlayer<PlayerIdType>, ulong>>();
 
         public TexasHoldem() : this(1, 6) {
         }
@@ -40,16 +42,6 @@ namespace Hardly.Games {
                 return maxBet;
             }
         }
-
-        public TexasHoldemPlayer<PlayerIdType> currentPlayer {
-            get {
-                if(seatedPlayers != null && currentPlayerId < seatedPlayers.Count) {
-                    return seatedPlayers[(int)currentPlayerId];
-                }
-
-                return null;
-            }
-        }
        
         public override bool StartGame() {
             if(CanStart()) {
@@ -68,9 +60,14 @@ namespace Hardly.Games {
                     seatedPlayers[1].PlaceBet(littleBlind, true);
                     seatedPlayers[(int)iBig].PlaceBet(bigBlind, true);
                 }
-                
-                currentPlayerId = StartingPlayerId;
-                endingPlayerId = iBig;
+
+                uint iFirstToAct = iBig + 1;
+                if(iFirstToAct >= seatedPlayers.Count) {
+                    iFirstToAct = 0;
+                }
+                firstToAct = seatedPlayers[(int)iFirstToAct];
+                currentPlayer = firstToAct;
+                endingPlayer = seatedPlayers[(int)iBig];
                 tableCards.Clear();
 
                 return true;
@@ -79,67 +76,126 @@ namespace Hardly.Games {
             return false;
         }
 
+        public bool canFold {
+            get {
+                return round != Round.GameOver && currentPlayer != null && !canCheck;
+            }
+        }
+
         public bool Fold() {
-            if(seatedPlayers.Remove(currentPlayer)) {
-                if(currentPlayerId == endingPlayerId || seatedPlayers.Count == 1) {
-                    NextRound();
-                } else if(currentPlayerId == seatedPlayers.Count) {
-                    currentPlayerId = 0;
-                }
-
-                if(currentPlayerId < endingPlayerId) {
-                    endingPlayerId--;
-                }
-
-                return true;
-            }
-            return false;
-        }
-
-        public bool Raise(ulong value) {
-            ulong bet = currentBet - currentPlayer.bet + value;
-            if(currentPlayer.PlaceBet(bet, true)) {
-                endingPlayerId = currentPlayerId > 0 ? currentPlayerId - 1 : (uint)seatedPlayers.Count - 1;
-                SelectNextPlayerOrNextRound();
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool Call() {
-            if(!canCheck) {
-                ulong bet = currentBet - currentPlayer.bet;
-                if(currentPlayer.PlaceBet(bet, true)) {
-                    SelectNextPlayerOrNextRound();
-                    return true;
-                } else {
-                    currentPlayer.PlaceBet(bet, false);
-                    sidepotPlayers.Add(currentPlayer);
-                    seatedPlayers.Remove(currentPlayer);
-                    if(currentPlayerId == endingPlayerId || seatedPlayers.Count == 1) {
-                        NextRound();
+            if(canFold) {
+                uint iPlayerSeat = seatedPlayers.IndexOf(currentPlayer);
+                var player = currentPlayer;
+                if(seatedPlayers.Remove(player)) {
+                    if(sidepotPlayers.Count > 0) {
+                        sidepotPlayers.Add(Tuple.Create(player, sidepotPlayers.Last.Item2));
                     }
-                }
-            }
 
-            return false;
-        }
+                    UpdateWhenPlayerDrops(iPlayerSeat);
 
-        public bool Bet(ulong value) {
-            if(canCheck && value > 0) {
-                if(currentPlayer.PlaceBet(value, true)) {
-                    endingPlayerId = currentPlayerId > 0 ? currentPlayerId - 1 : (uint)seatedPlayers.Count - 1;
-                    SelectNextPlayerOrNextRound();
                     return true;
                 }
             }
-
             return false;
+        }
+
+        private void UpdateWhenPlayerDrops(uint iPlayerSeat) {
+            int iNext = (int)iPlayerSeat;
+            if(iNext >= seatedPlayers.Count) {
+                iNext = 0;
+            }
+            if(currentPlayer.idObject.Equals(firstToAct.idObject)) {
+                firstToAct = seatedPlayers[iNext];
+            }
+
+            if(currentPlayer.idObject.Equals(endingPlayer.idObject) || seatedPlayers.Count == 1) {
+                NextRound();
+            } else {
+                currentPlayer = seatedPlayers[iNext];
+            }
+        }
+        
+        public bool canRaise {
+            get {
+                return round != Round.GameOver && currentPlayer != null && !canCheck;
+            }
+        }
+
+        public ulong Raise(ulong value) {
+            if(canRaise) {
+                ulong bet = currentBet - currentPlayer.bet + value;
+                bet = currentPlayer.PlaceBet(bet, false);
+                if(bet > 0) {
+                    UpdateWhenPlayerBets();
+                    SelectNextPlayerOrNextRound();
+                    return bet;
+                }
+            }
+
+            return 0;
+        }
+
+        private void UpdateWhenPlayerBets() {
+            int iPrevious = (int)seatedPlayers.IndexOf(currentPlayer) - 1;
+            if(iPrevious < 0) {
+                iPrevious = seatedPlayers.Count - 1;
+            }
+            endingPlayer = seatedPlayers[iPrevious];
+        }
+
+        public bool canCall {
+            get {
+                return round != Round.GameOver && !canCheck && currentPlayer != null;
+            }
+        }
+
+        public ulong Call() {
+            if(canCall) {
+                ulong bet = currentBet - currentPlayer.bet;
+                Debug.Assert(bet > 0);
+                ulong placedBet = currentPlayer.PlaceBet(bet, true);
+                if(placedBet == 0) {
+                    bet = PlaceSideBet(bet);
+                } else {
+                    SelectNextPlayerOrNextRound();
+                }
+                return bet;
+            }
+
+            return 0;
+        }
+
+        private ulong PlaceSideBet(ulong bet) {
+            bet = currentPlayer.PlaceBet(bet, false);
+            sidepotPlayers.Add(Tuple.Create(currentPlayer, GetTotalPot(currentPlayer.bet)));
+            uint iPlayerSeat = seatedPlayers.IndexOf(currentPlayer);
+            seatedPlayers.Remove(currentPlayer);
+            UpdateWhenPlayerDrops(iPlayerSeat);
+            
+            return bet;
+        }
+
+        public bool canBet {
+            get {
+                return round != Round.GameOver && canCheck;
+            }
+        }
+
+        public ulong Bet(ulong bet) {
+            if(canBet && bet > 0) {
+                bet = currentPlayer.PlaceBet(bet, false);
+                if(bet > 0) {
+                    UpdateWhenPlayerBets();
+                    SelectNextPlayerOrNextRound();
+                    return bet;
+                }
+            }
+
+            return 0;
         }
 
         public bool Join(PlayerIdType playerId, PlayerPointManager pointManager) {
-			if(round != Round.GameOver && !base.Contains(playerId) && pointManager.Points > bigBlind) {
+			if(round == Round.GameOver && !base.Contains(playerId) && pointManager.Points > bigBlind) {
                 Log.info(playerId.ToString() + " joined");
                 return base.Join(playerId, new TexasHoldemPlayer<PlayerIdType>(pointManager, playerId));
 			}
@@ -157,13 +213,14 @@ namespace Hardly.Games {
         }
 
         private void SelectNextPlayerOrNextRound() {
-            if(currentPlayerId == endingPlayerId) {
+            if(currentPlayer == endingPlayer) {
                 NextRound();
             } else {
-                currentPlayerId++;
-                if(currentPlayerId >= seatedPlayers.Count) {
-                    currentPlayerId = 0;
+                int iNext = (int)seatedPlayers.IndexOf(currentPlayer) + 1;
+                if(iNext >= seatedPlayers.Count) {
+                    iNext = 0;
                 }
+                currentPlayer = seatedPlayers[iNext];
             }
         }
 
@@ -200,8 +257,12 @@ namespace Hardly.Games {
                 break;
             }
             
-            currentPlayerId = StartingPlayerId;
-            endingPlayerId = seatedPlayers.Count >= 3 ? 2u : 0u;
+            currentPlayer = firstToAct;
+            int iPrevious = (int)seatedPlayers.IndexOf(firstToAct) - 1;
+            if(iPrevious < 0) {
+                iPrevious = seatedPlayers.Count - 1;
+            }
+            endingPlayer = seatedPlayers[iPrevious];
         }
 
         public ulong GetCallAmount() {
@@ -212,36 +273,43 @@ namespace Hardly.Games {
             }
         }
 
-        public ulong GetTotalPot() {
+        public ulong GetTotalPot(ulong lessThanOrEqualTo = ulong.MaxValue) {
             ulong totalBet = 0;
             foreach(var player in PlayerGameObjects) {
-                totalBet += player.bet;
+                totalBet += Math.Min(player.bet, lessThanOrEqualTo);
             }
 
             return totalBet;
         }
 
         public override void EndGame() {
+            while(tableCards.Count > 5) {
+                DealToTable(1);
+            }
+
             lastGameWinners.Clear();
-            lastGameLosers.Clear();
             lastGameSidepotWinners.Clear();
-            lastGameSidepotLosers.Clear();
+            lastGameEndedInSeatPlayers = new List<TexasHoldemPlayer<PlayerIdType>>(seatedPlayers);
+            lastGameEndedInSidepotPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
+            foreach(var player in sidepotPlayers) {
+                lastGameEndedInSidepotPlayers.Add(player.Item1);
+            }
 
             foreach(var player in seatedPlayers) {
                 player.EndGame(tableCards);
             }
             foreach(var player in sidepotPlayers) {
-                player.EndGame(tableCards);
+                player.Item1.EndGame(tableCards);
             }
 
-            lastGameWinners = GetWinners(seatedPlayers);
+            var seatedWinners = GetWinners(seatedPlayers);
 
             ulong sidepotTotalPayout = 0;
             while(sidepotPlayers.Count > 0) {
-                ulong smallestSideBet = ulong.MaxValue;
+                ulong smallestPot = ulong.MaxValue;
                 foreach(var player in sidepotPlayers) {
-                    if(player.bet < smallestSideBet) {
-                        smallestSideBet = player.bet;
+                    if(player.Item2 < smallestPot) {
+                        smallestPot = player.Item2;
                     }
                 }
 
@@ -249,45 +317,40 @@ namespace Hardly.Games {
                 foreach(var player in seatedPlayers) {
                     playersToTest.Add(player);
                 }
-                foreach(var player in sidepotPlayers) {
-                    if(player.bet >= smallestSideBet) {
-                        playersToTest.Add(player);
-                    }
-                }
-                var sidePotWinners = GetWinners(playersToTest);
-                ulong sidePayoutPerPerson = (ulong)(smallestSideBet * (ulong)playersToTest.Count) / (ulong)sidePotWinners.Count;
-                foreach(var player in sidePotWinners) {
-                    player.Award((long)sidePayoutPerPerson - (long)player.bet);
-                    sidepotTotalPayout += sidePayoutPerPerson;
-                    sidePotWinners.Add(player);
-                }
-
-                foreach(var player in playersToTest) {
-                    if(player.bet == smallestSideBet) {
+                for(int i = 0; i < sidepotPlayers.Count; i++) {
+                    var player = sidepotPlayers[i];
+                    if(player.Item2 >= smallestPot) {
+                        playersToTest.Add(player.Item1);
                         sidepotPlayers.Remove(player);
+                        i--;
                     }
+                }
+                var sideWinners = GetWinners(playersToTest);
+                ulong sidePayoutPerPerson = (ulong)(smallestPot / (ulong)sideWinners.Count); 
+                foreach(var player in sideWinners) {
+                    ulong amount = sidePayoutPerPerson - player.bet;
+                    lastGameSidepotWinners.Add(Tuple.Create(player, amount));
+                    player.Award((long)amount);
+                    sidepotTotalPayout += sidePayoutPerPerson;
                 }
             }
 
-            ulong payoutPerPerson = (ulong)(GetTotalPot() - sidepotTotalPayout / (ulong)lastGameWinners.Count);
-            foreach(var player in lastGameWinners) {
-                player.Award((long)payoutPerPerson);
+            ulong payoutPerPerson = (ulong)(GetTotalPot() - sidepotTotalPayout / (ulong)seatedPlayers.Count); 
+            foreach(var player in seatedWinners) {
+                ulong amount = payoutPerPerson - player.bet;
+                lastGameWinners.Add(Tuple.Create(player, amount));
+                player.Award((long)amount);
             }
             
-            foreach(var player in seatedPlayers) {
-                if(!lastGameWinners.Contains(player)) {
-                    lastGameLosers.Add(player);
-                }
-            }
-            foreach(var player in sidepotPlayers) {
-                if(!lastGameSidepotWinners.Contains(player)) {
-                    lastGameSidepotLosers.Add(player);
+            foreach(var player in PlayerGameObjects) {
+                if(!(lastGameSidepotWinners.Contains(player) || lastGameWinners.Contains(player))){
+                    player.LoseBet();
                 }
             }
         }
 
         List<TexasHoldemPlayer<PlayerIdType>> GetWinners(List<TexasHoldemPlayer<PlayerIdType>> playersToCheck) {
-            var winners = new List<TexasHoldemPlayer<PlayerIdType>>();
+            List<TexasHoldemPlayer<PlayerIdType>> winners = new List<TexasHoldemPlayer<PlayerIdType>>();
             if(playersToCheck.Count > 1) {
                 ulong bestHandValue = 0;
 
@@ -316,12 +379,6 @@ namespace Hardly.Games {
             }
         }
         
-        uint StartingPlayerId {
-            get {
-                return seatedPlayers.Count > 3 ? 3u : seatedPlayers.Count == 3 ? 0u : 1u;
-            }
-        }
-
         public bool canCheck {
             get {
                 return GetCallAmount() == 0 && round != Round.GameOver;

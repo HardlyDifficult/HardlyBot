@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Hardly {
     public class List<ItemType> {
@@ -132,6 +133,14 @@ namespace Hardly {
             }
 
             return null;
+        }
+
+        public uint IndexOf(ItemType item) {
+            if(Contains(item)) {
+                return (uint)items.IndexOf(item);
+            } else {
+                throw new Exception();
+            }
         }
         #endregion
 

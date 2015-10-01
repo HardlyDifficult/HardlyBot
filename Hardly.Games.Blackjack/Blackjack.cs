@@ -21,7 +21,7 @@
         public ulong Join(PlayerIdType playerId, PlayerPointManager pointManager, ulong bet) {
             if(!base.Contains(playerId)) {
                 var player = new BlackjackPlayer<PlayerIdType>(this, pointManager, playerId);
-                if(player.PlaceBet(bet, false)) {
+                if(player.PlaceBet(bet, false) > 0) {
                     base.Join(playerId, player);
                     Log.info(playerId.ToString() + " joined Blackjack!");
                     return player.bet;
@@ -29,7 +29,7 @@
             } else {
                 var player = Get(playerId);
                 player.CanelBet();
-                if(player.PlaceBet(bet, false)) {
+                if(player.PlaceBet(bet, false) > 0) {
                     Log.info(playerId.ToString() + " changed their Blackjack bet.");
                     return player.bet;
                 }

@@ -54,5 +54,10 @@ namespace Hardly {
 
 			isRunning = false;
 		}
-	}
+
+        public void Restart() {
+            Stop();
+            Start();
+        }
+    }
 }

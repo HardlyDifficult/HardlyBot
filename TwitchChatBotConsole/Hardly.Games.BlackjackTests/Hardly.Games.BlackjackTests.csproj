@@ -52,6 +52,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BlackjackPlayerHandTests.cs" />
+    <Compile Include="BlackjackTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

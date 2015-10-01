@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SysRandom = System.Random;
 
 namespace Hardly.Library.Twitch.Commands.System {
     class HelloCommand : TwitchCommandController {
@@ -32,7 +31,7 @@ namespace Hardly.Library.Twitch.Commands.System {
         private void TimeMeOut(SqlTwitchUser speaker, String time) {
             try {
                 if (time.IsEmpty()) {
-                    room.SendChatMessage(".timeout " + speaker.userName + " " + randomTime(600));
+                    room.SendChatMessage(".timeout " + speaker.userName + " " + Random.Uint.Between(1, 600));
                 }
                 else {
                     room.SendChatMessage(".timeout " + speaker.userName + " " + Int32.Parse(time));
@@ -47,13 +46,7 @@ namespace Hardly.Library.Twitch.Commands.System {
             room.SendChatMessage(speaker.userName + " is now banned. Everyone in the chat should type 'F' or riPepperonis to pay respects."); //lol jk dont do this
             lastWords = null; //noone cares so im deleting your words
         }//Oh GOD do i feel dirty....
-
-
-        private int randomTime(int maxTime) {
-            SysRandom rnd = new SysRandom();
-            return rnd.Next(1, maxTime);
-        }
-
+        
         private void HiCommand(SqlTwitchUser speaker, String additionalText) {
             room.SendWhisper(speaker, "Hello");
         }

@@ -18,14 +18,14 @@ namespace Hardly.Games {
             this.idObject = idObject;
         }
 
-        public bool PlaceBet(ulong amount, bool allOrNothing) {
+        public ulong PlaceBet(ulong amount, bool allOrNothing) {
             amount = pointManager?.ReserveBet(amount, allOrNothing) ?? amount;
             if(pointManager != null && amount > 0) {
                 bet += amount;
-                return true;
+                return amount;
             }
 
-            return false;
+            return 0;
         }
 
         public void CanelBet() {
@@ -34,11 +34,25 @@ namespace Hardly.Games {
         }
 
         public void Award(long winningsOrLosings) {
+            Log.debug("Points gave " + winningsOrLosings.ToStringWithCommas() + " to " + idObject.ToString());
             pointManager?.Award(bet, winningsOrLosings);
         }
 
         public void LoseBet() {
-            pointManager?.Award(bet, (long)bet * -1L);
+            Award((long)bet * -1L);
+        }
+
+        public override bool Equals(object obj) {
+            if(obj != null && obj is GamePlayer<PlayerIdObjectType>) {
+                var other = obj as GamePlayer<PlayerIdObjectType>;
+                return idObject.Equals(other.idObject);
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode() {
+            return idObject.GetHashCode();
         }
     }
 }

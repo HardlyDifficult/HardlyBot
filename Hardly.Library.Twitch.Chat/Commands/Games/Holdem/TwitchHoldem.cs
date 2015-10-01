@@ -2,7 +2,7 @@
 using Hardly.Games;
 
 namespace Hardly.Library.Twitch {
-	public class TwitchHoldem : TwitchGameController<TexasHoldem<SqlTwitchUser>, TwitchHoldem> {
+	public class TwitchHoldem : TwitchGameStateMachine<TexasHoldem<SqlTwitchUser>> {
 		ChatCommand aboutCommand, cancelCommand;
 
 		public TwitchHoldem(TwitchChatRoom room) : base(room) {

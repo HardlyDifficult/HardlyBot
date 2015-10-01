@@ -4,10 +4,15 @@
 	}
 
 	public class Uint : RandomHelper {
-		public static uint LessThan(uint max) {
-			return (uint)random.Next(0, (int)max);
-		}
-	}
+        public static uint LessThan(uint max) {
+            return (uint)random.Next(0, (int)max);
+        }
+
+        public static uint Between(uint min, uint max) {
+            Debug.Assert(max >= min);
+            return LessThan(max) - min;
+        }
+    }
 
 	public class String : RandomHelper {
 		public static string CharsAndNumbers(uint length) {

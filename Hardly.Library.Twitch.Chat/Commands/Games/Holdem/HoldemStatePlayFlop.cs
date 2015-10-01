@@ -4,9 +4,19 @@
 		}
 
         internal override void Open() {
-            base.Open();
+            string chatMessage = "Holdem" + OnTheTable() + " ";
+            bool first = true;
+            foreach(var player in controller.game.seatedPlayers) {
+                if(!first) {
+                    chatMessage += ", ";
+                }
+                first = false;
+                chatMessage += player.idObject.name;
+            }
+            chatMessage += " are playing, time for that flop... " + controller.game.tableCards.ToString();
+            controller.room.SendChatMessage(chatMessage);
 
-            controller.room.SendChatMessage("Holdem, time for that flop... " + controller.game.table.hand.ToChatString());
+            base.Open();
         }
     }
 }

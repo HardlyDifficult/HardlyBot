@@ -13,8 +13,9 @@ namespace Hardly.Games {
         }
 
         internal void EndGame(PlayingCardList tableCards) {
-            Debug.Assert(bestHand == null);
-            bestHand = new PokerPlayerHandEvaluator(hand.cards, tableCards);
+            if(bestHand == null && tableCards.Count == 5) {
+                bestHand = new PokerPlayerHandEvaluator(hand.cards, tableCards);
+            }
         }
     }
 }

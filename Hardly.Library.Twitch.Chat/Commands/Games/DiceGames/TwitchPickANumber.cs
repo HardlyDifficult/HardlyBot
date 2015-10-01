@@ -8,24 +8,24 @@ namespace Hardly.Library.Twitch {
 		}
         
         void PickCommand(SqlTwitchUser speaker, string message) {
+            game.Reset();
             var playerObject = new GamePlayer<SqlTwitchUser>(room.pointManager.ForUser(speaker), speaker);
-
             if(game.Join(speaker, playerObject)) {
                 if(game.StartGame()) {
                     uint pickedNumber;
-                    string numberString = message.GetBefore(" ");
+                    string numberString = message?.GetBefore(" ");
                     if(numberString == null) {
                         numberString = message;
                     }
                     if(uint.TryParse(numberString, out pickedNumber)) {
                         if(pickedNumber >= 0 && pickedNumber <= 10) {
-                            message = message.GetAfter(" for");
+                            message = message?.GetAfter(" for");
                             ulong bet = 1;
                             if(message != null) {
                                 bet = room.pointManager.GetPointsFromString(message);
                             }
 
-                            if(playerObject.PlaceBet(bet, false)) {
+                            if(playerObject.PlaceBet(bet, false) > 0) {
                                 uint myNumber = Random.Uint.LessThan(11);
                                 string chatMessage = "I guessed " + myNumber + "... ";
                                 if(myNumber.Equals(pickedNumber)) {

@@ -71,12 +71,22 @@ namespace Hardly.Games {
             }
         }
 
+        public string HandValueString() {
+            string message = mainHandEvaluator.HandValueString();
+            if(splitHandEvaluator != null) {
+                message += "/";
+                message += splitHandEvaluator.HandValueString();
+            }
+
+            return message;
+        }
+
         public bool Split() {
 			if(CanSplit) {
                 splitHandEvaluator = new BlackjackCardListEvaluator(new PlayingCardList(hand.cards.Pop()));
                 amountBetOnSplitHand = bet;
 
-                if(PlaceBet(bet, true)) {
+                if(PlaceBet(bet, true) > 0) {
                     mainHandEvaluator.isSplit = true;
                     splitHandEvaluator.isSplit = true;
                     controller.DealCard(hand.cards);
@@ -99,7 +109,7 @@ namespace Hardly.Games {
 
         public bool DoubleDown() {
             ulong amount = bet;
-            if(PlaceBet(amount, true)) {
+            if(PlaceBet(amount, true) > 0) {
                 if(CurrentHandEvaluator.Equals(splitHandEvaluator)) {
                     amountBetOnSplitHand += amount;
                 }

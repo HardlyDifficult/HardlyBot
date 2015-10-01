@@ -1,4 +1,6 @@
-﻿namespace Hardly.Games {
+﻿using System;
+
+namespace Hardly.Games {
     public class BlackjackCardListEvaluator : PlayingCardListEvaluator  {
         public bool isStanding = false;
         public bool isSplit = false;
@@ -31,6 +33,10 @@
             get {
                 return !isSplit && handValue == 21 && cards.Count == 2;
             }
+        }
+
+        public string HandValueString() {
+            return isBust ? "bust" : isBlackjack ? "blackjack" : handValue.ToString();
         }
 
         public bool isBust {

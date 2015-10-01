@@ -12,7 +12,7 @@ namespace Hardly.Library.Twitch {
             string chatMessage = "";
             if(commands != null) {
                 foreach(var command in commands) {
-                    if(!command.modOnly) {
+                    if(!command.modOnly && command.enabled) {
                         if(chatMessage.Length > 0) {
                             chatMessage += ", ";
                         }

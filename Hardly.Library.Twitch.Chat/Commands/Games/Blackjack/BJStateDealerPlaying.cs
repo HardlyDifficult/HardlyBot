@@ -26,7 +26,7 @@ namespace Hardly.Library.Twitch {
 				Announce(chatMessage);
 			} else if(controller.game.dealer.handValue > 17 || (controller.game.dealer.handValue == 17 && controller.game.dealer.cards.Count == 2)) {
 				controller.game.dealer.isStanding = true;
-				chatMessage += " and stands with " + controller.game.dealer.cards.ToString() + ".";
+				chatMessage += " and stands with " + controller.game.dealer.HandValueString() + ".";
 
 				Announce(chatMessage);
 			} else {
@@ -76,7 +76,11 @@ namespace Hardly.Library.Twitch {
 						chatMessage += ", ";
 					}
 					chatMessage += player.idObject.name;
-					chatMessage += " (" + player.hand.ToString() + ")";
+                    chatMessage += " has ";
+                    chatMessage += player.hand.cards.ToString();
+                    chatMessage += " (";
+                    chatMessage += player.HandValueString();
+                    chatMessage += ")";
 
 					first = false;
 				}

@@ -98,7 +98,11 @@ namespace Hardly.Library.Twitch {
 				if(i > 0) {
 					description += " == ";
 				}
-				description += units[units.Length - i - 1].value.ToStringWithCommas();
+                if(i < units.Length - 1) {
+                    description += (units[i + 1].value / units[i].value).ToStringWithCommas();
+                } else {
+                    description += "1";
+                }
 				description += " ";
 				description += units[i].name;
 				description += " ";

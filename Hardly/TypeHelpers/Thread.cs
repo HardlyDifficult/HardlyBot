@@ -30,7 +30,9 @@ namespace Hardly {
 			SleepInMilliseconds((uint)milliseconds);
 		}
 		public static void SleepInMilliseconds(uint milliseconds) {
-			System.Threading.Thread.Sleep((int)milliseconds);
+            try {
+                System.Threading.Thread.Sleep((int)milliseconds);
+            } catch { }
 		}
 	}
 }

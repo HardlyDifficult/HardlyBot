@@ -21,7 +21,7 @@ namespace Hardly.Library.Twitch {
 
 			if(player != null) {
 				if(player.Stand()) {
-					string chatMessage = "Standing with " + player.CurrentHandEvaluator.cards.ToString() + " (" + player.CurrentHandEvaluator.cards.ToString() + ").";
+					string chatMessage = "Standing with " + player.CurrentHandEvaluator.cards.ToString() + " (" + player.CurrentHandEvaluator.HandValueString() + ").";
 					chatMessage += AnnounceSplitHand(player);
 					controller.room.SendWhisper(speaker, chatMessage);
 					if(ReadyToEnd()) {
@@ -37,7 +37,7 @@ namespace Hardly.Library.Twitch {
 			var player = GetPlayer(speaker);
 			if(player.Split()) {
 				if(player.CurrentHandEvaluator.isStanding) {
-					controller.room.SendWhisper(speaker, "Hand split & standing with " + player.ToString());
+					controller.room.SendWhisper(speaker, "Hand split & standing with " + player.HandValueString());
 				} else {
 					controller.room.SendWhisper(speaker, "Hand split, in your first hand... " + player.CurrentHandEvaluator.cards.ToString());
 				}
@@ -87,7 +87,7 @@ namespace Hardly.Library.Twitch {
 					chatMessage += "Dealt a " + player.hand.cards.Last.ToString();
 
 					if(player.CurrentHandEvaluator.isBust) {
-						chatMessage += " and BUSTED with " + player.CurrentHandEvaluator.cards.ToString() + " (" + player.CurrentHandEvaluator.cards.ToString() + ")!";
+						chatMessage += " and BUSTED with " + player.CurrentHandEvaluator.cards.ToString() + " (" + player.CurrentHandEvaluator.HandValueString() + ")!";
 					} else {
 						chatMessage += ", you have " + player.CurrentHandEvaluator.cards.ToString() + ".";
 					}
@@ -99,7 +99,7 @@ namespace Hardly.Library.Twitch {
 						controller.SetState(this.GetType(), typeof(BJStateDealerPlaying));
 					}
 				} else {
-					controller.room.SendWhisper(speaker, "Too late, you are standing with " + player.CurrentHandEvaluator.cards.ToString());
+					controller.room.SendWhisper(speaker, "Too late, you are standing with " + player.CurrentHandEvaluator.HandValueString());
 				}
 			} else {
 				controller.room.SendWhisper(speaker, "Sorry, join the next game.");
