@@ -78,3 +78,13 @@ CREATE TABLE `twitch_user_points` (
   CONSTRAINT `Channel` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_channels` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `User` FOREIGN KEY (`UserId`) REFERENCES `twitch_users` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `twitch_commands` (
+  `Command_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ChannelUserId` int(10) unsigned NOT NULL,
+  `Command` varchar(45) NOT NULL,
+  `Discription` varchar(45) DEFAULT NULL,
+  `Mod` binary(1) DEFAULT '1',
+  `Cooldown` int(11) DEFAULT '0',
+  PRIMARY KEY (`Command_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
