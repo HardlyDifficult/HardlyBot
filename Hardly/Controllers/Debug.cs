@@ -17,7 +17,8 @@ namespace Hardly {
 		}
 
 		public static void Assert(bool result) {
-			System.Diagnostics.Debug.Assert(result);
+            if(!result)
+                Fail();
 		}
 	}
 }

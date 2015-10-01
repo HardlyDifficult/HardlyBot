@@ -104,12 +104,18 @@ namespace Hardly.Games {
                     amountBetOnSplitHand += amount;
                 }
                 CurrentHandEvaluator.isStanding = true;
-                controller.DealCard(hand.cards);
+                Hit();
 
                 return true;
             }
 
             return false;
+        }
+
+        public bool Hit() {
+            controller.DealCard(hand.cards);
+
+            return true;
         }
 
         public bool ReadyToSwitchHands() {

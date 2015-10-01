@@ -19,7 +19,7 @@ CREATE TABLE `twitch_bots` (
 
 CREATE TABLE `twitch_channels` (
   `UserId` int(10) unsigned NOT NULL,
-  `IsLive` bit(1) NOT NULL,
+  `IsLive` bit(1) NOT NULL DEFAULT b'0',
   `PreviewImageUrl` varchar(200) DEFAULT NULL,
   `Game` varchar(100) DEFAULT NULL,
   `LiveViewers` int(10) unsigned DEFAULT NULL,

@@ -37,7 +37,7 @@ namespace Hardly.Games {
         #endregion
 
         #region Protected interface
-        protected virtual ulong TotalPointsInAccount {
+        public virtual ulong TotalPointsInAccount {
             get;
             set;
         }

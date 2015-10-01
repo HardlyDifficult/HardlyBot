@@ -57,12 +57,12 @@ namespace Hardly.Games.Holdem.Gui {
         }
 
         private void aTimerRefresh_Tick(object sender, EventArgs e) {
-            var player = game.CurrentPlayer;
+            var player = game.currentPlayer;
             if(player != null) {
-                aLabelCurrentPlayer.Text = player.playerIdObject.ToString();
-                aLabelPlayerHand.Text = player.hand.ToChatString();
-                aLabelBoardCards.Text = game.table.hand.ToChatString();
-                aLabelAccountBalance.Text = player.pointManager.AvailablePoints.ToStringWithCommas();
+                aLabelCurrentPlayer.Text = player.idObject.ToString();
+                aLabelPlayerHand.Text = player.hand.cards.ToString();
+                aLabelBoardCards.Text = game.tableCards.ToString();
+                aLabelAccountBalance.Text = pointManagers[player.idObject].Points.ToStringWithCommas();
             } else {
                 aLabelCurrentPlayer.Text = "";
                 aLabelPlayerHand.Text = "";
@@ -78,7 +78,7 @@ namespace Hardly.Games.Holdem.Gui {
                     } else {
                         winners += ", ";
                     }
-                    winners += winner.Item1.playerIdObject.ToString();
+                    winners += winner.idObject.ToString();
                 }
             }
             aLabelWinners.Text = winners;
@@ -91,7 +91,7 @@ namespace Hardly.Games.Holdem.Gui {
                     } else {
                         losers += ", ";
                     }
-                    losers += loser.Item1.playerIdObject.ToString();
+                    losers += loser.idObject.ToString();
                 }
             }
             aLabelLosers.Text = losers;
