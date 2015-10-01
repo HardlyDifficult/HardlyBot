@@ -123,7 +123,7 @@ namespace Hardly.Games {
 
         public ulong Raise(ulong value) {
             if(canRaise) {
-                ulong bet = currentBet - currentPlayer.bet + value;
+                ulong bet = value == ulong.MaxValue ? ulong.MaxValue : currentBet - currentPlayer.bet + value;
                 bet = currentPlayer.PlaceBet(bet, false);
                 if(bet > 0) {
                     UpdateWhenPlayerBets();
@@ -283,7 +283,7 @@ namespace Hardly.Games {
         }
 
         public override void EndGame() {
-            while(tableCards.Count > 5) {
+            while(tableCards.Count < 5) {
                 DealToTable(1);
             }
 
@@ -328,14 +328,20 @@ namespace Hardly.Games {
                 var sideWinners = GetWinners(playersToTest);
                 ulong sidePayoutPerPerson = (ulong)(smallestPot / (ulong)sideWinners.Count); 
                 foreach(var player in sideWinners) {
-                    ulong amount = sidePayoutPerPerson - player.bet;
-                    lastGameSidepotWinners.Add(Tuple.Create(player, amount));
-                    player.Award((long)amount);
                     sidepotTotalPayout += sidePayoutPerPerson;
+                    ulong amount = sidePayoutPerPerson - (ulong)((double)smallestPot / playersToTest.Count);
+                    lastGameSidepotWinners.Add(Tuple.Create(player, amount));
+                    player.AwardPartialBet((ulong)((double)smallestPot / playersToTest.Count), (long)amount);
+                }
+
+                foreach(var player in playersToTest) {
+                    if(!sideWinners.Contains(player)) {
+                        player.LosePartialBet((ulong)((double)smallestPot / playersToTest.Count));
+                    }
                 }
             }
 
-            ulong payoutPerPerson = (ulong)(GetTotalPot() - sidepotTotalPayout / (ulong)seatedPlayers.Count); 
+            ulong payoutPerPerson = (ulong)(GetTotalPot() / (ulong)seatedWinners.Count); 
             foreach(var player in seatedWinners) {
                 ulong amount = payoutPerPerson - player.bet;
                 lastGameWinners.Add(Tuple.Create(player, amount));

@@ -12,6 +12,10 @@ namespace Hardly.Games {
         }
 
         public void Award(ulong reservation, long winningsOrLosings) {
+            Debug.Assert(reservedPoints >= reservation);
+            Debug.Assert(reservedPoints - reservation <= TotalPointsInAccount);
+            Debug.Assert(winningsOrLosings + (long)TotalPointsInAccount >= 0);
+
             FreeUp(reservation);
 
             if(winningsOrLosings < 0 && (winningsOrLosings * -1) > (long)TotalPointsInAccount) {
@@ -29,6 +33,7 @@ namespace Hardly.Games {
                     bet = 0;
                 }
             }
+            Debug.Assert(bet + reservedPoints <= TotalPointsInAccount);
 
             reservedPoints += bet;
 

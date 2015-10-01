@@ -70,14 +70,17 @@ namespace Hardly.Library.Twitch {
 		string GetStartingInMessage() {
 			TimeSpan timeRemaining = roundTimer.TimeRemaining();
 			string chatMessage;
-            int numberOfOpenSpots = controller.game.NumberOfOpenSpots();
-			if(numberOfOpenSpots > 0 && timeRemaining > TimeSpan.FromSeconds(5)) {
-				chatMessage = "in " + timeRemaining.ToSimpleString();
+            if(controller.game.CanStart()) {
+                if(timeRemaining > TimeSpan.FromSeconds(5)) {
+                    chatMessage = "in " + timeRemaining.ToSimpleString();
 
-				chatMessage += " or when " + numberOfOpenSpots + " more people !play.";
-			} else {
-				chatMessage = "sooon.";
-			}
+                    chatMessage += " or when " + controller.game.NumberOfOpenSpots() + " more people !play.";
+                } else {
+                    chatMessage = "sooon.";
+                }
+            } else {
+                chatMessage = "once more people join.";
+            }
 
 			return chatMessage;
 		}

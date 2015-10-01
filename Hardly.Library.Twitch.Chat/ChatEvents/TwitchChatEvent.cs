@@ -8,8 +8,10 @@ namespace Hardly.Library.Twitch {
 
 		internal static TwitchChatEvent Parse(string chatEventCommand) {
 			string command;
-			
-			if(chatEventCommand.StartsWith("PING")) {
+
+            // TODO, support Mod events -- e.g. :jtv MODE #hardlysober +o arbedii
+
+            if(chatEventCommand.StartsWith("PING")) {
 				command = "PING";
 			} else {
 				command = chatEventCommand.GetBetween(" ", " ");

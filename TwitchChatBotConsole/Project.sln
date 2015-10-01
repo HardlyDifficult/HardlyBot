@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Disabled", "..\Hardl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Games.PokerTests", "Hardly.Games.PokerTests\Hardly.Games.PokerTests.csproj", "{99067086-79E3-48CC-8198-D9E8A3D5C30B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Library.Strawpoll", "..\Hardly.Library.Stawpoll\Hardly.Library.Strawpoll.csproj", "{6CD0813A-6216-40F4-81ED-B210FB16E9CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -170,6 +172,14 @@ Global
 		{99067086-79E3-48CC-8198-D9E8A3D5C30B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99067086-79E3-48CC-8198-D9E8A3D5C30B}.Release|x64.ActiveCfg = Release|Any CPU
 		{99067086-79E3-48CC-8198-D9E8A3D5C30B}.Release|x64.Build.0 = Release|Any CPU
+		{6CD0813A-6216-40F4-81ED-B210FB16E9CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD0813A-6216-40F4-81ED-B210FB16E9CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD0813A-6216-40F4-81ED-B210FB16E9CD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6CD0813A-6216-40F4-81ED-B210FB16E9CD}.Debug|x64.Build.0 = Debug|Any CPU
+		{6CD0813A-6216-40F4-81ED-B210FB16E9CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD0813A-6216-40F4-81ED-B210FB16E9CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD0813A-6216-40F4-81ED-B210FB16E9CD}.Release|x64.ActiveCfg = Release|Any CPU
+		{6CD0813A-6216-40F4-81ED-B210FB16E9CD}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

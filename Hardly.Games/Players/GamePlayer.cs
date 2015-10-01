@@ -38,6 +38,24 @@ namespace Hardly.Games {
             pointManager?.Award(bet, winningsOrLosings);
         }
 
+        public void AwardPartialBet(ulong betAmount, long winningsOrLosings) {
+            Log.debug("Points gave " + winningsOrLosings.ToStringWithCommas() + " to " + idObject.ToString());
+            pointManager?.Award(betAmount, winningsOrLosings);
+            bet -= betAmount;
+        }
+
+        public void FreeUpPartialBet(ulong amount) {
+            amount = Math.Min(amount, bet);
+            pointManager?.Award(amount, 0);
+            bet -= amount;
+        }
+
+        public void LosePartialBet(ulong amount) {
+            amount = Math.Min(amount, bet);
+            pointManager?.Award(amount, (long)amount * -1);
+            bet -= amount;
+        }
+
         public void LoseBet() {
             Award((long)bet * -1L);
         }

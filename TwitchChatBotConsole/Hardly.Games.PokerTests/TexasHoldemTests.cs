@@ -383,9 +383,73 @@ namespace Hardly.Games.Tests {
 
         [TestMethod()]
         public void TexasHoldemTest7() {
-            var game = CreateGame();
-            game.StartGame();
+            TexasHoldem<int> game = new TexasHoldem<int>();
+            game.bigBlind = 2;
 
+            var pointManager1 = new PlayerPointManager();
+            pointManager1.TotalPointsInAccount = 100;
+            var pointManager2 = new PlayerPointManager();
+            pointManager2.TotalPointsInAccount = 1000;
+            game.Join(0, pointManager1);
+            game.Join(1, pointManager2);
+
+            game.StartGame();
+            if(game.currentPlayer.idObject == 0) {
+                game.Raise(ulong.MaxValue);
+                game.Raise(ulong.MaxValue);
+                game.Call();
+            } else {
+                game.Raise(ulong.MaxValue);
+                game.Call();
+            }
+
+            Assert.IsTrue(game.round == TexasHoldem<int>.Round.GameOver);
+            Assert.IsTrue(game.lastGameWinners.Count == 1);
+            Assert.IsTrue(game.lastGameSidepotWinners.Count >= 1);
+
+            if(game.lastGameSidepotWinners.Count == 1) {
+                if(game.lastGameSidepotWinners.First.Item1.idObject == 0) {
+                    Assert.IsTrue(pointManager1.TotalPointsInAccount == 200);
+                    Assert.IsTrue(pointManager2.TotalPointsInAccount == 900);
+                } else {
+                    Assert.IsTrue(pointManager1.TotalPointsInAccount == 0);
+                    Assert.IsTrue(pointManager2.TotalPointsInAccount == 1100);
+                }
+            }
+        }
+
+
+        [TestMethod()]
+        public void TexasHoldemTest8() {
+            TexasHoldem<int> game = new TexasHoldem<int>();
+            game.bigBlind = 2;
+
+            var pointManager1 = new PlayerPointManager();
+            pointManager1.TotalPointsInAccount = 100;
+            var pointManager2 = new PlayerPointManager();
+            pointManager2.TotalPointsInAccount = 100;
+            game.Join(0, pointManager1);
+            game.Join(1, pointManager2);
+
+            game.StartGame();
+            for(int i = 0; i < 2 * 4; i++) {
+                Assert.IsTrue(game.round != TexasHoldem<int>.Round.GameOver);
+                if(game.canCall) {
+                    game.Call();
+                } else {
+                    game.Check();
+                }
+            }
+
+            Assert.IsTrue(game.round == TexasHoldem<int>.Round.GameOver);
+
+            if(game.lastGameWinners.First.Item1.idObject == 0) {
+                Assert.IsTrue(pointManager1.TotalPointsInAccount == 102);
+                Assert.IsTrue(pointManager2.TotalPointsInAccount == 98);
+            } else {
+                Assert.IsTrue(pointManager1.TotalPointsInAccount == 98);
+                Assert.IsTrue(pointManager2.TotalPointsInAccount == 102);
+            }
         }
 
         private static TexasHoldem<int> CreateGame(bool setPlayer1To10 = false) {

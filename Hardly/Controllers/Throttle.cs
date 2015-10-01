@@ -10,7 +10,7 @@ namespace Hardly {
 			Debug.Assert(timeBetweenActions.TotalMilliseconds > 0);
 
 			this.timeBetweenActions = timeBetweenActions.TotalMilliseconds;
-		}
+        }
 
 		public bool ExecuteIfReady(ulong key) {
 			bool ready = TimeToSleepFor(key) <= 0;
