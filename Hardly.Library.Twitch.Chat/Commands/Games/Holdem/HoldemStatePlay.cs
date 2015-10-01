@@ -61,6 +61,8 @@ namespace Hardly.Library.Twitch {
                     FailedAction(speaker, "allin");
                 }
             }
+
+            CheckForNextState();
         }
 
         private void BetCommand(SqlTwitchUser speaker, string additionalText) {
@@ -109,7 +111,7 @@ namespace Hardly.Library.Twitch {
                     }
                 } else {
                     playersLookingToFold.Add(speaker);
-                    Success(speaker, "Later dude, will fold as soon as your turn is up.");
+                    Success(speaker, "Will check or fold as soon as your turn is up.");
                 }
             } 
 
@@ -233,23 +235,27 @@ namespace Hardly.Library.Twitch {
         }
 
         private void PlayerChanged(bool warning = false) {
-            string chatMessage = "";
-            if(warning) {
-                chatMessage = "Get Moving! ";
-            }
-            chatMessage += "You have ";
-            chatMessage += controller.game.currentPlayer.hand.cards.ToString();
-            chatMessage += " and ";
-            chatMessage += controller.room.pointManager.ToPointsString(controller.game.currentPlayer.bet);
-            chatMessage += " on the line so far.  ";
-            chatMessage += "Your up - ";
-            chatMessage += AvailableCommands();
+            if(playersLookingToFold.Contains(controller.game.currentPlayer.idObject)) {
+                FoldCommand(controller.game.currentPlayer.idObject, null);
+            } else {
+                string chatMessage = "";
+                if(warning) {
+                    chatMessage = "Get Moving! ";
+                }
+                chatMessage += "You have ";
+                chatMessage += controller.game.currentPlayer.hand.cards.ToString();
+                chatMessage += " and ";
+                chatMessage += controller.room.pointManager.ToPointsString(controller.game.currentPlayer.bet);
+                chatMessage += " on the line so far.  ";
+                chatMessage += "Your up - ";
+                chatMessage += AvailableCommands();
 
-            if(controller.game.tableCards.Count > 0) {
-                chatMessage += "-- On the table: " + controller.game.tableCards.ToString();
-            }
+                if(controller.game.tableCards.Count > 0) {
+                    chatMessage += "-- On the table: " + controller.game.tableCards.ToString();
+                }
 
-            controller.room.SendWhisper(lastKnownPlayer.idObject, chatMessage);
+                controller.room.SendWhisper(lastKnownPlayer.idObject, chatMessage);
+            }
         }
 
         private string AvailableCommands() {

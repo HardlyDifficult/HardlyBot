@@ -96,16 +96,18 @@ namespace Hardly.Library.Twitch {
 
 			for(int i = 0; i < units.Length; i++) {
 				if(i > 0) {
-					description += " == ";
-				}
-                if(i < units.Length - 1) {
-                    description += (units[i + 1].value / units[i].value).ToStringWithCommas();
-                } else {
-                    description += "1";
+					description += " == 1 ";
+                    description += units[i].name;
                 }
-				description += " ";
-				description += units[i].name;
-				description += " ";
+                if(i < units.Length - 1) {
+                    if(i > 0) {
+                        description += ", ";
+                    }
+                    description += ((double)units[i + 1].value / units[i].value).ToStringWithCommaAndDecimals(1);
+                    description += " ";
+                    description += units[i].name;
+                    description += " ";
+                } 
 			}
 
 			return description;
