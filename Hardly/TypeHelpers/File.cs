@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Hardly {
 	public static class File {
@@ -6,8 +7,16 @@ namespace Hardly {
 			if(filename != null) {
 				try {
 					if(Exists(filename)) {
-						return System.IO.File.ReadAllText(filename);
-					}
+                        using(FileStream fileStream = new FileStream(
+                            filename,
+                            FileMode.Open,
+                            FileAccess.Read,
+                            FileShare.ReadWrite)) {
+                            using(StreamReader streamReader = new StreamReader(fileStream)) {
+                                return streamReader.ReadToEnd();
+                            }
+                        }
+                    }
 				} catch(Exception e) {
 					Log.error("File, failed to read", e);
 				}

@@ -4,7 +4,7 @@ using Hardly.Library.Strawpoll;
 namespace Hardly.Library.Twitch {
     public class StrawPollCommands : TwitchCommandController {
         public StrawPollCommands(TwitchChatRoom room) : base(room) {
-            ChatCommand.Create(room, "getvote", GetVote, "Gets a strawpoll winner", null, false, TimeSpan.FromSeconds(30), false);
+            ChatCommand.Create(room, "getvote", GetVote, "Gets a strawpoll winner", new[] { "viewpoll" }, false, TimeSpan.FromSeconds(30), false);
         }
 
         private void GetVote(SqlTwitchUser speaker, string additionalText) {

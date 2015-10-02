@@ -65,6 +65,7 @@
     <Compile Include="TypeHelpers\File.cs" />
     <Compile Include="Controllers\Log.cs" />
     <Compile Include="Abstract\AppController.cs" />
+    <Compile Include="TypeHelpers\FileObserver.cs" />
     <Compile Include="TypeHelpers\List.cs" />
     <Compile Include="TypeHelpers\ListHelpers.cs" />
     <Compile Include="TypeHelpers\Regex.cs" />
