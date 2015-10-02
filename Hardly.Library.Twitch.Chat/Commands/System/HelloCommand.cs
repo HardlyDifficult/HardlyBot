@@ -11,6 +11,7 @@ namespace Hardly.Library.Twitch.Commands.System {
             ChatCommand.Create(room, "echo", EchoCommand, "Echos what you say", null, false, TimeSpan.FromSeconds(0), false);
             ChatCommand.Create(room, "timemeout", TimeMeOut, "Shhh...", null, false, TimeSpan.FromSeconds(0), false);
             ChatCommand.Create(room, "banme", BanYouBecauseYouAreStupidAndYouShouldntHaveDoneThat, "This will ban you. Dont do it unless you want to be benned.", null, false, TimeSpan.FromSeconds(0), false);
+            ChatCommand.Create(room, "about", About, "About the bot or sober.", null, false, TimeSpan.FromSeconds(0), false);
         }
 
         private void EchoCommand(SqlTwitchUser speaker, String additionalText) {
@@ -46,7 +47,16 @@ namespace Hardly.Library.Twitch.Commands.System {
             room.SendChatMessage(speaker.userName + " is now banned. Everyone in the chat should type 'F' or riPepperonis to pay respects."); //lol jk dont do this
             lastWords = null; //noone cares so im deleting your words
         }//Oh GOD do i feel dirty....
-        
+
+        private void About(SqlTwitchUser speaker, String additionalText) {
+            if (!additionalText.IsEmpty() && additionalText.Equals("sober")) {
+                room.SendChatMessage("//TODO get quote from sober"); //I NEED SOMEETHING FROM YOU SOBER ~1am
+            }
+            else {
+                room.SendChatMessage("Hi, I am HardlyBot! I am a chatbot designed to host card games. I am currently open source and made by HardlySober @ http://bit.ly/1LUViNe ");
+            }
+        }
+
         private void HiCommand(SqlTwitchUser speaker, String additionalText) {
             room.SendWhisper(speaker, "Hello");
         }
