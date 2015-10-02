@@ -23,20 +23,14 @@ namespace Hardly.Library.Twitch {
 
         public static ChatCommand Create(TwitchChatRoom room, string name, Action<SqlTwitchUser, string> action, string description, string[] aliases, bool modOnly, TimeSpan timeToThrottleFor, bool throttlePerUser, bool enabled = true) {
 			List<ChatCommand> commands;
-			if(roomCommands.TryGetValue(room.twitchConnection.channel, out commands)) {
-				//foreach(var command in commands) {
-				//	if(command.commandName.Equals(name)) {
-				//		return command;
-				//	}
-				//}
-			} else {
+			if(!roomCommands.TryGetValue(room.twitchConnection.channel, out commands)) {
 				commands = new List<ChatCommand>();
                 roomCommands.Add(room.twitchConnection.channel, commands);
 			}
 
 			// TODO, ensure no name/alias conflicts
 			var newCommand = new ChatCommand(room, name, action, description, aliases, modOnly, timeToThrottleFor, throttlePerUser, enabled);
-         commands.Add(newCommand);
+            commands.Add(newCommand);
 			return newCommand;
 		}
 

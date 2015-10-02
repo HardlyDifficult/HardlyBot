@@ -80,11 +80,17 @@ CREATE TABLE `twitch_user_points` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `twitch_commands` (
-  `Command_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ChannelUserId` int(10) unsigned NOT NULL,
+  `BotUserId` int(10) unsigned NOT NULL,
   `Command` varchar(45) NOT NULL,
-  `Discription` varchar(45) DEFAULT NULL,
-  `Mod` binary(1) DEFAULT '1',
-  `Cooldown` int(11) DEFAULT '0',
-  PRIMARY KEY (`Command_ID`)
+  `Description` varchar(500) DEFAULT NULL,
+  `IsModOnly` bit(1) NOT NULL DEFAULT b'1',
+  `CooldownInSeconds` int(11) NOT NULL DEFAULT '0',
+  `Response` varchar(500) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `CommandConnectionChannel_idx` (`ChannelUserId`),
+  KEY `CommandConnectionBot_idx` (`BotUserId`),
+  CONSTRAINT `CommandConnectionBot` FOREIGN KEY (`BotUserId`) REFERENCES `twitch_connections` (`BotUserId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `CommandConnectionChannel` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_connections` (`ChannelUserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -57,6 +57,7 @@
     <Compile Include="Commands\Games\Holdem\TwitchHoldem.cs" />
     <Compile Include="Commands\Games\TwitchGameStateMachine.cs" />
     <Compile Include="Commands\Games\DiceGames\TwitchPickANumber.cs" />
+    <Compile Include="Commands\System\DynamicCommands.cs" />
     <Compile Include="Controllers\IAutoJoinTwitchRooms.cs" />
     <Compile Include="Commands\Games\TwitchGame.cs" />
     <Compile Include="Commands\System\AboutCommands.cs" />

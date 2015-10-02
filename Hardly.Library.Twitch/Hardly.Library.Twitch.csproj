@@ -73,6 +73,7 @@
     <Compile Include="Controller\Twitch.cs" />
     <Compile Include="Internal\TwitchApi.cs" />
     <Compile Include="Internal\TwitchJson.cs" />
+    <Compile Include="Data\SqlTwitchCommands.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hardly.Games\Hardly.Games.csproj">

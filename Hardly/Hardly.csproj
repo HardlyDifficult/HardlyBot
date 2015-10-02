@@ -61,6 +61,7 @@
     <Compile Include="Abstract\DataList.cs" />
     <Compile Include="Abstract\PersistentDataList.cs" />
     <Compile Include="Controllers\Debug.cs" />
+    <Compile Include="TypeHelpers\ActionHelpers.cs" />
     <Compile Include="TypeHelpers\File.cs" />
     <Compile Include="Controllers\Log.cs" />
     <Compile Include="Abstract\AppController.cs" />
