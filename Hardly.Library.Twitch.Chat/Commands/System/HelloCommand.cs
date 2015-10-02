@@ -50,7 +50,7 @@ namespace Hardly.Library.Twitch.Commands.System {
 
         private void About(SqlTwitchUser speaker, String additionalText) {
             if (additionalText != null && additionalText.Equals("sober")) {
-                room.SendChatMessage("TODO get quote from sober"); //I NEED SOMEETHING FROM YOU SOBER ~1am
+                room.SendChatMessage(" //TODO get quote from sober"); //I NEED SOMEETHING FROM YOU SOBER ~1am
             }
             else {
                 room.SendChatMessage("Hi, I am HardlyBot! I am a chatbot designed to host card games. I am currently open source and made by HardlySober @ http://bit.ly/1LUViNe ");
