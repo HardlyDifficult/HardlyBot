@@ -17,7 +17,7 @@ UserId=123;
 insert
 into twitch_channel_point_scale
 -- channeluserid is your id , unitvalue must be at least 1 , unitname is the name you want to give the money/points --
-set	ChannelUserId=123,UnitValue=1,UnitName="points";
+set	ChannelUserId=123,UnitValue=1,UnitNameSingular="points",UnitNamePlural="points";
 
 insert
 into twitch_connections

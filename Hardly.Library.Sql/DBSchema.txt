@@ -52,7 +52,8 @@ CREATE TABLE `twitch_alerts` (
 CREATE TABLE `twitch_channel_point_scale` (
   `ChannelUserId` int(10) unsigned NOT NULL,
   `UnitValue` bigint(20) unsigned NOT NULL,
-  `UnitName` varchar(45) NOT NULL,
+  `UnitNameSingular` varchar(45) NOT NULL,
+  `UnitNamePlural` varchar(45) NOT NULL,
   PRIMARY KEY (`ChannelUserId`,`UnitValue`),
   CONSTRAINT `ScaleToChannel` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_channels` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

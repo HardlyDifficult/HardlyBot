@@ -9,8 +9,8 @@
 			}
 		}
 
-		public SqlTwitchChannelPointScale(SqlTwitchChannel channel, ulong unitValue, string unitName = null) : base(new object[] {
-			channel.user.id, unitValue, unitName
+		public SqlTwitchChannelPointScale(SqlTwitchChannel channel, ulong unitValue, string unitNameSingular = null, string unitNamePlural = null) : base(new object[] {
+			channel.user.id, unitValue, unitNameSingular, unitNamePlural
 		}) {
 			this.channel = channel;
 		}
@@ -21,7 +21,7 @@
 			if(results != null && results.Count > 0) {
 				SqlTwitchChannelPointScale[] points = new SqlTwitchChannelPointScale[results.Count];
 				for(int i = 0; i < results.Count; i++) {
-					points[i] = new SqlTwitchChannelPointScale(channel, (ulong)results[i][1], (string)results[i][2]);
+					points[i] = new SqlTwitchChannelPointScale(channel,  results[i][1].FromSql<ulong>(), results[i][2].FromSql<string>(), results[i][3].FromSql<string>());
 				}
 
 				return points;
@@ -40,16 +40,24 @@
 			get {
 				return Get<ulong>(1);
 			}
-		}
+        }
 
-		public string unitName {
-			get {
-				return Get<string>(2);
-			}
-			set {
-				Set(2, value);
-			}
-		}
+        public string unitNameSingular {
+            get {
+                return Get<string>(2);
+            }
+            set {
+                Set(2, value);
+            }
+        }
 
-	}
+        public string unitNamePlural {
+            get {
+                return Get<string>(3);
+            }
+            set {
+                Set(3, value);
+            }
+        }
+    }
 }

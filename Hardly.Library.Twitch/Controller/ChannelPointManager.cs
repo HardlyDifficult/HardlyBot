@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 namespace Hardly.Library.Twitch {
 	public class ChannelPointManager {
 		public class PointUnit {
-			public readonly string name;
+			public readonly string nameSingular, namePlural;
 			public readonly ulong value;
 
-			public PointUnit(string name, ulong value) {
-				this.name = name;
+			public PointUnit(string nameSingular, string namePlural, ulong value) {
+				this.nameSingular = nameSingular;
+                this.namePlural = namePlural;
 				this.value = value;
 			}
 		}
@@ -31,7 +32,7 @@ namespace Hardly.Library.Twitch {
 				PointUnit[] units = new PointUnit[points.Length];
 
 				for(int i = 0; i < points.Length; i++) {
-					units[i] = new PointUnit(points[i].unitName, points[i].unitValue);
+					units[i] = new PointUnit(points[i].unitNameSingular, points[i].unitNamePlural, points[i].unitValue);
 				}
 
 				return units;
@@ -71,7 +72,7 @@ namespace Hardly.Library.Twitch {
 						PointUnit unit = units[0];
 						if(numberUnit != null) {
 							for(uint i = 0; i < units.Length; i++) {
-								if(numberUnit.StartsWith(units[i].name, StringComparison.CurrentCultureIgnoreCase)) {
+								if(numberUnit.Equals(units[i].nameSingular, StringComparison.CurrentCultureIgnoreCase) || numberUnit.Equals(units[i].namePlural, StringComparison.CurrentCultureIgnoreCase)) {
 									unit = units[i];
 									if(numberValue == 0) {
 										numberValue = 1;
@@ -97,7 +98,7 @@ namespace Hardly.Library.Twitch {
 			for(int i = 0; i < units.Length; i++) {
 				if(i > 0) {
 					description += " == 1 ";
-                    description += units[i].name;
+                    description += units[i].nameSingular;
                 }
                 if(i < units.Length - 1) {
                     if(i > 0) {
@@ -105,8 +106,7 @@ namespace Hardly.Library.Twitch {
                     }
                     description += ((double)units[i + 1].value / units[i].value).ToStringWithCommaAndDecimals(1);
                     description += " ";
-                    description += units[i].name;
-                    description += " ";
+                    description += units[i].namePlural;
                 } 
 			}
 
@@ -122,19 +122,19 @@ namespace Hardly.Library.Twitch {
 					double unitValue = (double)pointValue / unitMin;
 					if(unitValue > 0) {
 						if(justTopDollar) {
-							value += unitValue.ToStringWithCommaAndDecimals(1) + " " + units[i].name + " ";
+							value += unitValue.ToStringWithCommaAndDecimals(1) + " " + (unitValue == 1 ? units[i].nameSingular : units[i].namePlural) + " ";
 							break;
 						} else {
 							pointValue -= (ulong)unitValue * unitMin;
 
-							value += (ulong)unitValue + " " + units[i].name + " ";
+							value += (ulong)unitValue + " " + (unitValue == 1 ? units[i].nameSingular : units[i].namePlural);
 						}
 					}
 				}
 			}
 
 			if(value.IsEmpty()) {
-				value = "0 " + units[0].name;
+				value = "0 " + units[0].namePlural;
 			}
 
 			return value;
