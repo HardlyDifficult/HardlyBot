@@ -5,6 +5,7 @@ Working currently
  - Texas Holdem (!holdem to start)
  - Pick a number (!pick x to play)
  - Hearthstone betting (must be running on the same PC that Hearth is running on - then auto driven by log updates)
+ - Russian Roulette (!russianroulette <amount> to start)
 
 Other things
  - Stawpoll (!getvote ID to view the outcome of a poll)
