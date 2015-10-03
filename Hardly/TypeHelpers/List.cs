@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Hardly {
@@ -64,6 +65,12 @@ namespace Hardly {
         #region Public interface
         public void Add(ItemType item) {
             items.Add(item);
+        }
+
+        public void Add(IEnumerable<ItemType> itemsToAdd) {
+            foreach(var item in itemsToAdd) {
+                items.Add(item);
+            }
         }
 
         public void Append(List<ItemType> itemsToAdd) {

@@ -57,7 +57,7 @@ namespace Hardly {
 		}
 
 		protected override bool Set(uint valueIndex, object value) {
-			return base.Set(valueIndex, SoberTypes.FromSql((
+			return base.Set(valueIndex, TypeHelpers.FromSql((
 				valueIndex < (table.primaryKeyHeaders?.Length ?? 0) ? table.primaryKeyHeaders[valueIndex] : table.additionalKeyHeaders[valueIndex - (table.primaryKeyHeaders?.Length ?? 0)]
 				).DataType, value));
 		}

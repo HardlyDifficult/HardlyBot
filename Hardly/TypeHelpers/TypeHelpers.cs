@@ -3,8 +3,31 @@ using System.Reflection;
 using System.Linq;
 
 namespace Hardly {
-	public static class SoberTypes {
-		public static Type[] GetAllSubclassesInThisAssumbly<BaseType>(this Type assemblyWithThisType, bool inSameNamespace) {
+	public static class TypeHelpers {
+        public static List<Type> GetAllSubclasses<BaseType>() {
+            List<Type> types = new List<Type>();
+            foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+                types.Add(assembly.GetTypes().Where(t => !t.IsAbstract && typeof(BaseType).IsAssignableFrom(t)));
+            }
+
+            return types;
+        }
+
+        public static BaseType[] InstantiateEachSubclass<BaseType, ArgType>(ArgType arg) {
+            List<Type> subclassTypes = GetAllSubclasses<BaseType>();
+            if(subclassTypes != null) {
+                BaseType[] subclassObjects = new BaseType[subclassTypes.Count];
+                for(int i = 0; i < subclassTypes.Count; i++) {
+                    subclassObjects[i] = (BaseType)subclassTypes[i].GetConstructor(new Type[] { arg.GetType() })?.Invoke(new object[] { arg });
+                }
+
+                return subclassObjects;
+            }
+
+            return null;
+        }
+
+        public static Type[] GetAllSubclassesInThisAssumbly<BaseType>(this Type assemblyWithThisType, bool inSameNamespace) {
 			return Assembly.GetAssembly(assemblyWithThisType).GetTypes().Where(t => !t.IsAbstract && typeof(BaseType).IsAssignableFrom(t) && (!inSameNamespace || t.Namespace.Equals(assemblyWithThisType.Namespace))).ToArray<Type>();
 		}
 

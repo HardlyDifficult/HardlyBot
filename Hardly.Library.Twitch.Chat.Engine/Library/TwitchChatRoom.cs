@@ -15,7 +15,7 @@ namespace Hardly.Library.Twitch {
 
 			chatConnection.Join(this);
 
-            GetType().InstantiateEachSubclassInMyAssembly<IAutoJoinTwitchRooms, TwitchChatRoom>(false, this);
+            TypeHelpers.InstantiateEachSubclass<IAutoJoinTwitchRooms, TwitchChatRoom>(this);
         }
 
 		#region Methods
