@@ -1,7 +1,14 @@
 # HardlyCode
 This is the card game chatbot made by HardlySober.
-Working currently is the games blackjack, and Pick a number.
-Games coming soon are hold'em poker and others.
+Working currently
+ - Blackjack (!blackjack to start)
+ - Texas Holdem (!holdem to start)
+ - Pick a number (!pick x to play)
+ - Hearthstone betting (must be running on the same PC that Hearth is running on - then auto driven by log updates)
+
+Other things
+ - Stawpoll (!getvote ID to view the outcome of a poll)
+ - !commands (lists all currently enabled commands)
 
 
 For info on setting up the mysql data see the wiki.
