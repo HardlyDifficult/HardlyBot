@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{99067086-79E3-48CC-8198-D9E8A3D5C30B}</ProjectGuid>
+    <ProjectGuid>{D9C0C8C7-0F24-4260-8892-C16E1FAE5059}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Hardly.Games.PokerTests</RootNamespace>
-    <AssemblyName>Hardly.Games.PokerTests</AssemblyName>
+    <RootNamespace>Hardly.Games.BlackjackTests</RootNamespace>
+    <AssemblyName>Hardly.Games.BlackjackTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -51,20 +51,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="PokerPlayerHandEvaluatorTests.cs" />
+    <Compile Include="BlackjackPlayerHandTests.cs" />
+    <Compile Include="BlackjackTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TexasHoldemTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Hardly.Games.Poker\Hardly.Games.Poker.csproj">
-      <Project>{D0EB0D1E-80E3-4D6F-94E5-14BEC0D4A0EF}</Project>
-      <Name>Hardly.Games.Poker</Name>
+    <ProjectReference Include="..\Hardly.Games.Blackjack\Hardly.Games.Blackjack.csproj">
+      <Project>{92E263B4-0B72-4D53-B32E-4CE821EFD322}</Project>
+      <Name>Hardly.Games.Blackjack</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Hardly.Games\Hardly.Games.csproj">
+    <ProjectReference Include="..\Hardly.Games\Hardly.Games.csproj">
       <Project>{64316fb2-3bfa-46e7-868a-faa53ee30261}</Project>
       <Name>Hardly.Games</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Hardly\Hardly.csproj">
+    <ProjectReference Include="..\Hardly\Hardly.csproj">
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>
     </ProjectReference>

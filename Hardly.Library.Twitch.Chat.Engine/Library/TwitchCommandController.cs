@@ -9,7 +9,7 @@ namespace Hardly.Library.Twitch {
     /// Every concrete instance of this class is automatically Constructed given each Chat room we connect to (via TwitchChatRoom)
     /// </summary>
 	public abstract class TwitchCommandController : IAutoJoinTwitchRooms {
-		internal TwitchChatRoom room;
+		protected TwitchChatRoom room;
 
 		public TwitchCommandController(TwitchChatRoom room) {
 			this.room = room;

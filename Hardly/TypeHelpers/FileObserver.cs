@@ -30,6 +30,9 @@ namespace Hardly {
                 if((message = streamReader.ReadLine()) != null) {
                     Observe(message);
                 } else {
+                    if(fileStream.Position > fileStream.Length) {
+                        fileStream.Position = 0;
+                    }
                     Thread.SleepInSeconds(1);
                 }
             }

@@ -54,6 +54,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Hardly.Library.Twitch.Chat.Engine\Hardly.Library.Twitch.Chat.Engine.csproj">
+      <Project>{4055aab4-3f01-49eb-b129-d852c8bf0aec}</Project>
+      <Name>Hardly.Library.Twitch.Chat.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Hardly.Library.Twitch.Chat\Hardly.Library.Twitch.Chat.csproj">
       <Project>{0e436bd2-c9d6-479d-9bb6-f58657270c3a}</Project>
       <Name>Hardly.Library.Twitch.Chat</Name>
@@ -65,10 +69,6 @@
     <ProjectReference Include="..\..\Hardly\Hardly.csproj">
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Hardly.Games.Holdem.Gui\Hardly.Games.Holdem.Gui.csproj">
-      <Project>{7885e4c8-136a-47ad-a936-cdcc297b3a4a}</Project>
-      <Name>Hardly.Games.Holdem.Gui</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6183EFA1-7FE4-44C3-B6F3-934EC9BA4357}</ProjectGuid>
+    <ProjectGuid>{4CEA7431-D1F1-41DD-AF87-0EE023716443}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Hardly.Library.Hearthstone</RootNamespace>
-    <AssemblyName>Hardly.Library.Hearthstone</AssemblyName>
+    <RootNamespace>Hardly.Games.Betting</RootNamespace>
+    <AssemblyName>Hardly.Games.Betting</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,30 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\SqlHearthstoneCard.cs" />
-    <Compile Include="Events\DrawCard.cs" />
-    <Compile Include="Events\EndOfGame.cs" />
-    <Compile Include="Events\HearthGame.cs" />
-    <Compile Include="Events\NewGame.cs" />
-    <Compile Include="Events\HearthstoneEvent.cs" />
-    <Compile Include="HearthstoneEventObserver.cs" />
-    <Compile Include="InternalEvents\HearthInternalStartingNewGame.cs" />
-    <Compile Include="InternalEvents\HearthInternalState.cs" />
-    <Compile Include="InternalEvents\HearthInternalStateGameInProgress.cs" />
-    <Compile Include="InternalEvents\HearthInternalStateOff.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hardly.Library.Sql\Hardly.Library.Sql.csproj">
-      <Project>{f84e492b-4aa6-4d7e-84a7-5432be992d52}</Project>
-      <Name>Hardly.Library.Sql</Name>
+    <ProjectReference Include="..\Hardly.Games\Hardly.Games.csproj">
+      <Project>{64316fb2-3bfa-46e7-868a-faa53ee30261}</Project>
+      <Name>Hardly.Games</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hardly\Hardly.csproj">
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

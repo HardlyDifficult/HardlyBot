@@ -58,25 +58,11 @@
     <Compile Include="Commands\Games\TwitchGameStateMachine.cs" />
     <Compile Include="Commands\Games\DiceGames\TwitchPickANumber.cs" />
     <Compile Include="Commands\System\DynamicCommands.cs" />
-    <Compile Include="Controllers\IAutoJoinTwitchRooms.cs" />
     <Compile Include="Commands\Games\TwitchGame.cs" />
     <Compile Include="Commands\System\AboutCommands.cs" />
     <Compile Include="Commands\System\HelloCommand.cs" />
-    <Compile Include="Controllers\ChatCommand.cs" />
     <Compile Include="Events\HearthstoneEvents.cs" />
-    <Compile Include="Events\TwitchEventHandler.cs" />
-    <Compile Include="Library\TwitchCommandController.cs" />
     <Compile Include="Logic\States\GameState.cs" />
-    <Compile Include="ChatEvents\TwitchChatChannelEvent.cs" />
-    <Compile Include="ChatEvents\TwitchChatEvent.cs" />
-    <Compile Include="ChatEvents\TwitchChatMessage.cs" />
-    <Compile Include="ChatEvents\TwitchChatPing.cs" />
-    <Compile Include="ChatEvents\TwitchChatUnknownEvent.cs" />
-    <Compile Include="ChatEvents\TwitchChatWhisper.cs" />
-    <Compile Include="Controllers\TwitchChatBot.cs" />
-    <Compile Include="Library\TwitchChatRoom.cs" />
-    <Compile Include="Library\TwitchCommandListener.cs" />
-    <Compile Include="Library\TwitchIrcConnection.cs" />
     <Compile Include="Logic\States\GameStateAcceptingPlayers.cs" />
     <Compile Include="Commands\UserInfo\ViewPoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -109,6 +95,10 @@
     <ProjectReference Include="..\Hardly.Library.Stawpoll\Hardly.Library.Strawpoll.csproj">
       <Project>{6cd0813a-6216-40f4-81ed-b210fb16e9cd}</Project>
       <Name>Hardly.Library.Strawpoll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardly.Library.Twitch.Chat.Engine\Hardly.Library.Twitch.Chat.Engine.csproj">
+      <Project>{4055aab4-3f01-49eb-b129-d852c8bf0aec}</Project>
+      <Name>Hardly.Library.Twitch.Chat.Engine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hardly.Library.Twitch\Hardly.Library.Twitch.csproj">
       <Project>{7790f780-0088-4def-8a37-041b883c7549}</Project>

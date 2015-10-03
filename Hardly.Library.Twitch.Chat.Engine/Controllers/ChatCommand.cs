@@ -12,7 +12,7 @@ namespace Hardly.Library.Twitch {
 		Action<SqlTwitchUser, string> action;
 		Throttle throttle;
 
-        internal static List<ChatCommand> ForRoom(TwitchChatRoom room) {
+        public static List<ChatCommand> ForRoom(TwitchChatRoom room) {
             List<ChatCommand> commands;
             if(roomCommands.TryGetValue(room.twitchConnection.channel, out commands)) {
                 return commands;
@@ -50,11 +50,11 @@ namespace Hardly.Library.Twitch {
 			this.enabled = enabled;
 		}
 
-		internal void Disable() {
+		public void Disable() {
 			enabled = false;
 		}
 
-		internal void Enable() {
+		public void Enable() {
 			enabled = true;
 		}
 

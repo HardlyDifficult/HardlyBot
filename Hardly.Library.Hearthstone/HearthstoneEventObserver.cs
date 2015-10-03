@@ -3,19 +3,26 @@
 namespace Hardly.Library.Hearthstone {
     public class HearthstoneEventObserver {
         List<Action<HearthstoneEvent>> observers = new List<Action<HearthstoneEvent>>();
+        FileObserver fileObserver;
+        internal HearthGame currentGame = null;
+        HearthInternalState currentState;
 
         public HearthstoneEventObserver() {
-            FileObserver fileObserver = new FileObserver("C:\\Program Files (x86)\\Hearthstone\\Logs\\Power.log", true);
+            currentState = new HearthInternalStateOff(this);
+            fileObserver = new FileObserver("C:\\Program Files (x86)\\Hearthstone\\Logs\\Power.log", true);
+            new Timer(TimeSpan.FromSeconds(10), DelayedObserving).Start();
+        }
+
+        private void DelayedObserving() {
+            Log.debug("Hearthstone Event Observer has begun watching the log.");
             fileObserver.RegisterObserver(NewLogLine);
         }
 
         private void NewLogLine(string line) {
-            if(line?.EndsWith("CREATE_GAME") ?? false) {
-                Observe(new NewGame());
-            }
+            currentState = currentState.NewLogLine(line, ref currentGame);
         }
 
-        private void Observe(HearthstoneEvent hearthEvent) {
+        internal void Observe(HearthstoneEvent hearthEvent) {
             foreach(var observer in observers) {
                 observer(hearthEvent);
             }

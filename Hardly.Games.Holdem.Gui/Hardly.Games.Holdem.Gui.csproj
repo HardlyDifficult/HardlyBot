@@ -82,15 +82,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Hardly.Games.Poker\Hardly.Games.Poker.csproj">
+    <ProjectReference Include="..\Hardly.Games.Poker\Hardly.Games.Poker.csproj">
       <Project>{d0eb0d1e-80e3-4d6f-94e5-14bec0d4a0ef}</Project>
       <Name>Hardly.Games.Poker</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Hardly.Games\Hardly.Games.csproj">
+    <ProjectReference Include="..\Hardly.Games\Hardly.Games.csproj">
       <Project>{64316fb2-3bfa-46e7-868a-faa53ee30261}</Project>
       <Name>Hardly.Games</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Hardly\Hardly.csproj">
+    <ProjectReference Include="..\Hardly\Hardly.csproj">
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>
     </ProjectReference>
