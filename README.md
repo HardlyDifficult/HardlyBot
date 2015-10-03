@@ -13,3 +13,4 @@ Other things
 
 
 For info on setting up the mysql data see the wiki.
+Solution file is under TwitchChatBotConsole
