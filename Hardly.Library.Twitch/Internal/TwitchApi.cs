@@ -10,7 +10,9 @@ namespace Hardly.Library.Twitch
     {
         internal static SqlTwitchUser GetUser(string username)
         {
-            return TwitchJson.ParseUser(WebClient.GetHTML("https://api.twitch.tv/kraken/users/" + username));
+            var user = TwitchJson.ParseUser(WebClient.GetHTML("https://api.twitch.tv/kraken/users/" + username));
+            user.Save(true);
+            return user;
         }
 
         internal static void UpdateLiveFollowers(SqlTwitchConnection connection, uint limit, uint offset)
