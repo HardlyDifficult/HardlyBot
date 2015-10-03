@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace Hardly.Library.Twitch.Commands.System {
     class HelloCommand : TwitchCommandController {
         public HelloCommand(TwitchChatRoom room) : base(room) {
-            ChatCommand.Create(room, "hi", HiCommand, "Says hello", null, false, TimeSpan.FromSeconds(0), false);
-            ChatCommand.Create(room, "echo", EchoCommand, "Echos what you say", null, false, TimeSpan.FromSeconds(0), false);
-            ChatCommand.Create(room, "timemeout", TimeMeOut, "Shhh...", null, false, TimeSpan.FromSeconds(0), false);
-            ChatCommand.Create(room, "banme", BanYouBecauseYouAreStupidAndYouShouldntHaveDoneThat, "This will ban you. Dont do it unless you want to be benned.", null, false, TimeSpan.FromSeconds(0), false);
-            ChatCommand.Create(room, "about", About, "About the bot or sober.", null, false, TimeSpan.FromSeconds(0), false);
+            ChatCommand.Create(room, "hi", HiCommand, "Says hello", null, false, null, false);
+            ChatCommand.Create(room, "echo", EchoCommand, "Echos what you say", null, false, null, false);
+            ChatCommand.Create(room, "timemeout", TimeMeOut, "Shhh...", null, false, null, false);
+            ChatCommand.Create(room, "banme", BanYouBecauseYouAreStupidAndYouShouldntHaveDoneThat, "This will ban you. Dont do it unless you want to be benned.", null, false, null, false);
+            ChatCommand.Create(room, "about", About, "About the bot or sober.", null, false, null, false);
         }
 
         private void EchoCommand(SqlTwitchUser speaker, String additionalText) {
@@ -32,10 +32,10 @@ namespace Hardly.Library.Twitch.Commands.System {
         private void TimeMeOut(SqlTwitchUser speaker, String time) {
             try {
                 if (time.IsEmpty()) {
-                    room.SendChatMessage(".timeout " + speaker.userName + " " + Random.Uint.Between(1, 600));
+                    room.Timeout(speaker, TimeSpan.FromSeconds(Random.Uint.Between(1, 600)));
                 }
                 else {
-                    room.SendChatMessage(".timeout " + speaker.userName + " " + Int32.Parse(time));
+                    room.Timeout(speaker, TimeSpan.FromSeconds(Int32.Parse(time)));
                 }
             }
             catch (Exception) {

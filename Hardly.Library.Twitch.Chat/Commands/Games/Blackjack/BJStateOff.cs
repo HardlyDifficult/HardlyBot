@@ -6,8 +6,9 @@ namespace Hardly.Library.Twitch {
 
 		public BJStateOff(TwitchBlackjack controller) : base(controller) {
 			timer = new Timer(TimeSpan.FromSeconds(30), AutoStart);
-			AddCommand(controller.room, "bj", BjCommand, "Starts a game of Blackjack", new[] { "blackjack" }, false, TimeSpan.FromSeconds(0), false);
-		}
+			AddCommand(controller.room, "bj", BjCommand, "Starts a game of Blackjack", new[] { "blackjack" }, false, null, false);
+            controller.game.Reset();
+        }
 
 		private void BjCommand(SqlTwitchUser speaker, string additionalText) {
 			controller.SetState(this.GetType(), typeof(BJStateAcceptingPlayers));
@@ -17,15 +18,9 @@ namespace Hardly.Library.Twitch {
 			controller.SetState(this.GetType(), typeof(BJStateAcceptingPlayers)); 
 		}
 
-		internal override void Close() {
-			base.Close();
+        public override void Dispose() {
+            base.Dispose();
 			timer?.Stop();
-		}
-
-		internal override void Open() {
-			base.Open();
-			controller.game.Reset();
-			//timer.Start();
 		}
 	}
 }

@@ -8,14 +8,19 @@ namespace Hardly.Library.Twitch {
         List<SqlTwitchUser> playersLookingToFold = new List<SqlTwitchUser>();
 
         public HoldemStatePlay(TwitchHoldem controller) : base(controller) {
-            AddCommand(controller.room, "call", CallCommand, "Call...", null, false, TimeSpan.FromSeconds(0), false);
-            AddCommand(controller.room, "raise", RaiseCommand, "Raise...", null, false, TimeSpan.FromSeconds(0), false);
-            AddCommand(controller.room, "check", CheckCommand, "Check...", null, false, TimeSpan.FromSeconds(0), false);
-            AddCommand(controller.room, "fold", FoldCommand, "Fold...", null, false, TimeSpan.FromSeconds(0), false);
-            AddCommand(controller.room, "bet", BetCommand, "Bet...", null, false, TimeSpan.FromSeconds(0), false);
-            AddCommand(controller.room, "allin", AllInCommand, "Bet or Raise all in...", null, false, TimeSpan.FromSeconds(0), false);
+            AddCommand(controller.room, "call", CallCommand, "Call...", null, false, null, false);
+            AddCommand(controller.room, "raise", RaiseCommand, "Raise...", null, false, null, false);
+            AddCommand(controller.room, "check", CheckCommand, "Check...", null, false, null, false);
+            AddCommand(controller.room, "fold", FoldCommand, "Fold...", null, false, null, false);
+            AddCommand(controller.room, "bet", BetCommand, "Bet...", null, false, null, false);
+            AddCommand(controller.room, "allin", AllInCommand, "Bet or Raise all in...", null, false, null, false);
 
             timer = new TimerSet(new TimeSpan[] { TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30) }, new Action[] { WarningTimer, WarningTimer, FinalTimer });
+
+            lastKnownPlayer = controller.game.currentPlayer;
+            PlayerChanged();
+            timer.Start();
+            playersLookingToFold.Clear();
         }
 
 
@@ -277,14 +282,6 @@ namespace Hardly.Library.Twitch {
             }
 
             return chatMessage;
-        }
-
-        internal override void Open() {
-            base.Open();
-            lastKnownPlayer = controller.game.currentPlayer;
-            PlayerChanged();
-            timer.Start();
-            playersLookingToFold.Clear();
         }
 
         private void FailedAction(SqlTwitchUser speaker, string youTriedTo) {

@@ -10,11 +10,29 @@ namespace Hardly.Library.Twitch {
 				new TimeSpan[] { TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(5) },
 				new Action[] { TimeUp1, TimeUp2, FinalTimeUp });
 
-			AddCommand(controller.room, "hit", HitCommand, "Draw another card.", null, false, TimeSpan.FromSeconds(0), false);
-			AddCommand(controller.room, "double", DoubleCommand, "Double your bet and get exactly one more card (then you stand).", null, false, TimeSpan.FromSeconds(0), false);
-			AddCommand(controller.room, "split", SplitCommand, "Splits two cards of the same value.  You play each hand separately, and each hand is playing for your opening bet.", null, false, TimeSpan.FromSeconds(0), false);
-			AddCommand(controller.room, "stand", StandCommand, "Ends your turn.", null, false, TimeSpan.FromSeconds(0), false);
-		}
+			AddCommand(controller.room, "hit", HitCommand, "Draw another card.", null, false, null, false);
+			AddCommand(controller.room, "double", DoubleCommand, "Double your bet and get exactly one more card (then you stand).", null, false, null, false);
+			AddCommand(controller.room, "split", SplitCommand, "Splits two cards of the same value.  You play each hand separately, and each hand is playing for your opening bet.", null, false, null, false);
+			AddCommand(controller.room, "stand", StandCommand, "Ends your turn.", null, false, null, false);
+
+            controller.game.StartGame();
+
+            string message = "Blackjack: Dealer ";
+            message += controller.game.dealer.cards.First.ToString();
+            message += " \uD83C\uDCA0 ";
+            foreach(var player in controller.game.PlayerGameObjects) {
+                message += ", ";
+                message += player.idObject.name;
+                message += " ";
+                message += player.CurrentHandEvaluator.cards.ToString();
+            }
+
+            message += " -- !Hit, !Stand, !Split or !DoubleDown?";
+
+            controller.room.SendChatMessage(message);
+
+            timers.Start();
+        }
 
 		private void StandCommand(SqlTwitchUser speaker, string message) {
 			var player = GetPlayer(speaker);
@@ -106,32 +124,11 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		internal override void Close() {
-			base.Close();
+        public override void Dispose() {
+            base.Dispose();
 			timers.Stop();
 		}
-
-		internal override void Open() {
-			base.Open();
-            controller.game.StartGame();
-
-			string message = "Blackjack: Dealer ";
-			message += controller.game.dealer.cards.First.ToString();
-			message += " \uD83C\uDCA0 ";
-			foreach(var player in controller.game.PlayerGameObjects) {
-				message += ", ";
-				message += player.idObject.name;
-				message += " ";
-				message += player.CurrentHandEvaluator.cards.ToString();
-			}
-
-			message += " -- !Hit, !Stand, !Split or !DoubleDown?";
-
-			controller.room.SendChatMessage(message);
-
-			timers.Start();
-		}
-
+        
 		void TimeUp1() {
 			foreach(var player in controller.game.PlayerGameObjects) {
 				if(!player.CurrentHandEvaluator.isDone) {

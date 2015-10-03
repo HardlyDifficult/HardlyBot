@@ -30,7 +30,8 @@ namespace Hardly {
 		}
 
 		public string ReadNextLine_BLOCKING() {
-			return inputStream.ReadLine();
+			string message = inputStream.ReadLine();
+            return message;
 		}
 	}
 }

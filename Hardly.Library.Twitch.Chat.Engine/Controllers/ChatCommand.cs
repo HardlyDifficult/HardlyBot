@@ -34,13 +34,18 @@ namespace Hardly.Library.Twitch {
 			return newCommand;
 		}
 
-		ChatCommand(TwitchChatRoom room, string name, Action<SqlTwitchUser, string> action, string description, string[] aliases, bool modOnly, TimeSpan timeToThrottleFor, bool throttlePerUser, bool enabled) : base(room) {
+        public void Remove() {
+            Disable();
+            roomCommands.Remove(this);
+        }
+
+        ChatCommand(TwitchChatRoom room, string name, Action<SqlTwitchUser, string> action, string description, string[] aliases, bool modOnly, TimeSpan timeToThrottleFor, bool throttlePerUser, bool enabled) : base(room) {
 			this.commandName = name;
 			this.action = action;
 			this.description = description;
 			this.aliases = aliases;
 			this.modOnly = modOnly;
-			if(timeToThrottleFor > TimeSpan.FromSeconds(0)) {
+			if(timeToThrottleFor != null) {
 				throttle = new Throttle(timeToThrottleFor); 
 			} else {
 				throttle = null;

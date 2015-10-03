@@ -30,6 +30,12 @@ namespace Hardly.Library.Twitch {
 		public void SendWhisper(SqlTwitchUser speakee, string message) {
 			whisperIrcConnection.SendWhisper(speakee, message);
 		}
-		#endregion
-	}
+
+        public void Timeout(SqlTwitchUser speaker, TimeSpan timeSpan) {
+            if(timeSpan.TotalSeconds > 0) {
+                SendChatMessage(".timeout " + speaker.userName + " " + timeSpan.TotalSeconds);
+            }
+        }
+        #endregion
+    }
 }

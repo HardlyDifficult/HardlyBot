@@ -3,17 +3,13 @@
 namespace Hardly.Library.Twitch {
 	internal class HoldemStateOff : GameState<TwitchHoldem> {
 		public HoldemStateOff(TwitchHoldem controller) : base(controller) {
-			AddCommand(controller.room, "holdem", HoldemCommand, "Starts a game of Texas Holdem", new[] { "texasholdem" }, false, TimeSpan.FromSeconds(0), false);
-		}
+			AddCommand(controller.room, "holdem", HoldemCommand, "Starts a game of Texas Holdem", new[] { "texasholdem" }, false, null, false);
+            controller.game.Reset();
+            controller.game.bigBlind = 2;
+        }
 
 		private void HoldemCommand(SqlTwitchUser speaker, string additionalText) {
 			controller.SetState(this.GetType(), typeof(HoldemStateAcceptingPlayers));
 		}
-
-		internal override void Open() {
-			base.Open();
-			controller.game.Reset();
-            controller.game.bigBlind = 2;
-        }
 	}
 }

@@ -6,7 +6,8 @@ namespace Hardly.Library.Twitch {
         public GameState state = null;
 		object myLock = new object();
 
-        public TwitchGameStateMachine(TwitchChatRoom room) : base(room) {
+        public TwitchGameStateMachine(TwitchChatRoom room, Type startingStateType) : base(room) {
+            SetState(null, startingStateType);
 		}
 
 		public bool SetState(Type startingState, Type nextStateType) {
@@ -14,18 +15,16 @@ namespace Hardly.Library.Twitch {
                 bool changed = false;
                 lock (myLock) {
                     if(startingState == null || (state != null && state.GetType().Equals(startingState))) {
-                        var nextState = (GameState)nextStateType.GetConstructor(new Type[] { this.GetType() }).Invoke(new object[] { this });
-                        if(!nextState.Equals(state)) {
-                            Log.debug("Twitch Game: Setting next state to " + nextState.GetType().ToString());
-                            state?.Close();
-                            state = nextState;
+                        if(!nextStateType.Equals(state)) {
+                            Log.debug("Twitch Game: Setting next state to " + nextStateType.ToString());
+                            state?.Dispose();
                             changed = true;
                         }
                     }
                 }
 
                 if(changed) {
-                    state.Open();
+                    state = (GameState)nextStateType.GetConstructor(new Type[] { this.GetType() }).Invoke(new object[] { this });
                     return true;
                 }
             }

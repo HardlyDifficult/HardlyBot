@@ -10,27 +10,32 @@ namespace Hardly.Library.Twitch {
 			roundTimer = new TimerSet(
 				new TimeSpan[] { TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(20) },
 				new Action[] { TimeUp, FinalTimeUp });
-		}
 
-		internal abstract void AnnounceGame();
+
+            AnnounceGame();
+        }
+
+        protected virtual void AnnounceGame() {
+            waitingToStartTimer.Start();
+        }
+
 		internal abstract void FinalTimeUp();
 		internal abstract void TimeUp();
 
-		protected void StartWaitingForSomeoneToJoin() {
-			waitingToStartTimer.Start();
-		}
 		protected void StopTimers() {
 				roundTimer.Stop();
 				waitingToStartTimer.Stop();
 
 		}
 		protected void MinHit_StartWaitingForAdditionalPlayers() {
-			waitingToStartTimer.Stop();
-			roundTimer.Start();
+            if(!roundTimer.isRunning) {
+                waitingToStartTimer.Stop();
+                roundTimer.Start();
+            }
 		}
 
-		internal override void Close() {
-			base.Close();
+        public override void Dispose() {
+            base.Dispose();
 			StopTimers();
 		}
 	}

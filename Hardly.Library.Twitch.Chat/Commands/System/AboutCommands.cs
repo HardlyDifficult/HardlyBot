@@ -3,7 +3,7 @@
 namespace Hardly.Library.Twitch {
     class AboutCommands : TwitchCommandController {
         public AboutCommands(TwitchChatRoom room) : base(room) {
-            ChatCommand.Create(room, "commands", ListCommands, "Lists all active commands", null, false, TimeSpan.FromSeconds(0), false);
+            ChatCommand.Create(room, "commands", ListCommands, "Lists all active commands", null, false, null, false);
         }
 
         void ListCommands(SqlTwitchUser speaker, string additionalText) {

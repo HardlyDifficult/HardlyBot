@@ -62,6 +62,7 @@
     <Compile Include="Abstract\PersistentDataList.cs" />
     <Compile Include="Controllers\Debug.cs" />
     <Compile Include="TypeHelpers\ActionHelpers.cs" />
+    <Compile Include="TypeHelpers\DictionaryHelpers.cs" />
     <Compile Include="TypeHelpers\File.cs" />
     <Compile Include="Controllers\Log.cs" />
     <Compile Include="Abstract\AppController.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="TypeHelpers\Threadable.cs" />
     <Compile Include="TypeHelpers\Timer.cs" />
     <Compile Include="TypeHelpers\TimerSet.cs" />
+    <Compile Include="TypeHelpers\TimeSpan.cs" />
     <Compile Include="TypeHelpers\TimeSpanHelpers.cs" />
     <Compile Include="TypeHelpers\TypeHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -62,6 +62,7 @@
     <Compile Include="Commands\Games\Holdem\TwitchHoldem.cs" />
     <Compile Include="Commands\Games\RussianRoulette\RRStateAcceptingPlayers.cs" />
     <Compile Include="Commands\Games\RussianRoulette\RRStateOff.cs" />
+    <Compile Include="Commands\Games\RussianRoulette\RRStatePlaying.cs" />
     <Compile Include="Commands\Games\RussianRoulette\TwitchRussianRoulette.cs" />
     <Compile Include="Commands\Games\TwitchGameStateMachine.cs" />
     <Compile Include="Commands\Games\DiceGames\TwitchPickANumber.cs" />

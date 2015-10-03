@@ -3,11 +3,9 @@ using Hardly.Games;
 
 namespace Hardly.Library.Twitch {
 	public class TwitchBlackjack : TwitchGameStateMachine<Blackjack<SqlTwitchUser>> {
-		public TwitchBlackjack(TwitchChatRoom room) : base(room) {
+		public TwitchBlackjack(TwitchChatRoom room) : base(room, typeof(BJStateOff)) {
 			ChatCommand.Create(room, "aboutbj", AboutBJ, "How to play Blackjack", new[] { "aboutblackjack", "howtoplaybj", "howtoplayblackjack" }, false, TimeSpan.FromMinutes(2), false);
-			ChatCommand.Create(room, "cancelbj", CancelBJ, "Cancels/ends any current games.  No money lost.", null, true, TimeSpan.FromSeconds(0), false);
-
-			SetState(null, typeof(BJStateOff));
+			ChatCommand.Create(room, "cancelbj", CancelBJ, "Cancels/ends any current games.  No money lost.", null, true, null, false);
 		}
 
 		private void CancelBJ(SqlTwitchUser user, string additionalText) {

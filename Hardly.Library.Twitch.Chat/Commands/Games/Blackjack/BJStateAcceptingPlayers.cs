@@ -4,10 +4,11 @@ using Hardly.Games;
 namespace Hardly.Library.Twitch {
 	public class BJStateAcceptingPlayers : GameStateAcceptingPlayers<TwitchBlackjack> {
 		public BJStateAcceptingPlayers(TwitchBlackjack controller) : base(controller) {
-			AddCommand(controller.room, "play", PlayCommand, "Joins a game of Blackjack, follow with your bet --- e.g. !play 10.", new[] { "join" }, false, TimeSpan.FromSeconds(0), false);
-			AddCommand(controller.room, "start", StartCommand, "Starts a game of Blackjack if there is at least one player", null, true, TimeSpan.FromSeconds(0), false);
-			AddCommand(controller.room, "cancelplay", CancelPlayCommand, "Cancels a play, if it's not too late.", new[] { "leave" }, false, TimeSpan.FromSeconds(0), false);
-		}
+            AddCommand(controller.room, "play", PlayCommand, "Joins a game of Blackjack, follow with your bet --- e.g. !play 10.", new[] { "join" }, false, null, false);
+			AddCommand(controller.room, "start", StartCommand, "Starts a game of Blackjack if there is at least one player", null, true, null, false);
+			AddCommand(controller.room, "cancelplay", CancelPlayCommand, "Cancels a play, if it's not too late.", new[] { "leave" }, false, null, false);
+            AnnounceGame();
+        }
 
 		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
 			var player = controller.game.Get(speaker);
@@ -47,12 +48,7 @@ namespace Hardly.Library.Twitch {
 				controller.SetState(this.GetType(), typeof(BJStatePlay));
 			}
 		}
-
-		internal override void Open() {
-			base.Open();
-			AnnounceGame();
-		}
-
+        
 		void SendJoinMessage(SqlTwitchUser speaker, ulong bet = 0) {
 			string chatMessage = "You're in";
 			if(bet > 0) {
@@ -79,9 +75,10 @@ namespace Hardly.Library.Twitch {
 			return chatMessage;
 		}
 
-		internal override void AnnounceGame() {
+		protected override void AnnounceGame() {
+            base.AnnounceGame();
+
 			controller.room.SendChatMessage("Blackjack: !play to join in.");
-			StartWaitingForSomeoneToJoin();
 		}
 
 		internal override void TimeUp() {

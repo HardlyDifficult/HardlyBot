@@ -21,6 +21,7 @@ namespace Hardly {
 		}
 
 		public void Start() {
+            timer.Stop();
 			startTime = DateTime.Now;
 			timer.Start();
 		}
@@ -31,7 +32,7 @@ namespace Hardly {
 				if(timeElapsed > TimeSpan.FromMilliseconds(0)) {
 					return TimeSpan.FromMilliseconds(timer.Interval) - timeElapsed;
 				} else {
-					return TimeSpan.FromSeconds(0);
+					return null;
 				}
 			} else {
 				return TimeSpan.FromMilliseconds(timer.Interval);

@@ -5,11 +5,9 @@ namespace Hardly.Library.Twitch {
 	public class TwitchHoldem : TwitchGameStateMachine<TexasHoldem<SqlTwitchUser>> {
 		ChatCommand aboutCommand, cancelCommand;
 
-		public TwitchHoldem(TwitchChatRoom room) : base(room) {
+		public TwitchHoldem(TwitchChatRoom room) : base(room, typeof(HoldemStateOff)) {
 			aboutCommand = ChatCommand.Create(room, "aboutholdem", AboutHoldem, "How to play Texas Holdem", new[] { "aboutholdem", "howtoplayholdem", "howtoplayholdem" }, false, TimeSpan.FromMinutes(2), false);
-			cancelCommand = ChatCommand.Create(room, "cancelholdem", CancelHoldem, "Cancels/ends any current games.  No money lost.", null, true, TimeSpan.FromSeconds(0), false);
-
-			SetState(null, typeof(HoldemStateOff));
+            cancelCommand = ChatCommand.Create(room, "cancelholdem", CancelHoldem, "Cancels/ends any current games.  No money lost.", null, true, null, false);
 		}
 
 		private void CancelHoldem(SqlTwitchUser user, string additionalText) {

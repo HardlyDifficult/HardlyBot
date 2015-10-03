@@ -27,7 +27,14 @@ namespace Hardly {
 
         #region Data
         System.Collections.Generic.List<ItemType> items;
-
+        public ItemType this[uint i] {
+            get {
+                return items[(int)i];
+            }
+            set {
+                items[(int)i] = value;
+            }
+        }
         public ItemType this[int i] {
             get {
                 return items[i];

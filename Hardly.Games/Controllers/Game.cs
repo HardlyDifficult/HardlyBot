@@ -39,7 +39,7 @@ namespace Hardly.Games {
 			return players.Count >= maxPlayers;
 		}
 
-        public bool Join(PlayerIdType playerId, PlayerGameType gameObject) {
+        public virtual bool Join(PlayerIdType playerId, PlayerGameType gameObject) {
             if(!IsFull()) {
                 players.Add(playerId, gameObject);
                 return true;

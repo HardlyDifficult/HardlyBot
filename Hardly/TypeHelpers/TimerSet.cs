@@ -2,11 +2,16 @@
 
 namespace Hardly {
 	public class TimerSet {
-		bool isRunning = false;
+		public bool isRunning {
+            get;
+            private set;
+        }
 		TimerBase[] timers;
 		Action[] actions;
 		
 		public TimerSet(TimeSpan[] timeSpan, Action[] action) {
+            isRunning = false;
+
 			if(timeSpan != null && action != null && timeSpan.Length == action.Length) {
 				this.actions = action;
 				timers = new TimerBase[timeSpan.Length];
@@ -33,7 +38,7 @@ namespace Hardly {
 		}
 
 		public TimeSpan TimeRemaining() {
-			TimeSpan timeRemaining = TimeSpan.FromSeconds(0);
+			TimeSpan timeRemaining = null;
 			bool foundActiveTimer = !isRunning;
 			for(int i = 0; i < timers.Length; i++) {
 				if(foundActiveTimer || timers[i].IsRunning()) {

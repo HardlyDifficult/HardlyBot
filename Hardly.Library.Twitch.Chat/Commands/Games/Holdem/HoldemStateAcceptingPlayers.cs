@@ -4,10 +4,10 @@ using System;
 namespace Hardly.Library.Twitch {
 	internal class HoldemStateAcceptingPlayers : GameStateAcceptingPlayers<TwitchHoldem> {
 		public HoldemStateAcceptingPlayers(TwitchHoldem controller) : base(controller) {
-			AddCommand(controller.room, "playholdem", PlayCommand, "Joins a game of Holdem.", null, false, TimeSpan.FromSeconds(0), false);
-			AddCommand(controller.room, "startholdem", StartCommand, "Starts a game of Holdem if there is at least two players", null, true, TimeSpan.FromSeconds(0), false);
-			AddCommand(controller.room, "cancelplayholdem", CancelPlayCommand, "Cancels a play, if it's not too late.", null, false, TimeSpan.FromSeconds(0), false);
-		}
+			AddCommand(controller.room, "playholdem", PlayCommand, "Joins a game of Holdem.", null, false, null, false);
+			AddCommand(controller.room, "startholdem", StartCommand, "Starts a game of Holdem if there is at least two players", null, true, null, false);
+			AddCommand(controller.room, "cancelplayholdem", CancelPlayCommand, "Cancels a play, if it's not too late.", null, false, null, false);
+        }
 
 		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
 			var player = controller.game.Get(speaker);
@@ -62,9 +62,9 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        internal override void AnnounceGame() {
+        protected override void AnnounceGame() {
 			controller.room.SendChatMessage("Holdem: !playholdem to join in.");
-			StartWaitingForSomeoneToJoin();
+            base.AnnounceGame();
 		}
 
 		string GetStartingInMessage() {
@@ -91,11 +91,6 @@ namespace Hardly.Library.Twitch {
 
 		internal override void TimeUp() {
 			controller.room.SendChatMessage("Holdem: !playholdem to join in, we start " + GetStartingInMessage());
-		}
-
-		internal override void Open() {
-			base.Open();
-			AnnounceGame();
 		}
 	}
 }

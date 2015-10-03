@@ -7,7 +7,7 @@ namespace Hardly.Library.Twitch {
         internal HearthGame hearthstoneGame = null;
         internal EndOfGame lastGameEnding = null;
 
-        public TwitchHearthstone(TwitchChatRoom room) : base(room) {
+        public TwitchHearthstone(TwitchChatRoom room) : base(room, typeof(HSStateOff)) {
             HearthstoneEventObserver hearthObserver = new HearthstoneEventObserver();
             hearthObserver.RegisterObserver(HearthEvent);
         }

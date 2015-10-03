@@ -1,9 +1,6 @@
 ﻿namespace Hardly.Library.Twitch {
 	public class HoldemStatePlayPreFlop : HoldemStatePlay {
 		public HoldemStatePlayPreFlop(TwitchHoldem controller) : base(controller) {
-        }
-
-        internal override void Open() {
             string chatMassege = "Texas Holdem has begun! ";
             bool first = true;
             foreach(var player in controller.game.seatedPlayers) {
@@ -25,8 +22,6 @@
                     controller.room.SendWhisper(player.idObject, playerMessage);
                 }
             }
-
-            base.Open();
         }
 	}
 }

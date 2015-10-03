@@ -11,7 +11,29 @@ namespace Hardly.Library.Twitch {
 
 		public HoldemStateEndOfGame(TwitchHoldem controller) : base(controller) {
             timer = new Timer(TimeSpan.FromSeconds(5), TimeUp);
-		}
+            iPlayer = 0;
+
+            if(controller.game.lastGameEndedInSidepotPlayers.Count + controller.game.lastGameEndedInSeatPlayers.Count > 1) {
+                string chatMessage = PlayerHand();
+                chatMessage += "...";
+                controller.room.SendChatMessage(chatMessage);
+                timer.Start();
+            } else {
+                string chatMessage = "Holdem: ";
+                TexasHoldemPlayer<SqlTwitchUser> player;
+                if(iPlayer > controller.game.lastGameEndedInSidepotPlayers.Count - 1) {
+                    player = controller.game.lastGameEndedInSeatPlayers[iPlayer - controller.game.lastGameEndedInSidepotPlayers.Count];
+                } else {
+                    player = controller.game.lastGameEndedInSidepotPlayers[iPlayer];
+                }
+                chatMessage += player.idObject.name;
+                chatMessage += " won ";
+                chatMessage += controller.room.pointManager.ToPointsString(controller.game.lastGameWinners.First.Item2);
+                controller.room.SendChatMessage(chatMessage);
+                // TODO option to show.
+                controller.SetState(GetType(), typeof(HoldemStateOff));
+            }
+        }
 
         private void TimeUp() {
             iPlayer++;
@@ -51,34 +73,7 @@ namespace Hardly.Library.Twitch {
                 }
             }
         }
-
-        internal override void Open() {
-            base.Open();
-            iPlayer = 0;
-            
-
-            if(controller.game.lastGameEndedInSidepotPlayers.Count + controller.game.lastGameEndedInSeatPlayers.Count > 1) {
-                string chatMessage = PlayerHand();
-                chatMessage += "...";
-                controller.room.SendChatMessage(chatMessage);
-                timer.Start();
-            } else {
-                string chatMessage = "Holdem: ";
-                TexasHoldemPlayer<SqlTwitchUser> player;
-                if(iPlayer > controller.game.lastGameEndedInSidepotPlayers.Count - 1) {
-                    player = controller.game.lastGameEndedInSeatPlayers[iPlayer - controller.game.lastGameEndedInSidepotPlayers.Count];
-                } else {
-                    player = controller.game.lastGameEndedInSidepotPlayers[iPlayer];
-                }
-                chatMessage += player.idObject.name;
-                chatMessage += " won ";
-                chatMessage += controller.room.pointManager.ToPointsString(controller.game.lastGameWinners.First.Item2);
-                controller.room.SendChatMessage(chatMessage);
-                // TODO option to show.
-                controller.SetState(GetType(), typeof(HoldemStateOff));
-            }
-        }
-
+        
         private string PlayerHand() {
             string chatMessage = "Holdem";
             TexasHoldemPlayer<SqlTwitchUser> player;

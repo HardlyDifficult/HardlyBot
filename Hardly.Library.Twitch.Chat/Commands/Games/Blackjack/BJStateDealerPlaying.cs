@@ -7,18 +7,17 @@ namespace Hardly.Library.Twitch {
 
 		public BJStateDealerPlaying(TwitchBlackjack controller) : base(controller) {
 			timer = new Timer(TimeSpan.FromSeconds(10), DrawCard);
-		}
 
-		internal override void Close() {
+            string chatMessage = "Blackjack: Dealer has ";
+            chatMessage += controller.game.dealer.cards.ToString();
+            CheckDone(chatMessage);
+        }
+
+        public override void Dispose() {
+            base.Dispose();
 			timer?.Stop();
 		}
-
-		internal override void Open() {
-			string chatMessage = "Blackjack: Dealer has ";
-			chatMessage += controller.game.dealer.cards.ToString();
-			CheckDone(chatMessage);
-		}
-
+        
 		void CheckDone(string chatMessage) {
 			if(controller.game.dealer.isBust) {
 				chatMessage += " and busts.";

@@ -21,7 +21,7 @@ namespace Hardly.Tests {
 			TimeSpan spanWithThrottle = calcTimeSpan(throttle, id);
 
 			Assert.IsTrue(spanWithThrottle > spanWithoutThrottle);
-			Assert.IsTrue(spanWithThrottle > new TimeSpan(0, 0, 9));
+			Assert.IsTrue(spanWithThrottle > TimeSpan.FromSeconds(9));
 		}
 
 		static uint counter = 0;
@@ -40,8 +40,8 @@ namespace Hardly.Tests {
 			threads.Run();
 
 			TimeSpan span = DateTime.Now - start;
-			Assert.IsTrue(span > new TimeSpan(0, 0, 9));
-			Assert.IsTrue(span < new TimeSpan(0, 0, 90));
+			Assert.IsTrue(span > TimeSpan.FromSeconds(9));
+			Assert.IsTrue(span < TimeSpan.FromSeconds(90));
 		}
 
 		TimeSpan calcTimeSpan(Throttle t, uint id) {
