@@ -94,3 +94,9 @@ CREATE TABLE `twitch_commands` (
   CONSTRAINT `CommandConnectionBot` FOREIGN KEY (`BotUserId`) REFERENCES `twitch_connections` (`BotUserId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `CommandConnectionChannel` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_connections` (`ChannelUserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `hearthstone_cards` (
+  `CardId` varchar(15) NOT NULL,
+  `Name` varchar(45) NOT NULL,
+  PRIMARY KEY (`CardId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

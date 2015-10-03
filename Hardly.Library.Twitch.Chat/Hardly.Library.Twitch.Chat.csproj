@@ -46,6 +46,11 @@
     <Compile Include="Commands\Games\Blackjack\BJStateOff.cs" />
     <Compile Include="Commands\Games\Blackjack\BJStatePlay.cs" />
     <Compile Include="Commands\Games\Blackjack\TwitchBlackjack.cs" />
+    <Compile Include="Commands\Games\Hearthstone\HSStateAcceptingBets.cs" />
+    <Compile Include="Commands\Games\Hearthstone\HSStateEndOfGame.cs" />
+    <Compile Include="Commands\Games\Hearthstone\HSStateNoBets.cs" />
+    <Compile Include="Commands\Games\Hearthstone\HSStateOff.cs" />
+    <Compile Include="Commands\Games\Hearthstone\HSStatePlaying.cs" />
     <Compile Include="Commands\Games\Holdem\HoldemStateAcceptingPlayers.cs" />
     <Compile Include="Commands\Games\Holdem\HoldemStateEndOfGame.cs" />
     <Compile Include="Commands\Games\Holdem\HoldemStateOff.cs" />
@@ -55,13 +60,16 @@
     <Compile Include="Commands\Games\Holdem\HoldemStatePlayRiver.cs" />
     <Compile Include="Commands\Games\Holdem\HoldemStatePlayTurn.cs" />
     <Compile Include="Commands\Games\Holdem\TwitchHoldem.cs" />
+    <Compile Include="Commands\Games\RussianRoulette\RRStateAcceptingPlayers.cs" />
+    <Compile Include="Commands\Games\RussianRoulette\RRStateOff.cs" />
+    <Compile Include="Commands\Games\RussianRoulette\TwitchRussianRoulette.cs" />
     <Compile Include="Commands\Games\TwitchGameStateMachine.cs" />
     <Compile Include="Commands\Games\DiceGames\TwitchPickANumber.cs" />
     <Compile Include="Commands\System\DynamicCommands.cs" />
     <Compile Include="Commands\Games\TwitchGame.cs" />
     <Compile Include="Commands\System\AboutCommands.cs" />
     <Compile Include="Commands\System\HelloCommand.cs" />
-    <Compile Include="Events\HearthstoneEvents.cs" />
+    <Compile Include="Commands\Games\Hearthstone\TwitchHearthstone.cs" />
     <Compile Include="Logic\States\GameState.cs" />
     <Compile Include="Logic\States\GameStateAcceptingPlayers.cs" />
     <Compile Include="Commands\UserInfo\ViewPoints.cs" />
@@ -69,6 +77,10 @@
     <Compile Include="WakeUpAssembly.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Hardly.Games.Betting\Hardly.Games.Betting.csproj">
+      <Project>{4cea7431-d1f1-41dd-af87-0ee023716443}</Project>
+      <Name>Hardly.Games.Betting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hardly.Games.Blackjack\Hardly.Games.Blackjack.csproj">
       <Project>{92e263b4-0b72-4d53-b32e-4ce821efd322}</Project>
       <Name>Hardly.Games.Blackjack</Name>
@@ -109,9 +121,6 @@
       <Project>{aa4abdd7-67d3-47f7-8e6d-4b5c394c2055}</Project>
       <Name>Hardly</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Commands\Games\Blackjack\Blackjack.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

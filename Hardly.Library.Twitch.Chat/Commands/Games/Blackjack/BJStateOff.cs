@@ -6,7 +6,7 @@ namespace Hardly.Library.Twitch {
 
 		public BJStateOff(TwitchBlackjack controller) : base(controller) {
 			timer = new Timer(TimeSpan.FromSeconds(30), AutoStart);
-			AddCommand(controller.room, "bj", BjCommand, "Starts a game of Blackjack", new[] { "blackjack" }, true, TimeSpan.FromSeconds(0), false);
+			AddCommand(controller.room, "bj", BjCommand, "Starts a game of Blackjack", new[] { "blackjack" }, false, TimeSpan.FromSeconds(0), false);
 		}
 
 		private void BjCommand(SqlTwitchUser speaker, string additionalText) {
