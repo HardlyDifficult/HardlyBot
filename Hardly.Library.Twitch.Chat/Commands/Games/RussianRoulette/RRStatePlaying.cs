@@ -8,7 +8,7 @@
             AddCommand(controller.room, "pussyout", PussyOut, "Points the gun at your head and pulls the trigger.  Good luck fool.", new[] { "pulltrigger" }, false);
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
             turnTimer = new Timer(TimeSpan.FromSeconds(30), TimeUp);
             controller.game.StartGame();
             string chatMessage = "Russian Roulette has begun - ";
@@ -19,8 +19,8 @@
             PussyOut(controller.game.currentPlayer.idObject, null);
         }
 
-        public override void Close() {
-            base.Close();
+        protected override void CloseState() {
+            base.CloseState();
 
             turnTimer.Stop();
         }

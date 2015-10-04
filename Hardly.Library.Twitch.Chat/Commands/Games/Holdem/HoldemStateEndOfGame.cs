@@ -14,7 +14,7 @@ namespace Hardly.Library.Twitch {
             iPlayer = 0;
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
             if(controller.game.lastGameEndedInSidepotPlayers.Count + controller.game.lastGameEndedInSeatPlayers.Count > 1) {
                 string chatMessage = PlayerHand();
                 chatMessage += "...";

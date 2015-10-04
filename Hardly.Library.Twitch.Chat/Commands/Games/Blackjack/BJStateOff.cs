@@ -8,7 +8,7 @@ namespace Hardly.Library.Twitch {
 			timer = new Timer(TimeSpan.FromSeconds(30), AutoStart);
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
             AddCommand(controller.room, "bj", BjCommand, "Starts a game of Blackjack", new[] { "blackjack" }, false, null, false);
             controller.game.Reset();
         }
@@ -21,8 +21,8 @@ namespace Hardly.Library.Twitch {
 			controller.SetState(this, typeof(BJStateAcceptingPlayers)); 
 		}
 
-        public override void Close() {
-            base.Close();
+        protected override void CloseState() {
+            base.CloseState();
 			timer?.Stop();
 		}
 	}

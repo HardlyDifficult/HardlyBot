@@ -11,7 +11,7 @@ namespace Hardly.Library.Twitch {
             AddCommand(controller.room, "bettolose", BetToLose, "Places a bet that the streamer will lose.", null, false, null, false);
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
             controller.room.SendChatMessage("Hearthstone --- just started a new game: "
                 + controller.hearthstoneGame.myPlayerName + " vs " + controller.hearthstoneGame.opponentPlayerName);
 

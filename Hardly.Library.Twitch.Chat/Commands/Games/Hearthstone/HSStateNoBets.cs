@@ -5,7 +5,7 @@ namespace Hardly.Library.Twitch {
         public HSStateNoBets(TwitchHearthstone controller) : base(controller) {
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
         }
     }
 }

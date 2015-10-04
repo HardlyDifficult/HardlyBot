@@ -5,7 +5,7 @@ namespace Hardly.Library.Twitch {
 		public HoldemStatePlayFlop(TwitchHoldem controller) : base(controller) {
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
             string chatMessage = "Holdem" + OnTheTable() + " ";
             bool first = true;
             foreach(var player in controller.game.seatedPlayers) {

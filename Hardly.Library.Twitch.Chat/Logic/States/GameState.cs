@@ -2,13 +2,36 @@
 
 namespace Hardly.Library.Twitch {
     public abstract class GameState {
-        public abstract void Close();
+        bool isClosed = false;
+        object myLock = new object();
+
+        public void Close() {
+            lock(myLock) {
+                if(!isClosed) {
+                    isClosed = true;
+
+                    CloseState();
+                }
+            }
+        }
+
+        public void Open() {
+            lock(myLock) {
+                if(!isClosed) {
+                    OpenState();
+                } else {
+                    Log.debug("State issue - this would have been bad...");
+                }
+            }
+        }
+
+        protected abstract void CloseState();
 
         /// <summary>
         /// This is called right after the constructor.  
         /// Anything that could change state must be in this method and NOT the constructor.
         /// </summary>
-        internal abstract void Open();
+        protected abstract void OpenState();
     }
 
 	public abstract class GameState<GameLogicController> : GameState {
@@ -30,7 +53,7 @@ namespace Hardly.Library.Twitch {
             return command;
 		}
 		
-		public override void Close() {
+		protected override void CloseState() {
 			foreach(var command in commands) {
 				command.Remove();
 			}

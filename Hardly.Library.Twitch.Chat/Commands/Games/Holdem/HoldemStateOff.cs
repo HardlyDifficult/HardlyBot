@@ -6,7 +6,7 @@ namespace Hardly.Library.Twitch {
 			AddCommand(controller.room, "holdem", HoldemCommand, "Starts a game of Texas Holdem", new[] { "texasholdem" }, false, null, false);
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
             controller.game.Reset();
             controller.game.bigBlind = 2;
         }

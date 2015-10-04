@@ -12,7 +12,7 @@ namespace Hardly.Library.Twitch {
 				new Action[] { TimeUp, FinalTimeUp });
         }
 
-        internal sealed override void Open() {
+        protected sealed override void OpenState() {
             AnnounceGame();
         }
 
@@ -35,8 +35,8 @@ namespace Hardly.Library.Twitch {
             }
 		}
 
-        public override void Close() {
-            base.Close();
+        protected override void CloseState() {
+            base.CloseState();
 			StopTimers();
 		}
 	}

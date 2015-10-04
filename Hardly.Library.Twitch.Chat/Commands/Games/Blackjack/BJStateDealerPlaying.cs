@@ -9,7 +9,7 @@ namespace Hardly.Library.Twitch {
 			timer = new Timer(TimeSpan.FromSeconds(10), DrawCard);
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
             if(controller.game.NumberOfPlayers() == 0) {
                 controller.SetState(this, typeof(BJStateOff));
             } else {
@@ -19,8 +19,8 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        public override void Close() {
-            base.Close();
+        protected override void CloseState() {
+            base.CloseState();
 			timer?.Stop();
 		}
         

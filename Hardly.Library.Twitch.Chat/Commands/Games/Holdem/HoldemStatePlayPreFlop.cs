@@ -5,7 +5,7 @@ namespace Hardly.Library.Twitch {
 		public HoldemStatePlayPreFlop(TwitchHoldem controller) : base(controller) {
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
             string chatMassege = "Texas Holdem has begun! ";
             bool first = true;
             foreach(var player in controller.game.seatedPlayers) {

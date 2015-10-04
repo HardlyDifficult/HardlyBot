@@ -6,7 +6,7 @@ namespace Hardly.Library.Twitch {
             AddCommand(controller.room, "russianroulette", StartGame, "Starts a game of Russian Roulette", null, false);
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
         }
 
         private void StartGame(SqlTwitchUser speaker, string additionalText) {

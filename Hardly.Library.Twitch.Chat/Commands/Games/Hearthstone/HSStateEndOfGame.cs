@@ -6,7 +6,7 @@ namespace Hardly.Library.Twitch {
             new Timer(TimeSpan.FromSeconds(20), AnnounceEnd).Start();
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
         }
 
         private void AnnounceEnd() {

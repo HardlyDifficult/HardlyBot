@@ -20,7 +20,7 @@ namespace Hardly.Library.Twitch {
             AddCommand(controller.room, "surrender", SurrenderCommand, "Surrender takes half your bet and kicks you out of the game.", null, false, null, false);
         }
 
-        internal override void Open() {
+        protected override void OpenState() {
             if(controller.game.CanStart()) {
                 controller.game.StartGame();
 
@@ -199,8 +199,8 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-        public override void Close() {
-            base.Close();
+        protected override void CloseState() {
+            base.CloseState();
 			timers.Stop();
             insuranceTimer.Stop();
 		}
