@@ -44,8 +44,8 @@
     <Compile Include="Events\DrawCard.cs" />
     <Compile Include="Events\EndOfGame.cs" />
     <Compile Include="Events\HearthGame.cs" />
-    <Compile Include="Events\NewGame.cs" />
     <Compile Include="Events\HearthstoneEvent.cs" />
+    <Compile Include="Events\NewGame.cs" />
     <Compile Include="HearthstoneEventObserver.cs" />
     <Compile Include="InternalEvents\HearthInternalStartingNewGame.cs" />
     <Compile Include="InternalEvents\HearthInternalState.cs" />

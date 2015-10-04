@@ -64,6 +64,7 @@
     <Compile Include="Data\SqlTwitchBot.cs" />
     <Compile Include="Data\SqlTwitchChannel.cs" />
     <Compile Include="Data\SqlTwitchChannelPointScale.cs" />
+    <Compile Include="Data\SqlTwitchCommands.cs" />
     <Compile Include="Data\SqlTwitchConnection.cs" />
     <Compile Include="Data\SqlTwitchFollower.cs" />
     <Compile Include="Data\SqlTwitchUser.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Controller\Twitch.cs" />
     <Compile Include="Internal\TwitchApi.cs" />
     <Compile Include="Internal\TwitchJson.cs" />
-    <Compile Include="Data\SqlTwitchCommands.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hardly.Games\Hardly.Games.csproj">
