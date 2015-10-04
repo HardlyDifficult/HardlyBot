@@ -14,16 +14,18 @@ namespace Hardly.Library.Twitch {
         }
 
         public bool SetState(GameState theStateIThinkWeAreIn, Type theStateToChangeToIfInTheStateIExpect) {
-            Debug.Assert(theStateIThinkWeAreIn?.GetType() != theStateToChangeToIfInTheStateIExpect);
-            
-            lock (myLock) {
-                if(theStateIThinkWeAreIn == null || currentState == null || currentState.Equals(theStateIThinkWeAreIn)) {
-                    Debug.Assert(!theStateToChangeToIfInTheStateIExpect.Equals(currentState?.GetType()));
-                    Log.debug("Twitch Game: Setting next state to " + theStateToChangeToIfInTheStateIExpect.ToString());
-                    currentState?.Close();
-                    currentState = (GameState)theStateToChangeToIfInTheStateIExpect.GetConstructor(new Type[] { this.GetType() }).Invoke(new object[] { this });
-                    currentState.Open();
-                    return true;
+            if(theStateIThinkWeAreIn?.GetType() != theStateToChangeToIfInTheStateIExpect) {
+                lock (myLock) {
+                    if(theStateIThinkWeAreIn == null || currentState == null || currentState.Equals(theStateIThinkWeAreIn)) {
+                        Debug.Assert(!theStateToChangeToIfInTheStateIExpect.Equals(currentState?.GetType()));
+                        Log.debug("Twitch Game: Setting next state to " + theStateToChangeToIfInTheStateIExpect.ToString());
+                        currentState?.Close();
+                        currentState = (GameState)theStateToChangeToIfInTheStateIExpect.GetConstructor(new Type[] { this.GetType() }).Invoke(new object[] { this });
+                        currentState.Open();
+                        return true;
+                    } else {
+                        theStateIThinkWeAreIn?.Close();
+                    }
                 }
             }
                    
