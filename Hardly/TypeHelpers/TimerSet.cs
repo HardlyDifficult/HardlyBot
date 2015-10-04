@@ -38,7 +38,7 @@ namespace Hardly {
 		}
 
 		public TimeSpan TimeRemaining() {
-			TimeSpan timeRemaining = null;
+			TimeSpan timeRemaining = TimeSpan.FromSeconds(0);
 			bool foundActiveTimer = !isRunning;
 			for(int i = 0; i < timers.Length; i++) {
 				if(foundActiveTimer || timers[i].IsRunning()) {
@@ -51,18 +51,13 @@ namespace Hardly {
 		}
 
 		public void Stop() {
-			if(isRunning && timers != null && timers.Length > 0) {
+            isRunning = false;
+
+            if(isRunning && timers != null && timers.Length > 0) {
 				foreach(var timer in timers) {
 					timer.Stop();
 				}
 			}
-
-			isRunning = false;
 		}
-
-        public void Restart() {
-            Stop();
-            Start();
-        }
     }
 }

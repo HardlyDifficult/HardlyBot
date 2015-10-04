@@ -7,13 +7,12 @@ namespace Hardly.Library.Twitch {
             AddCommand(controller.room, "play", PlayCommand, "Joins a game of Blackjack, follow with your bet --- e.g. !play 10.", new[] { "join" }, false, null, false);
 			AddCommand(controller.room, "start", StartCommand, "Starts a game of Blackjack if there is at least one player", null, true, null, false);
 			AddCommand(controller.room, "cancelplay", CancelPlayCommand, "Cancels a play, if it's not too late.", new[] { "leave" }, false, null, false);
-            AnnounceGame();
         }
 
 		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
 			var player = controller.game.Get(speaker);
 			if(player != null) {
-                player.CanelBet();
+                controller.game.LeaveGame(speaker);   
 				controller.room.SendWhisper(speaker, "You're out, later dude.");
 				if(controller.game.IsEmpty()) {
 					StopTimers();

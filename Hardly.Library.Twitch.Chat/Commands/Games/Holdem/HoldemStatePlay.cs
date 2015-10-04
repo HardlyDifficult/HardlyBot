@@ -235,7 +235,7 @@ namespace Hardly.Library.Twitch {
                 Log.debug("Twitch Game: Player changed, up now is: " + controller.game.currentPlayer.idObject.name);
                 lastKnownPlayer = controller.game.currentPlayer;
                 PlayerChanged();
-                timer.Restart();
+                timer.Start();
             }
         }
 
@@ -286,7 +286,7 @@ namespace Hardly.Library.Twitch {
 
         private void FailedAction(SqlTwitchUser speaker, string youTriedTo) {
             controller.room.SendWhisper(speaker, "Can't !" + youTriedTo + " right now -- you can " + AvailableCommands());
-            timer.Restart();
+            timer.Start();
         }
 
         protected string OnTheTable() {

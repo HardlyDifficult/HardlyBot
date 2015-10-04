@@ -23,10 +23,10 @@ namespace Hardly.Library.Twitch {
 		internal abstract void TimeUp();
 
 		protected void StopTimers() {
-				roundTimer.Stop();
-				waitingToStartTimer.Stop();
-
+			roundTimer.Stop();
+			waitingToStartTimer.Stop();
 		}
+
 		protected void MinHit_StartWaitingForAdditionalPlayers() {
             if(!roundTimer.isRunning) {
                 waitingToStartTimer.Stop();

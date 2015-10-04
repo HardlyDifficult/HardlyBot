@@ -28,7 +28,7 @@ namespace Hardly.Games {
             return 0;
         }
 
-        public void CanelBet() {
+        public void CancelBet() {
             pointManager?.Award(bet, 0);
             bet = 0;
         }

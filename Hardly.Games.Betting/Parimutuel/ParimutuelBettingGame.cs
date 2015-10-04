@@ -12,7 +12,7 @@ namespace Hardly.Games.Betting {
         public override void EndGame() {
             foreach(var player in PlayerGameObjects) {
                 if(iWon == null) {
-                    player.CanelBet();
+                    player.CancelBet();
                 } else if(player.toWin.Equals(iWon.Value)) {
                     double payoutRate = 1 - TotalBet(player.toWin) / TotalBet();  // 20 / 10 = 0.5.... 10/20 want 1:1 (1).  20/20 = want 0.  if 5/20 (.25) want 1:2 (.5)
                     payoutRate *= 2 - vig; // 0.5 * 0.05 = 0.025
@@ -40,5 +40,6 @@ namespace Hardly.Games.Betting {
         public void SetWinner(bool? iWon) {
             this.iWon = iWon;
         }
+
     }
 }

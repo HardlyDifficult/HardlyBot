@@ -19,7 +19,7 @@ namespace Hardly.Games {
         public bool Contains(PlayerIdType playerId) {
             return players.ContainsKey(playerId);
         }
-
+        
         public abstract void EndGame();
 
         public PlayerGameType Get(PlayerIdType player) {
@@ -46,6 +46,10 @@ namespace Hardly.Games {
             }
 
             return false;
+        }
+
+        public virtual void LeaveGame(PlayerIdType playerId) {
+            players.Remove(playerId);
         }
 
         public int NumberOfOpenSpots() {

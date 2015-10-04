@@ -403,5 +403,10 @@ namespace Hardly.Games {
         public override bool CanStart() {
             return round == Round.GameOver && NumberOfPlayers() >= 2;
         }
+
+        public override void LeaveGame(PlayerIdType playerId) {
+            seatedPlayers.Remove(Get(playerId));
+            base.LeaveGame(playerId);
+        }
     }
 }

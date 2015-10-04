@@ -1,4 +1,6 @@
-﻿namespace Hardly.Games {
+﻿using System;
+
+namespace Hardly.Games {
 	public sealed class Blackjack<PlayerIdType> : CardGame<PlayerIdType, BlackjackPlayer<PlayerIdType>> {
         public BlackjackCardListEvaluator dealer {
             get;
@@ -28,7 +30,7 @@
                 } 
             } else {
                 var player = Get(playerId);
-                player.CanelBet();
+                player.CancelBet();
                 if(player.PlaceBet(bet, false) > 0) {
                     Log.info(playerId.ToString() + " changed their Blackjack bet.");
                     return player.bet;
