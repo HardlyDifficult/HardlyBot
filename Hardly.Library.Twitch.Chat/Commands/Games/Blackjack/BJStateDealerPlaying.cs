@@ -7,14 +7,20 @@ namespace Hardly.Library.Twitch {
 
 		public BJStateDealerPlaying(TwitchBlackjack controller) : base(controller) {
 			timer = new Timer(TimeSpan.FromSeconds(10), DrawCard);
-
-            string chatMessage = "Blackjack: Dealer has ";
-            chatMessage += controller.game.dealer.cards.ToString();
-            CheckDone(chatMessage);
         }
 
-        public override void Dispose() {
-            base.Dispose();
+        internal override void Open() {
+            if(controller.game.NumberOfPlayers() == 0) {
+                controller.SetState(this, typeof(BJStateOff));
+            } else {
+                string chatMessage = "Blackjack: Dealer has ";
+                chatMessage += controller.game.dealer.cards.ToString();
+                CheckDone(chatMessage);
+            }
+        }
+
+        public override void Close() {
+            base.Close();
 			timer?.Stop();
 		}
         
@@ -63,7 +69,7 @@ namespace Hardly.Library.Twitch {
 			
 			controller.room.SendChatMessage(chatMessage);
             
-            controller.SetState(this.GetType(), typeof(BJStateOff));
+            controller.SetState(this, typeof(BJStateOff));
 		}
 
 		private string GetPlayerList(bool? winnerOrLoser) {

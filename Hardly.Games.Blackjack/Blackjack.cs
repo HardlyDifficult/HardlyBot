@@ -62,8 +62,22 @@ namespace Hardly.Games {
             return false;
 		}
 
+        public void Surrender(BlackjackPlayer<PlayerIdType> player) {
+            if(player.canSurrender) {
+                player.Award((long)(player.bet * -0.5));
+                LeaveGame(player.idObject);
+            }
+        }
+
         public override void EndGame() {
             foreach(var player in PlayerGameObjects) {
+                if(player.boughtInsurance) {
+                    if(dealer.isBlackjack) {
+                        player.LosePartialBet(player.bet / 3);
+                    } else {
+                        player.AwardPartialBet(player.bet / 3, (long)player.bet / 3 * 2);
+                    }
+                }
                 player.Award(player.GetWinningsOrLosings());
             }
         }
@@ -79,6 +93,20 @@ namespace Hardly.Games {
             }
 
             return allReady;
+        }
+
+        public bool InsuranceAvailable() {
+            if(dealer.cards.First.value.Equals(PlayingCard.Value.Ace)) {
+                foreach(var player in PlayerGameObjects) {
+                    if(player.CurrentHandEvaluator.cards.Count != 2) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Hardly.Library.Twitch {
 			AddCommand(controller.room, "cancelplayholdem", CancelPlayCommand, "Cancels a play, if it's not too late.", null, false, null, false);
         }
 
-		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
+        private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
 			var player = controller.game.Get(speaker);
 			if(player != null) {
 				TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
@@ -58,7 +58,7 @@ namespace Hardly.Library.Twitch {
 
         void StartGame() {
             if(controller.game.StartGame()) {
-                controller.SetState(this.GetType(), typeof(HoldemStatePlayPreFlop));
+                controller.SetState(this, typeof(HoldemStatePlayPreFlop));
             }
         }
 

@@ -6,9 +6,14 @@ namespace Hardly.Games {
         BlackjackCardListEvaluator mainHandEvaluator, splitHandEvaluator;
         ulong amountBetOnSplitHand;
 		bool currentHandIsMain = true;
+        public bool boughtInsurance {
+            get;
+            private set;
+        }
         
 		public BlackjackPlayer(Blackjack<PlayerIdType> controller, PlayerPointManager pointManager, PlayerIdType playerIdObject)
             : base(pointManager, playerIdObject) {
+            boughtInsurance = false;
             this.controller = controller;
             mainHandEvaluator = new BlackjackCardListEvaluator(hand.cards);
             splitHandEvaluator = null;
@@ -29,11 +34,12 @@ namespace Hardly.Games {
         internal long GetWinningsOrLosings() {
             long winningsOrLosings;
 
-            winningsOrLosings = GetWinnings(controller.dealer, mainHandEvaluator, bet);
 
             if(splitHandEvaluator != null) {
-                winningsOrLosings -= (long)amountBetOnSplitHand;
+                winningsOrLosings = GetWinnings(controller.dealer, mainHandEvaluator, bet - amountBetOnSplitHand);
                 winningsOrLosings += GetWinnings(controller.dealer, splitHandEvaluator, amountBetOnSplitHand);
+            } else {
+                winningsOrLosings = GetWinnings(controller.dealer, mainHandEvaluator, bet);
             }
 
             return winningsOrLosings;
@@ -65,9 +71,24 @@ namespace Hardly.Games {
             return winningsOrLosings;
         }
 
-        public bool CanSplit {
+        public bool BuyInsurance() {
+            if(PlaceBet(Math.Max(bet / 2, 1), true) > 0) {
+                boughtInsurance = true;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool canSplit {
             get {
                 return hand.cards.Count == 2 && hand.cards[0].BlackjackValue().Equals(hand.cards[1].BlackjackValue()) && splitHandEvaluator == null;
+            }
+        }
+
+        public bool canSurrender {
+            get {
+                return hand.cards.Count == 2 && splitHandEvaluator == null;
             }
         }
 
@@ -82,7 +103,7 @@ namespace Hardly.Games {
         }
 
         public bool Split() {
-			if(CanSplit) {
+			if(canSplit) {
                 splitHandEvaluator = new BlackjackCardListEvaluator(new PlayingCardList(hand.cards.Pop()));
                 amountBetOnSplitHand = bet;
 

@@ -203,25 +203,25 @@ namespace Hardly.Library.Twitch {
                 // Do nothing
                 break;
             case Games.TexasHoldem<SqlTwitchUser>.Round.Flop:
-                if(controller.SetState(GetType(), typeof(HoldemStatePlayFlop))) {
+                if(controller.SetState(this, typeof(HoldemStatePlayFlop))) {
                     timer.Stop();
                     return;
                 }
                 break;
             case Games.TexasHoldem<SqlTwitchUser>.Round.Turn:
-                if(controller.SetState(GetType(), typeof(HoldemStatePlayTurn))) {
+                if(controller.SetState(this, typeof(HoldemStatePlayTurn))) {
                     timer.Stop();
                     return;
                 }
                 break;
             case Games.TexasHoldem<SqlTwitchUser>.Round.River:
-                if(controller.SetState(GetType(), typeof(HoldemStatePlayRiver))) {
+                if(controller.SetState(this, typeof(HoldemStatePlayRiver))) {
                     timer.Stop();
                     return;
                 }
                 break;
             case Games.TexasHoldem<SqlTwitchUser>.Round.GameOver:
-                if(controller.SetState(GetType(), typeof(HoldemStateEndOfGame))) {
+                if(controller.SetState(this, typeof(HoldemStateEndOfGame))) {
                     timer.Stop();
                     return;
                 }

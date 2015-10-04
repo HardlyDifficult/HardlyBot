@@ -4,7 +4,7 @@ using System.Timers;
 namespace Hardly {
     public abstract class TimerBase {
         protected readonly System.Timers.Timer timer;
-        DateTime startTime = DateTime.MinValue;
+        protected DateTime startTime = DateTime.MinValue;
 
         public TimerBase(TimeSpan timeSpan) {
             this.timer = new System.Timers.Timer(timeSpan.TotalMilliseconds);
@@ -54,6 +54,7 @@ namespace Hardly {
         }
 
         private void TimerElapsed(object sender, ElapsedEventArgs e) {
+            Debug.Assert(startTime != DateTime.MinValue);
             timeUp();
         }
     }
@@ -69,6 +70,7 @@ namespace Hardly {
         }
 
         void TimerElapsed(object sender, ElapsedEventArgs e) {
+            Debug.Assert(startTime != DateTime.MinValue);
             timeUp(param);
         }
     }

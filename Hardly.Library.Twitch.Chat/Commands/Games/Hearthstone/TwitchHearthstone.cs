@@ -23,8 +23,8 @@ namespace Hardly.Library.Twitch {
                 SetState(null, typeof(HSStateEndOfGame));
             } else if(hearthEvent is DrawCard) {
                 var drawEvent = hearthEvent as DrawCard;
-                if(state is HSStatePlaying) {
-                    var playingState = state as HSStatePlaying;
+                if(currentState is HSStatePlaying) {
+                    var playingState = currentState as HSStatePlaying;
                     playingState.NextTurn(drawEvent);
                 }
             }

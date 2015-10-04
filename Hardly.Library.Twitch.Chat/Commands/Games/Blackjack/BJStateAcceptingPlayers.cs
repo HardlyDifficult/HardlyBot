@@ -9,7 +9,7 @@ namespace Hardly.Library.Twitch {
 			AddCommand(controller.room, "cancelplay", CancelPlayCommand, "Cancels a play, if it's not too late.", new[] { "leave" }, false, null, false);
         }
 
-		private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
+        private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
 			var player = controller.game.Get(speaker);
 			if(player != null) {
                 controller.game.LeaveGame(speaker);   
@@ -24,7 +24,7 @@ namespace Hardly.Library.Twitch {
 
 		void StartCommand(SqlTwitchUser speaker, string additionalText) {
 			if(!controller.game.IsEmpty()) {
-				controller.SetState(this.GetType(), typeof(BJStatePlay));
+				controller.SetState(this, typeof(BJStatePlay));
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace Hardly.Library.Twitch {
 
 		private void StartIfReady() {
 			if(controller.game.IsFull()) {
-				controller.SetState(this.GetType(), typeof(BJStatePlay));
+				controller.SetState(this, typeof(BJStatePlay));
 			}
 		}
         
@@ -81,11 +81,19 @@ namespace Hardly.Library.Twitch {
 		}
 
 		internal override void TimeUp() {
-			controller.room.SendChatMessage("Blackjack: !play to join in, we start " + GetStartingInMessage());
+            if(controller.game.CanStart()) {
+                controller.room.SendChatMessage("Blackjack: !play to join in, we start " + GetStartingInMessage());
+            } else {
+                StopTimers();
+            }
 		}
 
 		internal override void FinalTimeUp() {
-			controller.SetState(this.GetType(), typeof(BJStatePlay));
+            if(controller.game.CanStart()) {
+                controller.SetState(this, typeof(BJStatePlay));
+            } else {
+                StopTimers();
+            }
 		}
 	}
 }

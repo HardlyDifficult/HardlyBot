@@ -10,8 +10,9 @@ namespace Hardly.Library.Twitch {
 			roundTimer = new TimerSet(
 				new TimeSpan[] { TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(20) },
 				new Action[] { TimeUp, FinalTimeUp });
+        }
 
-
+        internal sealed override void Open() {
             AnnounceGame();
         }
 
@@ -34,8 +35,8 @@ namespace Hardly.Library.Twitch {
             }
 		}
 
-        public override void Dispose() {
-            base.Dispose();
+        public override void Close() {
+            base.Close();
 			StopTimers();
 		}
 	}

@@ -12,7 +12,9 @@ namespace Hardly.Library.Twitch {
 		public HoldemStateEndOfGame(TwitchHoldem controller) : base(controller) {
             timer = new Timer(TimeSpan.FromSeconds(5), TimeUp);
             iPlayer = 0;
+        }
 
+        internal override void Open() {
             if(controller.game.lastGameEndedInSidepotPlayers.Count + controller.game.lastGameEndedInSeatPlayers.Count > 1) {
                 string chatMessage = PlayerHand();
                 chatMessage += "...";
@@ -31,7 +33,7 @@ namespace Hardly.Library.Twitch {
                 chatMessage += controller.room.pointManager.ToPointsString(controller.game.lastGameWinners.First.Item2);
                 controller.room.SendChatMessage(chatMessage);
                 // TODO option to show.
-                controller.SetState(GetType(), typeof(HoldemStateOff));
+                controller.SetState(this, typeof(HoldemStateOff));
             }
         }
 
@@ -57,7 +59,7 @@ namespace Hardly.Library.Twitch {
                 }
                 
                 controller.room.SendChatMessage(chatMessage);
-                controller.SetState(GetType(), typeof(HoldemStateOff));
+                controller.SetState(this, typeof(HoldemStateOff));
             }
         }
 
