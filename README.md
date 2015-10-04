@@ -1,4 +1,5 @@
-# HardlyCode
+![Hardly (a) BOT](http://i.imgur.com/66sOapV.png)
+
 This is the card game chatbot made by HardlySober.
 Working currently
  - Blackjack (!blackjack to start)
@@ -14,3 +15,4 @@ Other things
 
 For info on setting up the mysql data see the wiki.
 Solution file is under TwitchChatBotConsole
+
