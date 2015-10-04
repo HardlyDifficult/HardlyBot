@@ -67,5 +67,18 @@ namespace Hardly.Games {
                 player.Award(player.GetWinningsOrLosings());
             }
         }
+
+        public bool ReadyToEnd() {
+            bool allReady = true;
+
+            foreach(var player in PlayerGameObjects) {
+                if(!player.CurrentHandEvaluator.isDone) {
+                    allReady = false;
+                    break;
+                }
+            }
+
+            return allReady;
+        }
     }
 }

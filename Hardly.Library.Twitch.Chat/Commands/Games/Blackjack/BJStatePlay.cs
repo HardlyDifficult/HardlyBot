@@ -17,21 +17,29 @@ namespace Hardly.Library.Twitch {
 
             controller.game.StartGame();
 
-            string message = "Blackjack: Dealer ";
-            message += controller.game.dealer.cards.First.ToString();
-            message += " \uD83C\uDCA0 ";
             foreach(var player in controller.game.PlayerGameObjects) {
-                message += ", ";
-                message += player.idObject.name;
-                message += " ";
-                message += player.CurrentHandEvaluator.cards.ToString();
+                if(player.CurrentHandEvaluator.isBlackjack) {
+                    StandCommand(player.idObject, null);
+                }
             }
 
-            message += " -- !Hit, !Stand, !Split or !DoubleDown?";
+            if(!controller.game.ReadyToEnd()) {
+                string message = "Blackjack: Dealer ";
+                message += controller.game.dealer.cards.First.ToString();
+                message += " \uD83C\uDCA0 ";
+                foreach(var player in controller.game.PlayerGameObjects) {
+                    message += ", ";
+                    message += player.idObject.name;
+                    message += " ";
+                    message += player.CurrentHandEvaluator.cards.ToString();
+                }
 
-            controller.room.SendChatMessage(message);
-
-            timers.Start();
+                message += " -- !Hit, !Stand, !Split or !DoubleDown?";
+                controller.room.SendChatMessage(message);
+            } else {
+                controller.SetState(this.GetType(), typeof(BJStateDealerPlaying));
+                timers.Start();
+            }
         }
 
 		private void StandCommand(SqlTwitchUser speaker, string message) {
@@ -42,7 +50,7 @@ namespace Hardly.Library.Twitch {
 					string chatMessage = "Standing with " + player.CurrentHandEvaluator.cards.ToString() + " (" + player.CurrentHandEvaluator.HandValueString() + ").";
 					chatMessage += AnnounceSplitHand(player);
 					controller.room.SendWhisper(speaker, chatMessage);
-					if(ReadyToEnd()) {
+					if(controller.game.ReadyToEnd()) {
 						controller.SetState(this.GetType(), typeof(BJStateDealerPlaying));
 					}
 				}
@@ -104,16 +112,18 @@ namespace Hardly.Library.Twitch {
 
 					chatMessage += "Dealt a " + player.hand.cards.Last.ToString();
 
-					if(player.CurrentHandEvaluator.isBust) {
-						chatMessage += " and BUSTED with " + player.CurrentHandEvaluator.cards.ToString() + " (" + player.CurrentHandEvaluator.HandValueString() + ")!";
-					} else {
-						chatMessage += ", you have " + player.CurrentHandEvaluator.cards.ToString() + ".";
-					}
+                    if(player.CurrentHandEvaluator.isBust) {
+                        chatMessage += " and BUSTED with " + player.CurrentHandEvaluator.cards.ToString() + " (" + player.CurrentHandEvaluator.HandValueString() + ")!";
+                    } else if(player.CurrentHandEvaluator.handValue == 21 && player.Stand()) {
+                        chatMessage += " and you stood with " + player.CurrentHandEvaluator.cards.ToString() + " (" + player.CurrentHandEvaluator.HandValueString() + ")!";
+                    } else {
+                        chatMessage += ", you have " + player.CurrentHandEvaluator.cards.ToString() + ".";
+                    }
 					
 					chatMessage += AnnounceSplitHand(player);
 					controller.room.SendWhisper(speaker, chatMessage);
 
-					if(ReadyToEnd()) {
+					if(controller.game.ReadyToEnd()) {
 						controller.SetState(this.GetType(), typeof(BJStateDealerPlaying));
 					}
 				} else {
@@ -149,19 +159,6 @@ namespace Hardly.Library.Twitch {
 
 		void FinalTimeUp() {
 			controller.SetState(this.GetType(), typeof(BJStateDealerPlaying));
-		}
-
-		bool ReadyToEnd() {
-			bool allReady = true;
-
-			foreach(var player in controller.game.PlayerGameObjects) {
-				if(!player.CurrentHandEvaluator.isDone) {
-					allReady = false;
-					break;
-				}
-			}
-
-			return allReady;
 		}
 
 		BlackjackPlayer<SqlTwitchUser> GetPlayer(SqlTwitchUser speaker) {
