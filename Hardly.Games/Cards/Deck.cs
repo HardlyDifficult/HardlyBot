@@ -15,6 +15,11 @@ namespace Hardly.Games {
             currentDeck.Shuffle();
         }
 
+        public void ShuffleIn(CardType newCard) {
+            currentDeck.Add(newCard);
+            currentDeck.Shuffle();
+        }
+
         public void ShuffleIn(List<CardType> newCards) {
             currentDeck.Add(newCards);
             currentDeck.Shuffle();

@@ -3,7 +3,7 @@
         : Game<PlayerGameObjectType, PlayerIdType> 
         where PlayerGameObjectType : GamePlayer<PlayerIdType> 
         where CardType : ICard {
-		Deck<CardType> deck;
+		protected readonly Deck<CardType> deck;
 
 		public CardGame(Deck<CardType> dealerDeck, uint minPlayers, uint maxPlayers) : base(minPlayers, maxPlayers) {
             deck = dealerDeck;
@@ -14,7 +14,7 @@
             deck.Reset();
 		}
 
-		public CardType DealCard(List<CardType> playerCards) {
+		public virtual CardType DealCard(List<CardType> playerCards) {
             CardType card = deck.TakeTopCard();
 			playerCards.Add(card);
 
