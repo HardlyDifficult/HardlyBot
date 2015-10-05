@@ -9,7 +9,7 @@ namespace Hardly.Library.Twitch {
 
         public static SqlTwitchUser GetFromName(string username) {
             try {
-                SqlTwitchUser user = SqlTwitchUser.GetFromName(username);
+                var user = FromName(username);
                 if(user != null) {
                     return user;
                 } else {
@@ -71,7 +71,7 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        public static SqlTwitchUser GetFromName(string username) {
+        static SqlTwitchUser FromName(string username) {
             try {
                 object[] values = _table.Select(null, null, "Name=?a", new object[] { username }, null);
                 if(values != null && values.Length > 0) {
