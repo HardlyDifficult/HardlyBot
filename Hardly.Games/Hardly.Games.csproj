@@ -40,16 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cards\CardPlayerHand.cs" />
     <Compile Include="Cards\Deck.cs" />
+    <Compile Include="Cards\ICard.cs" />
     <Compile Include="Cards\PlayingCard.cs" />
-    <Compile Include="Cards\PlayingCardList.cs" />
-    <Compile Include="Cards\PlayingCardListEvaluator.cs" />
+    <Compile Include="Cards\PlayingCardDeck.cs" />
     <Compile Include="Controllers\CardGame.cs" />
     <Compile Include="Controllers\Game.cs" />
     <Compile Include="Controllers\PlayerPointManager.cs" />
-    <Compile Include="Dice\DiceGame.cs" />
-    <Compile Include="Players\CardPlayer.cs" />
+    <Compile Include="Dice\PickANumberGame.cs" />
+    <Compile Include="Dice\PickANumberPlayer.cs" />
     <Compile Include="Players\GamePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,22 +1,69 @@
-﻿using System;
-
-namespace Hardly.Games.Betting {
-    public class RussianRoulette<PlayerIdType> : Game<PlayerIdType, RussianRoulettePlayer<PlayerIdType>> {
+﻿namespace Hardly.Games.Betting {
+    public class RussianRoulette<PlayerIdType> : Game<RussianRoulettePlayer<PlayerIdType>, PlayerIdType> {
         public ulong bet;
-        public readonly List<RussianRoulettePlayer<PlayerIdType>> seatedPlayers = new List<RussianRoulettePlayer<PlayerIdType>>();
         uint iRound, iBulletPosition, iCurrentPlayer;
 
-        public RussianRoulette() : base(6) {
+        public RussianRoulette() : base(1, 6) {
+            bet = 1;
             iRound = 0;
             iBulletPosition = 0;
             iCurrentPlayer = 0;
         }
 
+        public RussianRoulettePlayer<PlayerIdType> currentPlayer {
+            get {
+                return GetPlayers()[iCurrentPlayer];
+            }
+        }
+
+        public override bool Join(RussianRoulettePlayer<PlayerIdType> playerGameObject) {
+            if(!Contains(playerGameObject)) {
+                if(base.Join(playerGameObject)) {
+                    if(playerGameObject.PlaceBet(bet, true) > 0) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool gunHasBeenFired {
+            get {
+                return iBulletPosition != 0;
+            }
+        }
+
+        public bool PullTrigger() {
+            if(currentPlayer != null && !gameOver) {
+                iRound++;
+
+                if(iRound >= 6) {
+                    iRound = 0;
+                }
+
+                if(iRound == iBulletPosition) {
+                    currentPlayer.isWinner = false;
+                    currentPlayer.LoseBet();
+                    if(RemovePlayer(currentPlayer)) {
+                        ReloadGun();
+                    }
+                } else {
+                    iCurrentPlayer++;
+                }
+
+                CheckForEndGame();
+                return true;
+            }
+
+            return false;
+        }
+
         public bool PussyOut() {
-            if(currentPlayer != null && !GameOver()) {
+            if(currentPlayer != null && !gameOver) {
                 if(Contains(currentPlayer.idObject)) {
                     currentPlayer.LoseBet();
-                    if(seatedPlayers.Remove(currentPlayer)) {
+                    if(RemovePlayer(currentPlayer)) {
                         CheckForEndGame();
                         return true;
                     }
@@ -26,120 +73,43 @@ namespace Hardly.Games.Betting {
             return false;
         }
 
-        private void CheckForEndGame() {
-            if(iCurrentPlayer >= seatedPlayers.Count) {
+        public override bool StartGame() {
+            if(base.StartGame()) {
+                iCurrentPlayer = 0;
+                GetPlayers().Shuffle();
+                ReloadGun();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        protected override void EndGame() {
+            if(numberOfPlayers >= 1) {
+                ulong winnings = TotalBets() / numberOfPlayers;
+                foreach(var player in GetPlayers()) {
+                    player.isWinner = true;
+                    player.Award((long)(winnings - player.bet));
+                }
+            }
+
+            base.EndGame();
+        }
+
+        void CheckForEndGame() {
+            if(iCurrentPlayer >= numberOfPlayers) {
                 iCurrentPlayer = 0;
             }
 
-            if(seatedPlayers.Count <= 1) {
+            if(numberOfPlayers <= 1) {
                 EndGame();
             }
         }
 
-        public override void Reset() {
-            base.Reset();
-
-            iCurrentPlayer = 0;
-        }
-
-        public override bool CanStart() {
-            return NumberOfPlayers() >= 2;
-        }
-
-        public override void EndGame() {
-            if(seatedPlayers.Count >= 1) {
-                ulong winnings = TotalPot() / (ulong)seatedPlayers.Count;
-                foreach(var player in seatedPlayers) {
-                    player.Award((long)(winnings - player.bet));
-                }
-            }
-        }
-
-        private ulong TotalPot() {
-            ulong pot = 0;
-            foreach(var player in PlayerGameObjects) {
-                pot += player.bet;
-            }
-
-            return pot;
-        }
-
-        public override bool Join(PlayerIdType playerId, RussianRoulettePlayer<PlayerIdType> gameObject) {
-            if(!Contains(playerId)) {
-                if(gameObject.PlaceBet(bet, true) > 0) {
-                    if(base.Join(playerId, gameObject)) {
-                        return true;
-                    } else {
-                        gameObject.CancelBet();
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// True you died, false you lived.
-        /// </summary>
-        public bool PullTrigger() {
-            iRound++;
-
-            if(iRound >= 6) {
-                iRound = 0;
-            }
-
-            if(iRound == iBulletPosition) {
-                currentPlayer.LoseBet();
-                seatedPlayers.Remove(currentPlayer);
-                CheckForEndGame();
-                ReloadGun();
-                return true;
-            } else {
-                iCurrentPlayer++;
-                CheckForEndGame();
-
-                return false;
-            }
-        }
-
-        public bool GameOver() {
-            return seatedPlayers.Count <= 1;
-        }
-
-        public override bool StartGame() {
-            if(base.StartGame()) {
-                seatedPlayers.Clear();
-                seatedPlayers.Add(PlayerGameObjects);
-                seatedPlayers.Shuffle();
-
-                ReloadGun();
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private void ReloadGun() {
+        void ReloadGun() {
             iBulletPosition = 0;
             iRound = Random.Uint.LessThan(6);
-        }
-
-        public bool gunHasBeenFired {
-            get {
-                return iBulletPosition != 0;
-            }
-        }
-
-        public RussianRoulettePlayer<PlayerIdType> currentPlayer {
-            get {
-                return seatedPlayers[iCurrentPlayer];
-            }
-        }
-
-        public override void LeaveGame(PlayerIdType playerId) {
-            seatedPlayers.Remove(Get(playerId));
-            base.LeaveGame(playerId);
         }
     }
 }

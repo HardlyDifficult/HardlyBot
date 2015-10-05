@@ -25,7 +25,7 @@ namespace Hardly.Games.Tests {
             Assert.IsTrue(!(game.Raise(10) > 0));
 
             Assert.IsTrue(game.round == TexasHoldem<int>.Round.GameOver);
-            Assert.IsTrue(game.CanStart());
+            Assert.IsTrue(game.isReadyToStart);
             Assert.IsTrue(game.StartGame());
             Assert.IsTrue(game.round == TexasHoldem<int>.Round.PreFlop);
 
@@ -390,8 +390,8 @@ namespace Hardly.Games.Tests {
             pointManager1.TotalPointsInAccount = 100;
             var pointManager2 = new PlayerPointManager();
             pointManager2.TotalPointsInAccount = 1000;
-            game.Join(0, pointManager1);
-            game.Join(1, pointManager2);
+            game.Join(new TexasHoldemPlayer<int>(pointManager1, 0));
+            game.Join(new TexasHoldemPlayer<int>(pointManager2, 1));
 
             game.StartGame();
             if(game.currentPlayer.idObject == 0) {
@@ -428,8 +428,8 @@ namespace Hardly.Games.Tests {
             pointManager1.TotalPointsInAccount = 100;
             var pointManager2 = new PlayerPointManager();
             pointManager2.TotalPointsInAccount = 100;
-            game.Join(0, pointManager1);
-            game.Join(1, pointManager2);
+            game.Join(new TexasHoldemPlayer<int>(pointManager1, 0));
+            game.Join(new TexasHoldemPlayer<int>(pointManager2, 1));
 
             game.StartGame();
             for(int i = 0; i < 2 * 4; i++) {
@@ -462,7 +462,7 @@ namespace Hardly.Games.Tests {
                 } else {
                     pointManager.TotalPointsInAccount = 100;
                 }
-                game.Join(i, pointManager);
+                game.Join(new TexasHoldemPlayer<int>(pointManager, i));
             }
 
             return game;

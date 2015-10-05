@@ -53,7 +53,7 @@ namespace Hardly {
 		public void Stop() {
             isRunning = false;
 
-            if(isRunning && timers != null && timers.Length > 0) {
+            if(timers != null && timers.Length > 0) {
 				foreach(var timer in timers) {
 					timer.Stop();
 				}

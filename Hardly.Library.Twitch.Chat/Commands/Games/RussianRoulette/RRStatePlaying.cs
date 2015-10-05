@@ -48,7 +48,9 @@
 
         private void PullTrigger(SqlTwitchUser speaker, string arg2) {
             if(CheckPlayer(speaker)) {
-                if(controller.game.PullTrigger()) {
+                var player = controller.game.GetPlayer(speaker);
+                controller.game.PullTrigger();
+                if(player.isWinner.GetValueOrDefault(true) == false) {
                     controller.room.Timeout(speaker, TimeSpan.FromMinutes(5));
                     string chatMessage = speaker.name;
                     chatMessage += " died... ";
@@ -63,15 +65,14 @@
 
     
         private void GunMessage(string chatMessage) {
-            if(!controller.game.GameOver()) {
-
+            if(!controller.game.gameOver) {
                 if(lastPlayer == null || !lastPlayer.id.Equals(controller.game.currentPlayer?.idObject.id)) {
                     lastPlayer = controller.game.currentPlayer?.idObject;
                     turnTimer.Start();
                 }
 
                 bool first = true;
-                foreach(var player in controller.game.seatedPlayers) {
+                foreach(var player in controller.game.GetPlayers()) {
                     if(!first) {
                         chatMessage += ", ";
                     }
@@ -93,7 +94,7 @@
 
             } else {
                 chatMessage += "Game's over - ";
-                chatMessage += controller.game.seatedPlayers.First.idObject.name;
+                chatMessage += controller.game.GetPlayers().First.idObject.name;
                 chatMessage += " won!";
 
                 controller.SetState(this, typeof(RRStateOff));

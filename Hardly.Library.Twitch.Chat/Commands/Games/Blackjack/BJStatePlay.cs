@@ -21,9 +21,8 @@ namespace Hardly.Library.Twitch {
         }
 
         protected override void OpenState() {
-            if(controller.game.CanStart()) {
+            if(controller.game.isReadyToStart) {
                 controller.game.StartGame();
-
                 if(controller.game.InsuranceAvailable()) {
                     insuranceCommand = AddCommand(controller.room, "insurance", BuyInsurance, "Buy insurance against dealer Blackjack", new[] { "buyinsurance" }, false);
                     controller.room.SendChatMessage("Dealer has an Ace... !insurance anyone?");
@@ -54,7 +53,7 @@ namespace Hardly.Library.Twitch {
                     controller.room.SendWhisper(speaker, "Purchased insurance.");
 
                     bool allDone = true;
-                    foreach(var p in controller.game.PlayerGameObjects) {
+                    foreach(var p in controller.game.GetPlayers()) {
                         if(!p.boughtInsurance) {
                             allDone = false;
                             break;
@@ -77,7 +76,7 @@ namespace Hardly.Library.Twitch {
         }
 
         private void StartPlaying() {
-            foreach(var player in controller.game.PlayerGameObjects) {
+            foreach(var player in controller.game.GetPlayers()) {
                 if(player.CurrentHandEvaluator.isBlackjack) {
                     StandCommand(player.idObject, null);
                 }
@@ -91,7 +90,7 @@ namespace Hardly.Library.Twitch {
                     string message = "Blackjack: Dealer ";
                     message += controller.game.dealer.cards.First.ToString();
                     message += " \uD83C\uDCA0 ";
-                    foreach(var player in controller.game.PlayerGameObjects) {
+                    foreach(var player in controller.game.GetPlayers()) {
                         message += ", ";
                         message += player.idObject.name;
                         message += " ";
@@ -177,7 +176,7 @@ namespace Hardly.Library.Twitch {
                         player.Hit();
                     }
 
-					chatMessage += "Dealt a " + player.hand.cards.Last.ToString();
+					chatMessage += "Dealt a " + player.hand.Last.ToString();
 
                     if(player.CurrentHandEvaluator.isBust) {
                         chatMessage += " and BUSTED with " + player.CurrentHandEvaluator.cards.ToString() + " (" + player.CurrentHandEvaluator.HandValueString() + ")!";
@@ -206,7 +205,7 @@ namespace Hardly.Library.Twitch {
 		}
         
 		void TimeUp1() {
-			foreach(var player in controller.game.PlayerGameObjects) {
+			foreach(var player in controller.game.GetPlayers()) {
 				if(!player.CurrentHandEvaluator.isDone) {
 					string chatMessage = "!Hit, !Stand or !DoubleDown?";
 					controller.room.SendWhisper(player.idObject, chatMessage);
@@ -215,7 +214,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void TimeUp2() {
-			foreach(var player in controller.game.PlayerGameObjects) {
+			foreach(var player in controller.game.GetPlayers()) {
 				if(!player.CurrentHandEvaluator.isDone) {
 					string chatMessage = "!Hit, !Stand or !DoubleDown?  You have only seconds to respond.";
 					controller.room.SendWhisper(player.idObject, chatMessage);
@@ -228,7 +227,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		BlackjackPlayer<SqlTwitchUser> GetPlayer(SqlTwitchUser speaker) {
-			var player = controller.game.Get(speaker);
+			var player = controller.game.GetPlayer(speaker);
             if(player == null) {
                 controller.room.SendWhisper(speaker, "Sorry, join the next game.");
             }

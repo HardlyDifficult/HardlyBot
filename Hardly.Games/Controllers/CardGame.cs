@@ -1,19 +1,21 @@
 ﻿namespace Hardly.Games {
-	public abstract class CardGame<PlayerIdType, PlayerGameType> : Game<PlayerIdType, PlayerGameType> {
-		uint numberOfDecks = 1;
-		Deck deck;
+	public abstract class CardGame<PlayerGameObjectType, PlayerIdType, CardType> 
+        : Game<PlayerGameObjectType, PlayerIdType> 
+        where PlayerGameObjectType : GamePlayer<PlayerIdType> 
+        where CardType : ICard {
+		Deck<CardType> deck;
 
-		public CardGame(uint numberOfDecks, uint maxPlayers) : base(maxPlayers) {
-			this.numberOfDecks = numberOfDecks;
+		public CardGame(Deck<CardType> dealerDeck, uint minPlayers, uint maxPlayers) : base(minPlayers, maxPlayers) {
+            deck = dealerDeck;
 		}
 
 		public override void Reset() {
 			base.Reset();
-			deck = new Deck(numberOfDecks);
+            deck.Reset();
 		}
 
-		public PlayingCard DealCard(PlayingCardList playerCards) {
-            PlayingCard card = deck.Pop();
+		public CardType DealCard(List<CardType> playerCards) {
+            CardType card = deck.TakeTopCard();
 			playerCards.Add(card);
 
             return card;

@@ -1,25 +1,33 @@
 ﻿using System;
 
 namespace Hardly.Games {
-	public class Deck : PlayingCardList {
-        static PlayingCardList standardDeck = GenerateStandardDeck(false),
-            standardDeckWithJokers = GenerateStandardDeck(true);
+	public class Deck<CardType> where CardType : ICard {
+        List<CardType> fullDeck, currentDeck;
 
-        public Deck(uint numberOfDecks = 1, bool includeJokers = false) : base(includeJokers ? standardDeckWithJokers : standardDeck) {
-            DuplicateEntities(numberOfDecks - 1);
-            Shuffle();
-		}
+        public Deck(List<CardType> cardsInAStandardDeck, uint numberOfDecks = 1) {
+            this.fullDeck = cardsInAStandardDeck;
+            this.fullDeck.DuplicateEntities(numberOfDecks - 1);
+            Reset();
+        }
 
-        static PlayingCardList GenerateStandardDeck(bool includeJokers) {
-            int cardCount = 52 + (includeJokers ? 2 : 0);
-            PlayingCardList cards = new PlayingCardList();
-            for(int i = 0; i < cardCount; i++) {
-                PlayingCard.Suit suit = (PlayingCard.Suit)(i % 4);
-                PlayingCard.Value value = (PlayingCard.Value)((i - (int)suit) / 4);
-                cards.Add(new PlayingCard(suit, value));
+        public void Reset() {
+            currentDeck = new List<CardType>(fullDeck);
+            currentDeck.Shuffle();
+        }
+
+        public void ShuffleIn(List<CardType> newCards) {
+            currentDeck.Add(newCards);
+            currentDeck.Shuffle();
+        }
+
+        public CardType TakeTopCard() {
+            return currentDeck.Pop();
+        }
+
+        public uint numberOfCardsRemaining {
+            get {
+                return (uint)currentDeck.Count;
             }
-
-            return cards;
         }
     }
 }

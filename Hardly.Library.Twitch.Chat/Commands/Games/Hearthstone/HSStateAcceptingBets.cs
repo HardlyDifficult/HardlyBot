@@ -28,7 +28,7 @@ namespace Hardly.Library.Twitch {
 
         private void PlaceBet(SqlTwitchUser speaker, string additionalText, bool toWin) {
             if(controller.game.Contains(speaker)) {
-                var bettingPlayer = controller.game.Get(speaker);
+                var bettingPlayer = controller.game.GetPlayer(speaker);
                 if(bettingPlayer.toWin == toWin) {
                     ulong amount = controller.room.pointManager.GetPointsFromString(additionalText);
                     amount = bettingPlayer.PlaceBet(amount, false);
@@ -46,7 +46,7 @@ namespace Hardly.Library.Twitch {
                 ulong amount = controller.room.pointManager.GetPointsFromString(additionalText);
                 amount = bettingPlayer.PlaceBet(amount, false);
                 if(amount > 0) {
-                    controller.game.Join(speaker, bettingPlayer);
+                    controller.game.Join(bettingPlayer);
                     controller.room.SendWhisper(speaker, "You bet " + controller.room.pointManager.ToPointsString(amount));
                 } else {
                     // Broke dude.

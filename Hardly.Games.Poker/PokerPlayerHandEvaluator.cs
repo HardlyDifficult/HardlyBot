@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Hardly.Games {
-    public class PokerPlayerHandEvaluator : PlayingCardListEvaluator {
+    public class PokerPlayerHandEvaluator {
         public enum HandType {
             HighCard,
             OnePair,
@@ -21,18 +21,19 @@ namespace Hardly.Games {
             get;
             private set;
         }
+        public readonly List<PlayingCard> cards;
 
-        public PokerPlayerHandEvaluator(PlayingCardList playerCards, PlayingCardList tableCards) : base(null) {
+        public PokerPlayerHandEvaluator(List<PlayingCard> playerCards, List<PlayingCard> tableCards) {
             Debug.Assert(playerCards.Count == 2);
             Debug.Assert(tableCards.Count == 5);
 
             Tuple<HandType, ulong> bestHandValue = HandValue(tableCards);
-            PlayingCardList bestHand = tableCards;
+            List<PlayingCard> bestHand = tableCards;
 
             // swap one, or the other player card for any one table card.
             foreach(var card in playerCards) {
                 for(int i = 0; i < 5; i++) {
-                    var cards = new PlayingCardList();
+                    var cards = new List<PlayingCard>();
                     for(int iNewHand = 0; iNewHand < 5; iNewHand++) {
                         if(iNewHand == i) {
                             cards.Add(card);
@@ -40,7 +41,7 @@ namespace Hardly.Games {
                             cards.Add(tableCards[iNewHand]);
                         }
                     }
-                    var newHand = new PlayingCardList(cards);
+                    var newHand = new List<PlayingCard>(cards);
                     Tuple<HandType, ulong> newHandValue = HandValue(newHand);
                     if(newHandValue.Item2 > bestHandValue.Item2) {
                         bestHandValue = newHandValue;
@@ -51,7 +52,7 @@ namespace Hardly.Games {
             // swap both for any two table cards.
             for(int iCard1 = 0; iCard1 < 4; iCard1++) {
                 for(int iCard2 = iCard1; iCard2 < 5; iCard2++) {
-                    var cards = new PlayingCardList();
+                    var cards = new List<PlayingCard>();
                     for(int iNewHand = 0; iNewHand < 5; iNewHand++) {
                         if(iNewHand == iCard1) {
                             cards.Add(playerCards[0]);
@@ -61,7 +62,7 @@ namespace Hardly.Games {
                             cards.Add(tableCards[iNewHand]);
                         }
                     }
-                    var newHand = new PlayingCardList(cards);
+                    var newHand = new List<PlayingCard>(cards);
                     Tuple<HandType, ulong> newHandValue = HandValue(newHand);
                     if(newHandValue.Item2 > bestHandValue.Item2) {
                         bestHandValue = newHandValue;
@@ -75,7 +76,7 @@ namespace Hardly.Games {
             this.handValue = bestHandValue.Item2;
         }
 
-        static Tuple<HandType, ulong> HandValue(PlayingCardList cards) {
+        static Tuple<HandType, ulong> HandValue(List<PlayingCard> cards) {
             Debug.Assert(cards.Count == 5);
 
             cards.Sort();
@@ -172,7 +173,7 @@ namespace Hardly.Games {
             return (ulong)((ulong)value1 * Math.Pow(13,4) + (ulong)value2 * Math.Pow(13, 3) + (ulong)value3 * Math.Pow(13,2) + (ulong)value4 * 13 + (ulong)value5);
         }
 
-        static void CalcHandStats(PlayingCardList playerCards, out bool isFlush, out PlayingCard.Value? firstPairValue, out PlayingCard.Value? secondPairValue, out uint firstPairCardCount, out uint secondPairCardCount, out bool isStraight) {
+        static void CalcHandStats(List<PlayingCard> playerCards, out bool isFlush, out PlayingCard.Value? firstPairValue, out PlayingCard.Value? secondPairValue, out uint firstPairCardCount, out uint secondPairCardCount, out bool isStraight) {
             Debug.Assert(playerCards.Count == 5);
 
             PlayingCard.Value? lastCardValue = null;
@@ -208,7 +209,7 @@ namespace Hardly.Games {
             }
         }
 
-        static bool CheckForFlush(PlayingCardList playerCards) {
+        static bool CheckForFlush(List<PlayingCard> playerCards) {
             PlayingCard.Suit flushSuit = playerCards[0].suit;
             foreach(var card in playerCards) {
                 if(card.suit != flushSuit) {

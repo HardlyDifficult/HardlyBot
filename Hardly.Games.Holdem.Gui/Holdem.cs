@@ -28,10 +28,10 @@ namespace Hardly.Games.Holdem.Gui {
             game.bigBlind = ((ulong)aNumberBigBlind.Value);
 
             for(int i = 0; i < aNumberPlayers.Value; i++) {
-                game.Join(i, pointManagers[i]);
+                game.Join(new TexasHoldemPlayer<int>(pointManagers[i], i));
             }
 
-            if(game.CanStart()) {
+            if(game.isReadyToStart) {
                 game.StartGame();
             }
         }
@@ -60,7 +60,7 @@ namespace Hardly.Games.Holdem.Gui {
             var player = game.currentPlayer;
             if(player != null) {
                 aLabelCurrentPlayer.Text = player.idObject.ToString();
-                aLabelPlayerHand.Text = player.hand.cards.ToString();
+                aLabelPlayerHand.Text = player.hand.ToString();
                 aLabelBoardCards.Text = game.tableCards.ToString();
                 aLabelAccountBalance.Text = pointManagers[player.idObject].Points.ToStringWithCommas();
             } else {

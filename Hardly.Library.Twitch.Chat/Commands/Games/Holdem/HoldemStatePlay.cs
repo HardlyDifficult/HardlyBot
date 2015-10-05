@@ -100,7 +100,7 @@ namespace Hardly.Library.Twitch {
         private void FoldCommand(SqlTwitchUser speaker, string arg2) {
             if(SpeakerInGame(speaker)) {
                 if(speaker.id.Equals(controller.game.currentPlayer.idObject.id)) {
-                    PlayingCardList cards = controller.game.currentPlayer.hand.cards;
+                    List<PlayingCard> cards = controller.game.currentPlayer.hand;
                     if(controller.game.Fold()) {
                         if(arg2 != null && arg2.ToLower().Contains("show")) {
                             controller.room.SendChatMessage("Holdem: " + speaker.name + " is out, had " + cards.ToString());
@@ -125,7 +125,7 @@ namespace Hardly.Library.Twitch {
 
         private bool SpeakerInGame(SqlTwitchUser speaker) {
             bool inGame = false;
-            foreach(var player in controller.game.PlayerGameObjects) {
+            foreach(var player in controller.game.GetPlayers()) {
                 if(speaker.id.Equals(player.idObject.id)) {
                     inGame = true;
                 }
@@ -248,7 +248,7 @@ namespace Hardly.Library.Twitch {
                     chatMessage = "Get Moving! ";
                 }
                 chatMessage += "You have ";
-                chatMessage += controller.game.currentPlayer.hand.cards.ToString();
+                chatMessage += controller.game.currentPlayer.hand.ToString();
                 chatMessage += " and ";
                 chatMessage += controller.room.pointManager.ToPointsString(controller.game.currentPlayer.bet);
                 chatMessage += " on the line so far.  ";

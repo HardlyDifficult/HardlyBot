@@ -14,12 +14,12 @@ namespace Hardly.Library.Twitch {
         }
 
         public bool SetState(GameState theStateIThinkWeAreIn, Type theStateToChangeToIfInTheStateIExpect) {
-            currentState?.Close();
+           // currentState?.Close();
             theStateIThinkWeAreIn?.Close();
             Action openAction = null;
 
-            if(theStateIThinkWeAreIn?.GetType() != theStateToChangeToIfInTheStateIExpect) {
-                lock (myLock) {
+            lock (myLock) {
+                if(theStateIThinkWeAreIn?.GetType() != theStateToChangeToIfInTheStateIExpect) {
                     if(theStateIThinkWeAreIn == null || currentState == null || currentState.Equals(theStateIThinkWeAreIn)) {
                         Debug.Assert(!theStateToChangeToIfInTheStateIExpect.Equals(currentState?.GetType()));
                         Log.debug("Twitch Game: Setting next state to " + theStateToChangeToIfInTheStateIExpect.ToString());

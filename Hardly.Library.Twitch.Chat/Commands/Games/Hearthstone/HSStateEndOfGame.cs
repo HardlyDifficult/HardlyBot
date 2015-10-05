@@ -13,8 +13,7 @@ namespace Hardly.Library.Twitch {
             string chatMessage = "Hearthstone Game Over - " + (controller.lastGameEnding.iWon == null ? "ended in a draw"
                 : controller.lastGameEnding.iWon.Value ? "we won!" : controller.hearthstoneGame.opponentPlayerName + " won...");
 
-            controller.game.SetWinner(controller.lastGameEnding.iWon);
-            controller.game.EndGame();
+            controller.game.EndGame(controller.lastGameEnding.iWon);
 
             controller.room.SendChatMessage(chatMessage);
         }

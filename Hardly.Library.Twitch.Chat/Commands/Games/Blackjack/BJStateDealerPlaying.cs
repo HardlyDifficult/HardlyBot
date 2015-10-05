@@ -10,7 +10,7 @@ namespace Hardly.Library.Twitch {
         }
 
         protected override void OpenState() {
-            if(controller.game.NumberOfPlayers() == 0) {
+            if(controller.game.numberOfPlayers == 0) {
                 controller.SetState(this, typeof(BJStateOff));
             } else {
                 string chatMessage = "Blackjack: Dealer has ";
@@ -50,8 +50,6 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void Announce(string chatMessage) {
-            controller.game.EndGame();
-
             chatMessage += " ";
 			
 			string winners = GetPlayerList(true);
@@ -75,14 +73,14 @@ namespace Hardly.Library.Twitch {
 		private string GetPlayerList(bool? winnerOrLoser) {
 			string chatMessage = "";
 			bool first = true;
-			foreach(var player in controller.game.PlayerGameObjects) {
+			foreach(var player in controller.game.GetPlayers()) {
 				if(player.IsWinner() == winnerOrLoser) {
 					if(!first) {
 						chatMessage += ", ";
 					}
 					chatMessage += player.idObject.name;
                     chatMessage += " has ";
-                    chatMessage += player.hand.cards.ToString();
+                    chatMessage += player.hand.ToString();
                     chatMessage += " (";
                     chatMessage += player.HandValueString();
                     chatMessage += ")";

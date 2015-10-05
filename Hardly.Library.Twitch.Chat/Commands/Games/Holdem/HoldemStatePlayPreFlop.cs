@@ -21,7 +21,7 @@ namespace Hardly.Library.Twitch {
             foreach(var player in controller.game.seatedPlayers) {
                 if(player.idObject.id != controller.game.currentPlayer.idObject.id) {
                     string playerMessage = "You have ";
-                    playerMessage += player.hand.cards.ToString();
+                    playerMessage += player.hand.ToString();
                     playerMessage += ".";
                     playerMessage += " Sit tight while others play.  I'll whisper again shortly.";
                     controller.room.SendWhisper(player.idObject, playerMessage);

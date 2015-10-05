@@ -1,11 +1,13 @@
 ﻿using System;
 
 namespace Hardly.Games {
-    public class BlackjackCardListEvaluator : PlayingCardListEvaluator  {
+    public class BlackjackCardListEvaluator {
+        public readonly List<PlayingCard> cards;
         public bool isStanding = false;
         public bool isSplit = false;
 
-        public BlackjackCardListEvaluator(PlayingCardList cards) : base(cards) {
+        public BlackjackCardListEvaluator(List<PlayingCard> cards) {
+            this.cards = cards;
         }
 
         public uint handValue {

@@ -80,6 +80,12 @@ namespace Hardly {
             }
         }
 
+        public void Add(List<ItemType> itemsToAdd) {
+            foreach(var item in itemsToAdd) {
+                items.Add(item);
+            }
+        }
+
         public void Append(List<ItemType> itemsToAdd) {
             int itemLength = Count;
             for(int i = 0; i < itemLength; i++) {

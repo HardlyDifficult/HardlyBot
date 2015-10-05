@@ -11,14 +11,14 @@ namespace Hardly.Games.Tests {
     public class PokerPlayerHandTests {
         [TestMethod()]
         public void HandValueTest() {
-            var straightFlush = new PlayingCardList(new[] {
+            var straightFlush = new List<PlayingCard>(new[] {
                 new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.Jack),
                 new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.Ten),
                 new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.Seven),
                 new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.Nine),
                 new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.Eight),
             });
-            var fourOfAKind = new PlayingCardList(new[] {
+            var fourOfAKind = new List<PlayingCard>(new[] {
                 new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.Six),
                 new PlayingCard(PlayingCard.Suit.Clubs, PlayingCard.Value.Jack),
                 new PlayingCard(PlayingCard.Suit.Diamonds, PlayingCard.Value.Six),

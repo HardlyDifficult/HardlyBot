@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Hardly.Games {
-	public class PlayingCard : IComparable {
+	public class PlayingCard : ICard {
 		public enum Suit {
 			Clubs,
 			Diamonds,

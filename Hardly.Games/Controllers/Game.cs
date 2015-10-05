@@ -1,69 +1,102 @@
-﻿using System.Collections.Generic;
-
-namespace Hardly.Games {
+﻿namespace Hardly.Games {
     public abstract class Game {
     }
 
-	public abstract class Game<PlayerIdType, PlayerGameType> : Game {
-		public readonly uint maxPlayers;
-		Dictionary<PlayerIdType, PlayerGameType> players = new Dictionary<PlayerIdType, PlayerGameType>();
+	public abstract class Game<PlayerGameObjectType, PlayerIdType> : Game where PlayerGameObjectType : GamePlayer<PlayerIdType> {
+		readonly uint minPlayers, maxPlayers;
+        List<PlayerGameObjectType> players = new List<PlayerGameObjectType>();
+        public bool gameOver {
+            get;
+            private set;
+        }
 
-		public Game(uint maxPlayers) {
+		public Game(uint minPlayers, uint maxPlayers) {
+            this.gameOver = false;
+            this.minPlayers = minPlayers;
 			this.maxPlayers = maxPlayers;
 		}
 
-        public virtual bool CanStart() {
-            return NumberOfPlayers() >= 1;
-        }
+        public bool Contains(PlayerGameObjectType playerGameObject) {
+            return players.Contains(playerGameObject);
+        } 
 
         public bool Contains(PlayerIdType playerId) {
-            return players.ContainsKey(playerId);
-        }
-        
-        public abstract void EndGame();
-
-        public PlayerGameType Get(PlayerIdType player) {
-            PlayerGameType results;
-            if(players.TryGetValue(player, out results)) {
-                return results;
+            foreach(var player in players) {
+                if(player.idObject.Equals(playerId)) {
+                    return true;
+                }
             }
 
-            return (PlayerGameType)typeof(PlayerGameType).GetDefaultValue();
+            return false;
         }
 
-        public bool IsEmpty() {
-            return players.Count == 0;
+        protected virtual void EndGame() {
+            gameOver = true;
         }
 
-        public bool IsFull() {
-			return players.Count >= maxPlayers;
-		}
+        public PlayerGameObjectType GetPlayer(PlayerIdType playerId) {
+            foreach(var player in players) {
+                if(player.idObject.Equals(playerId)) {
+                    return player;
+                }
+            }
 
-        public virtual bool Join(PlayerIdType playerId, PlayerGameType gameObject) {
-            if(!IsFull()) {
-                players.Add(playerId, gameObject);
+            return null;
+        }
+
+        public List<PlayerGameObjectType> GetPlayers() {
+            return players;
+        }
+
+        public virtual bool Join(PlayerGameObjectType playerGameObject) {
+            if(!isFull) {
+                players.Add(playerGameObject);
                 return true;
             }
 
             return false;
         }
 
-        public virtual void LeaveGame(PlayerIdType playerId) {
-            players.Remove(playerId);
-        }
-
-        public int NumberOfOpenSpots() {
-            return (int)(maxPlayers - players.Count);
-        }
-
-        public int NumberOfPlayers() {
-            return players.Count;
-        }
-
-        public Dictionary<PlayerIdType, PlayerGameType>.ValueCollection PlayerGameObjects {
-            get {
-                return players.Values;
+        public bool isEmpty {
+            get { 
+                return players.Count == 0;
             }
+        }
+
+        public bool isFull {
+            get {
+                return players.Count >= maxPlayers;
+            }
+        }
+
+        public bool isReadyToStart {
+            get {
+                return numberOfPlayers >= minPlayers;
+            }
+        }
+
+        public virtual void LeaveGame(PlayerIdType playerId) {
+            var player = GetPlayer(playerId);
+            player.CancelBet();
+            players.Remove(player);
+        }
+
+        public uint numberOfOpenSpots {
+            get {
+                Debug.Assert(maxPlayers >= players.Count);
+                return (uint)(maxPlayers - players.Count);
+            }
+        }
+
+        public uint numberOfPlayers {
+            get {
+                return (uint)players.Count;
+            }
+        }
+
+        public bool RemovePlayer(PlayerGameObjectType playerGameObject) {
+            playerGameObject.CancelBet();
+            return players.Remove(playerGameObject);
         }
 
         public virtual void Reset() {
@@ -71,7 +104,16 @@ namespace Hardly.Games {
         }
 
         public virtual bool StartGame() {
-            return CanStart();
+            return isReadyToStart;
+        }
+
+        public ulong TotalBets() {
+            ulong bet = 0;
+            foreach(var player in GetPlayers()) {
+                bet += player.bet;
+            }
+
+            return bet;
         }
     }
 }

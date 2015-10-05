@@ -93,7 +93,7 @@ namespace Hardly.Library.Twitch {
                 lastHand = player.bestHand;
 
                 chatMessage += " has ";
-                chatMessage += player.hand.cards.ToString();
+                chatMessage += player.hand.ToString();
                 if(player.bestHand != null) {
                     chatMessage += " for ";
                     chatMessage += player.bestHand.handType.ToString();

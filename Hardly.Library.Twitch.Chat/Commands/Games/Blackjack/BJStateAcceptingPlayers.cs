@@ -10,11 +10,11 @@ namespace Hardly.Library.Twitch {
         }
 
         private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
-			var player = controller.game.Get(speaker);
+			var player = controller.game.GetPlayer(speaker);
 			if(player != null) {
                 controller.game.LeaveGame(speaker);   
 				controller.room.SendWhisper(speaker, "You're out, later dude.");
-				if(controller.game.IsEmpty()) {
+				if(!controller.game.isReadyToStart) {
 					StopTimers();
 				}
 			} else {
@@ -23,7 +23,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		void StartCommand(SqlTwitchUser speaker, string additionalText) {
-			if(!controller.game.IsEmpty()) {
+			if(controller.game.isReadyToStart) {
 				controller.SetState(this, typeof(BJStatePlay));
 			}
 		}
@@ -43,7 +43,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void StartIfReady() {
-			if(controller.game.IsFull()) {
+			if(controller.game.isFull) {
 				controller.SetState(this, typeof(BJStatePlay));
 			}
 		}
@@ -62,7 +62,7 @@ namespace Hardly.Library.Twitch {
 		string GetStartingInMessage() {
 			TimeSpan timeRemaining = roundTimer.TimeRemaining();
 			string chatMessage;
-			int numberOfOpenSpots = controller.game.NumberOfOpenSpots();
+			uint numberOfOpenSpots = controller.game.numberOfOpenSpots;
 			if(numberOfOpenSpots > 0 && timeRemaining > TimeSpan.FromSeconds(5)) {
 				chatMessage = "in " + timeRemaining.ToSimpleString();
 
@@ -81,7 +81,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		internal override void TimeUp() {
-            if(controller.game.CanStart()) {
+            if(controller.game.isReadyToStart) {
                 controller.room.SendChatMessage("Blackjack: !play to join in, we start " + GetStartingInMessage());
             } else {
                 StopTimers();
@@ -89,7 +89,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		internal override void FinalTimeUp() {
-            if(controller.game.CanStart()) {
+            if(controller.game.isReadyToStart) {
                 controller.SetState(this, typeof(BJStatePlay));
             } else {
                 StopTimers();

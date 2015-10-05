@@ -10,12 +10,12 @@ namespace Hardly.Library.Twitch {
         private void JoinGame(SqlTwitchUser speaker, string additionalText) {
             var pointManager = controller.room.pointManager.ForUser(speaker);
             var player = new RussianRoulettePlayer<SqlTwitchUser>(pointManager, speaker);
-            if(controller.game.Join(speaker, player)) {
+            if(controller.game.Join(player)) {
                 controller.room.SendWhisper(speaker, "You're in");
 
-                if(controller.game.IsFull()) {
+                if(controller.game.isFull) {
                     StartGame();
-                } else if(controller.game.CanStart()) {
+                } else if(controller.game.isReadyToStart) {
                     MinHit_StartWaitingForAdditionalPlayers();
                 }
             } else {

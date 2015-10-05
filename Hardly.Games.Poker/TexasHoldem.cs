@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Hardly.Games {
-	public class TexasHoldem<PlayerIdType> : CardGame<PlayerIdType, TexasHoldemPlayer<PlayerIdType>> {
+	public class TexasHoldem<PlayerIdType> : CardGame<TexasHoldemPlayer<PlayerIdType>, PlayerIdType, PlayingCard> {
         public enum Round {
             PreFlop, Flop, Turn, River, GameOver
         }
@@ -9,7 +9,7 @@ namespace Hardly.Games {
         public ulong bigBlind = 0;
         public TexasHoldemPlayer<PlayerIdType> currentPlayer = null;
         TexasHoldemPlayer<PlayerIdType> endingPlayer = null, firstToAct = null;
-        public PlayingCardList tableCards = new PlayingCardList();
+        public List<PlayingCard> tableCards = new List<PlayingCard>();
         public readonly List<TexasHoldemPlayer<PlayerIdType>>
             // Players = players which may be seated or in the sidepot (not both, if neither they folded)
             seatedPlayers = new List<TexasHoldemPlayer<PlayerIdType>>();
@@ -26,8 +26,7 @@ namespace Hardly.Games {
         public TexasHoldem() : this(1, 6) {
         }
 
-        public TexasHoldem(uint numberOfDecks, uint maxPlayers) : base(numberOfDecks, maxPlayers) {
-            Reset();
+        public TexasHoldem(uint numberOfDecks, uint maxPlayers) : base(new PlayingCardDeck(numberOfDecks), 2, maxPlayers) {
         }
 
         ulong currentBet {
@@ -44,13 +43,13 @@ namespace Hardly.Games {
         }
        
         public override bool StartGame() {
-            if(CanStart()) {
+            if(isReadyToStart) {
                 round = Round.PreFlop;
                 ShufflePlayersAndPutInSeats();
 
                 for(int i = 0; i < 2; i++) {
                     foreach(var player in seatedPlayers) {
-                        DealCard(player.hand.cards);
+                        DealCard(player.hand);
                     }
                 }
 
@@ -194,10 +193,9 @@ namespace Hardly.Games {
             return 0;
         }
 
-        public bool Join(PlayerIdType playerId, PlayerPointManager pointManager) {
-			if(round == Round.GameOver && !base.Contains(playerId) && pointManager.Points > bigBlind) {
-                Log.info(playerId.ToString() + " joined");
-                return base.Join(playerId, new TexasHoldemPlayer<PlayerIdType>(pointManager, playerId));
+        public override bool Join(TexasHoldemPlayer<PlayerIdType> player) {
+            if(player.pointManager.Points > bigBlind) {
+                return base.Join(player);
 			}
 
             return false;
@@ -227,7 +225,7 @@ namespace Hardly.Games {
         private void NextRound() {
             Debug.Assert(round != Round.GameOver);
 
-            foreach(var player in PlayerGameObjects) {
+            foreach(var player in GetPlayers()) {
                 if(player.bet < currentBet) {
                     seatedPlayers.Remove(player);
                 }
@@ -275,14 +273,14 @@ namespace Hardly.Games {
 
         public ulong GetTotalPot(ulong lessThanOrEqualTo = ulong.MaxValue) {
             ulong totalBet = 0;
-            foreach(var player in PlayerGameObjects) {
+            foreach(var player in GetPlayers()) {
                 totalBet += Math.Min(player.bet, lessThanOrEqualTo);
             }
 
             return totalBet;
         }
 
-        public override void EndGame() {
+        protected override void EndGame() {
             while(tableCards.Count < 5) {
                 DealToTable(1);
             }
@@ -348,11 +346,13 @@ namespace Hardly.Games {
                 player.Award((long)amount);
             }
             
-            foreach(var player in PlayerGameObjects) {
+            foreach(var player in GetPlayers()) {
                 if(!(lastGameSidepotWinners.Contains(player) || lastGameWinners.Contains(player))){
                     player.LoseBet();
                 }
             }
+
+            base.EndGame();
         }
 
         List<TexasHoldemPlayer<PlayerIdType>> GetWinners(List<TexasHoldemPlayer<PlayerIdType>> playersToCheck) {
@@ -394,18 +394,12 @@ namespace Hardly.Games {
         private void ShufflePlayersAndPutInSeats() {
             seatedPlayers.Clear();
             sidepotPlayers.Clear();
-                
-            foreach(var player in PlayerGameObjects.ToArray().Shuffle()) {
-                seatedPlayers.Add(player);
-            }
-        }
-
-        public override bool CanStart() {
-            return round == Round.GameOver && NumberOfPlayers() >= 2;
+            seatedPlayers.Add(GetPlayers());
+            seatedPlayers.Shuffle();
         }
 
         public override void LeaveGame(PlayerIdType playerId) {
-            seatedPlayers.Remove(Get(playerId));
+            seatedPlayers.Remove(GetPlayer(playerId));
             base.LeaveGame(playerId);
         }
     }

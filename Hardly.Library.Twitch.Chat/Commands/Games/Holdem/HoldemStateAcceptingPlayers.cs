@@ -10,12 +10,12 @@ namespace Hardly.Library.Twitch {
         }
 
         private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
-			var player = controller.game.Get(speaker);
+			var player = controller.game.GetPlayer(speaker);
 			if(player != null) {
 				TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
 				userPoints.Award(player.bet, 0);
 				controller.room.SendWhisper(speaker, "You're out, later dude.");
-				if(!controller.game.CanStart()) {
+				if(!controller.game.isReadyToStart) {
 					StopTimers();
 				}
 			} else {
@@ -24,7 +24,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void StartCommand(SqlTwitchUser speaker, string additionalText) {
-			if(controller.game.CanStart()) {
+			if(controller.game.isReadyToStart) {
                 StartGame();
 			}
 		}
@@ -33,8 +33,8 @@ namespace Hardly.Library.Twitch {
 			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
 
             if(userPoints.Points > controller.game.bigBlind) {
-				controller.game.Join(speaker, userPoints);
-				if(controller.game.CanStart()) {
+				controller.game.Join(new TexasHoldemPlayer<SqlTwitchUser>(userPoints, speaker));
+				if(controller.game.isReadyToStart) {
 					MinHit_StartWaitingForAdditionalPlayers();
 				}
 				SendJoinMessage(speaker);
@@ -51,7 +51,7 @@ namespace Hardly.Library.Twitch {
 		}
 
 		private void StartIfReady() {
-			if(controller.game.IsFull()) {
+			if(controller.game.isFull) {
                 StartGame();
             }
         }
@@ -70,11 +70,11 @@ namespace Hardly.Library.Twitch {
 		string GetStartingInMessage() {
 			TimeSpan timeRemaining = roundTimer.TimeRemaining();
 			string chatMessage;
-            if(controller.game.CanStart()) {
+            if(controller.game.isReadyToStart) {
                 if(timeRemaining > TimeSpan.FromSeconds(5)) {
                     chatMessage = "in " + timeRemaining.ToSimpleString();
 
-                    chatMessage += " or when " + controller.game.NumberOfOpenSpots() + " more people !play.";
+                    chatMessage += " or when " + controller.game.numberOfOpenSpots + " more people !play.";
                 } else {
                     chatMessage = "sooon.";
                 }
