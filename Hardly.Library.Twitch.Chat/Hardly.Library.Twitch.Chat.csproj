@@ -73,7 +73,7 @@
     <Compile Include="Commands\Games\Hearthstone\TwitchHearthstone.cs" />
     <Compile Include="Logic\States\GameState.cs" />
     <Compile Include="Logic\States\GameStateAcceptingPlayers.cs" />
-    <Compile Include="Commands\UserInfo\ViewPoints.cs" />
+    <Compile Include="Commands\UserInfo\PointCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WakeUpAssembly.cs" />
   </ItemGroup>
