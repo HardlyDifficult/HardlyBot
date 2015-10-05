@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hardly {
+namespace Hardly.Library.Twitch {
 	public class SqlTwitchConnection : SqlRow {
 		public readonly SqlTwitchBot bot;
 		public readonly SqlTwitchChannel channel;

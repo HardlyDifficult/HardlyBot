@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Hardly {
+namespace Hardly.Library.Twitch {
 	public class SqlTwitchChannel : SqlRow {
 		public readonly SqlTwitchUser user;
 

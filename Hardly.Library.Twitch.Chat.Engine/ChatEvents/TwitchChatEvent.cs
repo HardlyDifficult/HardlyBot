@@ -37,11 +37,11 @@ namespace Hardly.Library.Twitch {
 
 		#region Helpers
 		private static SqlTwitchUser ParseUser(string chatEventCommand) {
-			return Twitch.GetUserFromName(chatEventCommand.GetBetween(":", "!"));
+			return SqlTwitchUser.GetFromName(chatEventCommand.GetBetween(":", "!"));
 		}
 
 		private static SqlTwitchChannel ParseChannel(string chatEventCommand) {
-			return new SqlTwitchChannel(Twitch.GetUserFromName(chatEventCommand.GetBetween(" #", " ")));
+			return new SqlTwitchChannel(SqlTwitchUser.GetFromName(chatEventCommand.GetBetween(" #", " ")));
 		}
 
 		internal abstract void RespondToEvent(LinkedList<TwitchChatRoom> chatRooms);

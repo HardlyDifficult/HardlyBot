@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hardly {
+namespace Hardly.Library.Twitch {
 	public class SqlTwitchUserPoints : SqlRow {
 		public readonly SqlTwitchUser user;
 		public readonly SqlTwitchChannel channel;

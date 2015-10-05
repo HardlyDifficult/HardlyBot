@@ -22,20 +22,6 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        public static SqlTwitchUser GetUserFromName(string username) {
-            try {
-                SqlTwitchUser user = SqlTwitchUser.GetFromName(username);
-                if(user != null) {
-                    return user;
-                } else {
-                    return TwitchApi.GetUser(username);
-                }
-            } catch(Exception e) {
-                Log.error("Twitch get user from name", e);
-                return null;
-            }
-        }
-
         public static SqlTwitchChannel[] GetLiveFollowers(SqlTwitchConnection connection) {
             try {
                 if(liveFollowersThrottle.ExecuteIfReady(connection.channel.user.id)) {

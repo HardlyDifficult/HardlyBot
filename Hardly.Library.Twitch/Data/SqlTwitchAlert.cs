@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hardly {
+namespace Hardly.Library.Twitch {
     public class SqlTwitchAlert : SqlRow {
         public readonly SqlTwitchConnection connection;
 

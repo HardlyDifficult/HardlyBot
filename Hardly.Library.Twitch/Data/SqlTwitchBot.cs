@@ -1,4 +1,4 @@
-﻿namespace Hardly {
+﻿namespace Hardly.Library.Twitch {
     public class SqlTwitchBot : SqlRow {
         public readonly SqlTwitchUser user;
 

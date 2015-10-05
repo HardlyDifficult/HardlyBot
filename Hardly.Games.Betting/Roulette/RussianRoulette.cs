@@ -3,7 +3,7 @@
         public ulong bet;
         uint iRound, iBulletPosition, iCurrentPlayer;
 
-        public RussianRoulette() : base(1, 6) {
+        public RussianRoulette() : base(2, 6) {
             bet = 1;
             iRound = 0;
             iBulletPosition = 0;

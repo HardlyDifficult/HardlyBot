@@ -1,4 +1,4 @@
-﻿namespace Hardly {
+﻿namespace Hardly.Library.Twitch {
 	public class SqlTwitchChannelPointScale : SqlRow {
 		SqlTwitchChannel channel;
 
