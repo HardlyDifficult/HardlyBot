@@ -40,10 +40,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchChat.BasicTest", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchChatBotConsole", "TwitchChatBotConsole\TwitchChatBotConsole.csproj", "{6BE277CD-CAD2-4D58-AA94-29126DFFAE8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Games.Uno", "..\Hardly.Games.Uno\Hardly.Games.Uno.csproj", "{4AF44FCB-F08C-40BA-BD6B-933EB07247C8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Games.UnoTests", "Hardly.Games.UnoTests\Hardly.Games.UnoTests.csproj", "{5E32DFBB-67C2-4E93-8D86-E642BF386533}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -204,22 +200,6 @@ Global
 		{6BE277CD-CAD2-4D58-AA94-29126DFFAE8A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6BE277CD-CAD2-4D58-AA94-29126DFFAE8A}.Release|x64.ActiveCfg = Release|Any CPU
 		{6BE277CD-CAD2-4D58-AA94-29126DFFAE8A}.Release|x64.Build.0 = Release|Any CPU
-		{4AF44FCB-F08C-40BA-BD6B-933EB07247C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AF44FCB-F08C-40BA-BD6B-933EB07247C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AF44FCB-F08C-40BA-BD6B-933EB07247C8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4AF44FCB-F08C-40BA-BD6B-933EB07247C8}.Debug|x64.Build.0 = Debug|Any CPU
-		{4AF44FCB-F08C-40BA-BD6B-933EB07247C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AF44FCB-F08C-40BA-BD6B-933EB07247C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AF44FCB-F08C-40BA-BD6B-933EB07247C8}.Release|x64.ActiveCfg = Release|Any CPU
-		{4AF44FCB-F08C-40BA-BD6B-933EB07247C8}.Release|x64.Build.0 = Release|Any CPU
-		{5E32DFBB-67C2-4E93-8D86-E642BF386533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E32DFBB-67C2-4E93-8D86-E642BF386533}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E32DFBB-67C2-4E93-8D86-E642BF386533}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5E32DFBB-67C2-4E93-8D86-E642BF386533}.Debug|x64.Build.0 = Debug|Any CPU
-		{5E32DFBB-67C2-4E93-8D86-E642BF386533}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E32DFBB-67C2-4E93-8D86-E642BF386533}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E32DFBB-67C2-4E93-8D86-E642BF386533}.Release|x64.ActiveCfg = Release|Any CPU
-		{5E32DFBB-67C2-4E93-8D86-E642BF386533}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
