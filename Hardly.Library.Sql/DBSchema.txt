@@ -58,11 +58,12 @@ CREATE TABLE `twitch_channel_point_scale` (
   CONSTRAINT `ScaleToChannel` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_channels` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `twitch_followers` (
+CREATE TABLE `twitch_user_in_channel` (
   `UserId` int(10) unsigned NOT NULL,
   `ChannelUserId` int(10) unsigned NOT NULL,
   `CreatedAt` datetime NOT NULL,
   `IsCurrentlyFollowing` bit(1) NOT NULL,
+  `GreetingMessage` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`UserId`,`ChannelUserId`),
   KEY `ChannelIdToFollowers_idx` (`ChannelUserId`),
   CONSTRAINT `ChannelIdToFollowers` FOREIGN KEY (`ChannelUserId`) REFERENCES `twitch_channels` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION,

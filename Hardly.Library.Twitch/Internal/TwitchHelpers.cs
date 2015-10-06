@@ -8,7 +8,7 @@ namespace Hardly.Library.Twitch
 {
     internal static class TwitchHelpers
     {
-        internal static string GetAllAsCsv(SqlTwitchFollower[] followers)
+        internal static string GetAllAsCsv(SqlTwitchUserInChannel[] followers)
         {
             string csv = "";
             if (followers != null)

@@ -66,7 +66,7 @@
     <Compile Include="Data\SqlTwitchChannelPointScale.cs" />
     <Compile Include="Data\SqlTwitchCommands.cs" />
     <Compile Include="Data\SqlTwitchConnection.cs" />
-    <Compile Include="Data\SqlTwitchFollower.cs" />
+    <Compile Include="Data\SqlTwitchUserInChannel.cs" />
     <Compile Include="Data\SqlTwitchUser.cs" />
     <Compile Include="Data\SqlTwitchUserPoints.cs" />
     <Compile Include="Internal\TwitchHelpers.cs" />

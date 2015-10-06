@@ -10,12 +10,12 @@ namespace Hardly.Library.Twitch {
             newFollowersThrottle = new Throttle(TimeSpan.FromMinutes(1)),
             refreshAllFollowersThrottle = new Throttle(TimeSpan.FromMinutes(5));
 
-        public static SqlTwitchFollower[] GetNewFollowers(SqlTwitchAlert alerts) {
+        public static SqlTwitchUserInChannel[] GetNewFollowers(SqlTwitchAlert alerts) {
             try {
                 if(newFollowersThrottle.ExecuteIfReady(alerts.connection.channel.user.id)) {
                     TwitchApi.UpdateNewFollowers(alerts.connection, 25, 0);
                 }
-                return SqlTwitchFollower.GetNew(alerts);
+                return SqlTwitchUserInChannel.GetNew(alerts);
             } catch(Exception e) {
                 Log.error("Twitch get new followers", e);
                 return null;
@@ -38,7 +38,7 @@ namespace Hardly.Library.Twitch {
         public static void RefreshAllFollowers(SqlTwitchConnection connection) {
             try {
                 if(refreshAllFollowersThrottle.ExecuteIfReady(connection.channel.user.id)) {
-                    SqlTwitchFollower.ClearAll(connection.channel);
+                    SqlTwitchUserInChannel.ClearAll(connection.channel);
                     TwitchApi.UpdateNewFollowers(connection, 100, 0, true);
                 }
             } catch(Exception e) {

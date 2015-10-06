@@ -19,19 +19,19 @@
 		public bool Save(bool lazySave = false) {
 			bool hasChanged = false;
 
-			if(!lazySave) {
-				if(pendingWrite.GetValueOrDefault(true)) {
-					pendingWrite = false;
-					if(SaveDataList(false)) {
-						hasChangedDb = true;
-						pendingRead = false;
-						hasChanged = true;
-					}
-				} else {
-					shouldSave = true;
-					hasChanged = pendingWrite.GetValueOrDefault(true);
-				}
-			}
+            if(!lazySave) {
+                if(pendingWrite.GetValueOrDefault(true)) {
+                    pendingWrite = false;
+                    if(SaveDataList(false)) {
+                        hasChangedDb = true;
+                        pendingRead = false;
+                        hasChanged = true;
+                    }
+                }
+            } else {
+                shouldSave = true;
+                hasChanged = pendingWrite.GetValueOrDefault(true);
+            }
 
 			return hasChanged;
 		}
@@ -73,6 +73,7 @@
 		protected override bool Set(uint valueIndex, object value) {
 			if(base.Set(valueIndex, value)) {
 				pendingWrite = true;
+                Debug.Assert(pendingWrite.HasValue && pendingWrite.Value == true);
 				return true;
 			} else {
 				return false;

@@ -71,6 +71,7 @@
     <Compile Include="Commands\System\AboutCommands.cs" />
     <Compile Include="Commands\System\HelloCommand.cs" />
     <Compile Include="Commands\Games\Hearthstone\TwitchHearthstone.cs" />
+    <Compile Include="Commands\UserInfo\UserAccountManagementCommands.cs" />
     <Compile Include="Logic\States\GameState.cs" />
     <Compile Include="Logic\States\GameStateAcceptingPlayers.cs" />
     <Compile Include="Commands\UserInfo\PointCommands.cs" />
