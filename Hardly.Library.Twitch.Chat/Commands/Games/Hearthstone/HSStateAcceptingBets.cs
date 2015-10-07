@@ -18,15 +18,15 @@ namespace Hardly.Library.Twitch {
             controller.game.StartGame();
         }
 
-        private void BetToLose(SqlTwitchUser speaker, string additionalText) {
+        private void BetToLose(TwitchUser speaker, string additionalText) {
             PlaceBet(speaker, additionalText, false);
         }
 
-        private void BetToWin(SqlTwitchUser speaker, string additionalText) {
+        private void BetToWin(TwitchUser speaker, string additionalText) {
             PlaceBet(speaker, additionalText, true);
         }
 
-        private void PlaceBet(SqlTwitchUser speaker, string additionalText, bool toWin) {
+        private void PlaceBet(TwitchUser speaker, string additionalText, bool toWin) {
             if(controller.game.Contains(speaker)) {
                 var bettingPlayer = controller.game.GetPlayer(speaker);
                 if(bettingPlayer.toWin == toWin) {
@@ -42,7 +42,7 @@ namespace Hardly.Library.Twitch {
                     // no switching sides
                 }
             } else {
-                var bettingPlayer = new ParimutuelPlayer<SqlTwitchUser>(controller.room.pointManager.ForUser(speaker), speaker, toWin);
+                var bettingPlayer = new ParimutuelPlayer<TwitchUser>(controller.room.pointManager.ForUser(speaker), speaker, toWin);
                 ulong amount = controller.room.pointManager.GetPointsFromString(additionalText);
                 amount = bettingPlayer.PlaceBet(amount, false);
                 if(amount > 0) {

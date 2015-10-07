@@ -1,5 +1,5 @@
 ﻿namespace Hardly {
-	public abstract class PersistentDataList : DataList {
+	public abstract class PersistentDataList : DataList, IDataList {
 		bool? pendingRead, pendingWrite;
 		bool hasChangedDb, shouldSave;
 

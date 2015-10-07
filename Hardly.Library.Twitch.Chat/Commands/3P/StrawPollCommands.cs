@@ -7,7 +7,7 @@ namespace Hardly.Library.Twitch {
             ChatCommand.Create(room, "getvote", GetVote, "Gets a strawpoll winner", new[] { "viewpoll" }, false, TimeSpan.FromSeconds(30), false);
         }
 
-        private void GetVote(SqlTwitchUser speaker, string additionalText) {
+        private void GetVote(TwitchUser speaker, string additionalText) {
             uint pollNumber;
             if(uint.TryParse(additionalText, out pollNumber)) {
                 string pollResults = Strawpoll.Strawpoll.GetWinner(pollNumber);

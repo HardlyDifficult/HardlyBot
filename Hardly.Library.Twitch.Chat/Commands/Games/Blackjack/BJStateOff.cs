@@ -13,7 +13,7 @@ namespace Hardly.Library.Twitch {
             controller.game.Reset();
         }
 
-        private void BjCommand(SqlTwitchUser speaker, string additionalText) {
+        private void BjCommand(TwitchUser speaker, string additionalText) {
 			controller.SetState(this, typeof(BJStateAcceptingPlayers));
 		}
 

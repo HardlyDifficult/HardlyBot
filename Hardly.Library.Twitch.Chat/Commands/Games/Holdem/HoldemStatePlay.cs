@@ -4,8 +4,8 @@ using Hardly.Games;
 namespace Hardly.Library.Twitch {
     public abstract class HoldemStatePlay : GameState<TwitchHoldem> {
         TimerSet timer;
-        TexasHoldemPlayer<SqlTwitchUser> lastKnownPlayer = null;
-        List<SqlTwitchUser> playersLookingToFold = new List<SqlTwitchUser>();
+        TexasHoldemPlayer<TwitchUser> lastKnownPlayer = null;
+        List<TwitchUser> playersLookingToFold = new List<TwitchUser>();
 
         public HoldemStatePlay(TwitchHoldem controller) : base(controller) {
             AddCommand(controller.room, "call", CallCommand, "Call...", null, false, null, false);
@@ -46,7 +46,7 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        private void AllInCommand(SqlTwitchUser speaker, string arg2) {
+        private void AllInCommand(TwitchUser speaker, string arg2) {
             if(MyTurn(speaker)) {
                 if(controller.game.canBet) {
                     ulong amount = controller.game.Bet(ulong.MaxValue);
@@ -70,7 +70,7 @@ namespace Hardly.Library.Twitch {
             CheckForNextState();
         }
 
-        private void BetCommand(SqlTwitchUser speaker, string additionalText) {
+        private void BetCommand(TwitchUser speaker, string additionalText) {
             if(MyTurn(speaker)) {
                 ulong amount = controller.room.pointManager.GetPointsFromString(additionalText);
                 amount = controller.game.Bet(amount);
@@ -84,7 +84,7 @@ namespace Hardly.Library.Twitch {
             CheckForNextState();
         }
 
-        private bool MyTurn(SqlTwitchUser speaker) {
+        private bool MyTurn(TwitchUser speaker) {
             if(SpeakerInGame(speaker)) {
                 if(speaker.id.Equals(controller.game.currentPlayer.idObject.id)) {
                     return true;
@@ -97,7 +97,7 @@ namespace Hardly.Library.Twitch {
             return false;
         }
         
-        private void FoldCommand(SqlTwitchUser speaker, string arg2) {
+        private void FoldCommand(TwitchUser speaker, string arg2) {
             if(SpeakerInGame(speaker)) {
                 if(speaker.id.Equals(controller.game.currentPlayer.idObject.id)) {
                     List<PlayingCard> cards = controller.game.currentPlayer.hand;
@@ -123,7 +123,7 @@ namespace Hardly.Library.Twitch {
             CheckForNextState();
         }
 
-        private bool SpeakerInGame(SqlTwitchUser speaker) {
+        private bool SpeakerInGame(TwitchUser speaker) {
             bool inGame = false;
             foreach(var player in controller.game.GetPlayers()) {
                 if(speaker.id.Equals(player.idObject.id)) {
@@ -138,7 +138,7 @@ namespace Hardly.Library.Twitch {
             return inGame;
         }
 
-        private void CheckCommand(SqlTwitchUser speaker, string arg2) {
+        private void CheckCommand(TwitchUser speaker, string arg2) {
             if(MyTurn(speaker)) {
                 if(controller.game.Check()) {
                     controller.room.SendWhisper(speaker, "Check check.");
@@ -150,7 +150,7 @@ namespace Hardly.Library.Twitch {
             CheckForNextState();
         }
 
-        private void RaiseCommand(SqlTwitchUser speaker, string additionalText) {
+        private void RaiseCommand(TwitchUser speaker, string additionalText) {
             if(MyTurn(speaker)) {
                 ulong callAmount = controller.game.GetCallAmount();
                 ulong amount = controller.room.pointManager.GetPointsFromString(additionalText);
@@ -169,7 +169,7 @@ namespace Hardly.Library.Twitch {
             CheckForNextState();
         }
 
-        private void CallCommand(SqlTwitchUser speaker, string arg2) {
+        private void CallCommand(TwitchUser speaker, string arg2) {
             if(MyTurn(speaker)) {
                 ulong amount = controller.game.GetCallAmount();
                 amount = controller.game.Call();
@@ -191,7 +191,7 @@ namespace Hardly.Library.Twitch {
             CheckForNextState();
         }
 
-        private void Success(SqlTwitchUser speaker, string message) {
+        private void Success(TwitchUser speaker, string message) {
             controller.room.SendWhisper(speaker, message);
         }
 
@@ -199,28 +199,28 @@ namespace Hardly.Library.Twitch {
             Log.debug("Twitch Game: checking round " + controller.game.round.ToString());
 
             switch(controller.game.round) {
-            case Games.TexasHoldem<SqlTwitchUser>.Round.PreFlop:
+            case Games.TexasHoldem<TwitchUser>.Round.PreFlop:
                 // Do nothing
                 break;
-            case Games.TexasHoldem<SqlTwitchUser>.Round.Flop:
+            case Games.TexasHoldem<TwitchUser>.Round.Flop:
                 if(controller.SetState(this, typeof(HoldemStatePlayFlop))) {
                     timer.Stop();
                     return;
                 }
                 break;
-            case Games.TexasHoldem<SqlTwitchUser>.Round.Turn:
+            case Games.TexasHoldem<TwitchUser>.Round.Turn:
                 if(controller.SetState(this, typeof(HoldemStatePlayTurn))) {
                     timer.Stop();
                     return;
                 }
                 break;
-            case Games.TexasHoldem<SqlTwitchUser>.Round.River:
+            case Games.TexasHoldem<TwitchUser>.Round.River:
                 if(controller.SetState(this, typeof(HoldemStatePlayRiver))) {
                     timer.Stop();
                     return;
                 }
                 break;
-            case Games.TexasHoldem<SqlTwitchUser>.Round.GameOver:
+            case Games.TexasHoldem<TwitchUser>.Round.GameOver:
                 if(controller.SetState(this, typeof(HoldemStateEndOfGame))) {
                     timer.Stop();
                     return;
@@ -284,7 +284,7 @@ namespace Hardly.Library.Twitch {
             return chatMessage;
         }
 
-        private void FailedAction(SqlTwitchUser speaker, string youTriedTo) {
+        private void FailedAction(TwitchUser speaker, string youTriedTo) {
             controller.room.SendWhisper(speaker, "Can't !" + youTriedTo + " right now -- you can " + AvailableCommands());
             timer.Start();
         }

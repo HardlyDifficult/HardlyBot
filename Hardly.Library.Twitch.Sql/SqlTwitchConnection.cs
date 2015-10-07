@@ -1,11 +1,17 @@
 ﻿using System;
 
 namespace Hardly.Library.Twitch {
-	public class SqlTwitchConnection : SqlRow {
-		public readonly SqlTwitchBot bot;
-		public readonly SqlTwitchChannel channel;
+	public class SqlTwitchConnection : SqlRow, TwitchConnection {
+		public TwitchBot bot {
+            get;
+            private set;
+        }
+		public TwitchChannel channel {
+            get;
+            private set;
+        }
 
-		public SqlTwitchConnection(SqlTwitchBot bot, SqlTwitchChannel channel, bool autoConnectToChat = false)
+		public SqlTwitchConnection(TwitchBot bot, TwitchChannel channel, bool autoConnectToChat = false)
 			 : base(new object[] { bot.user.id, channel.user.id, autoConnectToChat }) {
 			this.bot = bot;
 			this.channel = channel;
@@ -39,7 +45,7 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		public static SqlTwitchConnection[] GetAllAutoConnectingConnections(SqlTwitchBot bot) {
+		public static SqlTwitchConnection[] GetAllAutoConnectingConnections(TwitchBot bot) {
 			List<object[]> results = _table.Select(null, null, "BotUserId=?a and AutoConnectToChat=?b", new object[] { bot.user.id, true }, null, 0);
 			if(results != null && results.Count > 0) {
 				SqlTwitchConnection[] connections = new SqlTwitchConnection[results.Count];

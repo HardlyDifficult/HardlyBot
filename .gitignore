@@ -194,3 +194,30 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+/BlankProjectTemplate
+/Hardly.Apps.Gui
+/Hardly.Apps.Server.Web
+/Hardly.Apps.TwitchChat
+/Hardly.Data
+/Hardly.DataTests
+/Hardly.Disabled
+/Hardly.Library.Amazon
+/Hardly.Library.Google
+/Hardly.Library.Twitter
+/Hardly.Library.Web
+/Hardly.Library.Web.StaticFiles
+/Hardly.Library.Web.Templates
+/Hardly.Library.Web.Templates.Composites.Pages
+/Hardly.Library.Web.Templates.Composites.Sites
+/Hardly.Library.Web.Templates.Composites.Themes
+/Hardly.Library.Web.Templates.Composites.Widgets
+/Hardly.Library.Web.Templates.Css
+/Hardly.Library.Web.Templates.CssTests
+/Hardly.Library.Web.Templates.Data
+/Hardly.Library.Web.Templates.Js
+/Hardly.Library.Web.Templates.WidgetParts
+/Hardly.Library.Web.Templates.WidgetPartsTests
+/Hardly.Main
+/Hardly.Service
+/HardlyCode.sln
+

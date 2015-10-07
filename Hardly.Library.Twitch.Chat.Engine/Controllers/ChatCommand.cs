@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Hardly.Library.Twitch {
 	public class ChatCommand : TwitchCommandListener {
-		static Dictionary<SqlTwitchChannel, List<ChatCommand>> roomCommands = new Dictionary<SqlTwitchChannel, List<ChatCommand>>();
+		static Dictionary<TwitchChannel, List<ChatCommand>> roomCommands = new Dictionary<TwitchChannel, List<ChatCommand>>();
 		public readonly string commandName;
         public readonly string description;
         public readonly string[] aliases;
         public readonly bool modOnly, throttlePerUser;
         public bool enabled;
-		Action<SqlTwitchUser, string> action;
+		Action<TwitchUser, string> action;
 		Throttle throttle;
 
         public static List<ChatCommand> ForRoom(TwitchChatRoom room) {
@@ -21,7 +21,7 @@ namespace Hardly.Library.Twitch {
             return null;
         }
 
-        public static ChatCommand Create(TwitchChatRoom room, string name, Action<SqlTwitchUser, string> action, string description, string[] aliases, bool modOnly, TimeSpan timeToThrottleFor, bool throttlePerUser, bool enabled = true) {
+        public static ChatCommand Create(TwitchChatRoom room, string name, Action<TwitchUser, string> action, string description, string[] aliases, bool modOnly, TimeSpan timeToThrottleFor, bool throttlePerUser, bool enabled = true) {
 			List<ChatCommand> commands;
 			if(!roomCommands.TryGetValue(room.twitchConnection.channel, out commands)) {
 				commands = new List<ChatCommand>();
@@ -39,7 +39,7 @@ namespace Hardly.Library.Twitch {
             roomCommands.Remove(this);
         }
 
-        ChatCommand(TwitchChatRoom room, string name, Action<SqlTwitchUser, string> action, string description, string[] aliases, bool modOnly, TimeSpan timeToThrottleFor, bool throttlePerUser, bool enabled) : base(room) {
+        ChatCommand(TwitchChatRoom room, string name, Action<TwitchUser, string> action, string description, string[] aliases, bool modOnly, TimeSpan timeToThrottleFor, bool throttlePerUser, bool enabled) : base(room) {
 			this.commandName = name;
 			this.action = action;
 			this.description = description;
@@ -63,7 +63,7 @@ namespace Hardly.Library.Twitch {
 			enabled = true;
 		}
 
-		internal override void ObserveCommand(SqlTwitchUser speaker, string message) {
+		internal override void ObserveCommand(TwitchUser speaker, string message) {
 			if(enabled) {
 				message = message?.Trim();
 				string reqestedCommandName = message?.GetBefore(" ");

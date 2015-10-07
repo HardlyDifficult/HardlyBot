@@ -7,7 +7,7 @@
 			TwitchChatMessage.RegisterObserver(this.ObserveChatMessage);
 		}
 
-		public void ObserveChatMessage(TwitchChatRoom room, SqlTwitchUser speaker, string message) {
+		public void ObserveChatMessage(TwitchChatRoom room, TwitchUser speaker, string message) {
 			if(this.room.Equals(room)) {
 				if(message != null && message.StartsWith("!")) {
 					ObserveCommand(speaker, message.Substring(1));
@@ -21,6 +21,6 @@
 		//	}
 		//}
 
-		internal abstract void ObserveCommand(SqlTwitchUser speaker, string message);
+		internal abstract void ObserveCommand(TwitchUser speaker, string message);
 	}
 }

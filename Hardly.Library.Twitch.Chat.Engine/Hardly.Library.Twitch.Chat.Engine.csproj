@@ -7,8 +7,8 @@
     <ProjectGuid>{4055AAB4-3F01-49EB-B129-D852C8BF0AEC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sober.Gui</RootNamespace>
-    <AssemblyName>Sober.Gui</AssemblyName>
+    <RootNamespace>Hardly.Library.Twitch</RootNamespace>
+    <AssemblyName>Hardly.Library.Twitch.Chat.Engine</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -60,10 +60,6 @@
     <ProjectReference Include="..\Hardly.Library.Network\Hardly.Library.Network.csproj">
       <Project>{57f110ff-a588-47ff-a1dd-f44b684dc42d}</Project>
       <Name>Hardly.Library.Network</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Hardly.Library.Sql\Hardly.Library.Sql.csproj">
-      <Project>{f84e492b-4aa6-4d7e-84a7-5432be992d52}</Project>
-      <Name>Hardly.Library.Sql</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hardly.Library.Twitch\Hardly.Library.Twitch.csproj">
       <Project>{7790f780-0088-4def-8a37-041b883c7549}</Project>

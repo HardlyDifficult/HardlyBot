@@ -11,7 +11,7 @@ namespace Hardly {
 				Log.info("WebClient " + url);
 
 				try {
-					HttpWebRequest request = HttpWebRequest.CreateHttp(url);
+					WebRequest request = HttpWebRequest.Create(url);
 					request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
 					using(WebResponse response = request.GetResponse()) {
 						if(response != null) {

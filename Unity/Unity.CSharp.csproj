@@ -66,8 +66,26 @@
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
-    <Reference Include="Hardly">
-      <HintPath>Assets\Hardly.dll</HintPath>
+    <Reference Include="HardlyUnity">
+      <HintPath>Assets\HardlyUnity.dll</HintPath>
+    </Reference>
+    <Reference Include="HardlyUnity.Games.Betting">
+      <HintPath>Assets\HardlyUnity.Games.Betting.dll</HintPath>
+    </Reference>
+    <Reference Include="HardlyUnity.Games.Blackjack">
+      <HintPath>Assets\HardlyUnity.Games.Blackjack.dll</HintPath>
+    </Reference>
+    <Reference Include="HardlyUnity.Games">
+      <HintPath>Assets\HardlyUnity.Games.dll</HintPath>
+    </Reference>
+    <Reference Include="HardlyUnity.Games.Holdem">
+      <HintPath>Assets\HardlyUnity.Games.Holdem.dll</HintPath>
+    </Reference>
+    <Reference Include="HardlyUnity.Library.Network">
+      <HintPath>Assets\HardlyUnity.Library.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="HardlyUnity.SqlFaker">
+      <HintPath>Assets\HardlyUnity.SqlFaker.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +103,7 @@
     <Compile Include="Assets\Movement\WorldBoundHelpers.cs" />
     <Compile Include="Assets\ObjectFollower.cs" />
     <Compile Include="Assets\SpawDuplicates.cs" />
+    <Compile Include="Assets\TestCards.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\PowerUps Vol 1 Free\Readme.txt" />

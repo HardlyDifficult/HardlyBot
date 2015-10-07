@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Hardly.Library.Twitch {
 	public class TwitchChatWhisper : TwitchChatEvent {
-		static Action<TwitchChatRoom, SqlTwitchUser, string>[] observers = new Action<TwitchChatRoom, SqlTwitchUser, string>[0];
-		readonly SqlTwitchUser speaker;
+		static Action<TwitchChatRoom, TwitchUser, string>[] observers = new Action<TwitchChatRoom, TwitchUser, string>[0];
+		readonly TwitchUser speaker;
 		readonly string message;
 
-		public TwitchChatWhisper(SqlTwitchUser speaker, string message) {
+		public TwitchChatWhisper(TwitchUser speaker, string message) {
 			this.speaker = speaker;
 			this.message = message;
 		}
@@ -16,7 +16,7 @@ namespace Hardly.Library.Twitch {
 			return "*" + speaker.userName + "*: " + message;
 		}
 
-		internal static void RegisterObserver(Action<TwitchChatRoom, SqlTwitchUser, string> observer) {
+		internal static void RegisterObserver(Action<TwitchChatRoom, TwitchUser, string> observer) {
 			observers = observers.Append(observer);
 		}
 
@@ -24,7 +24,7 @@ namespace Hardly.Library.Twitch {
 			Observe(chatRooms.First.Value, speaker, message);
 		}
 
-		void Observe(TwitchChatRoom room, SqlTwitchUser speaker, string message) {
+		void Observe(TwitchChatRoom room, TwitchUser speaker, string message) {
 			foreach(var observer in observers) {
 				observer(room, speaker, message);
 			}

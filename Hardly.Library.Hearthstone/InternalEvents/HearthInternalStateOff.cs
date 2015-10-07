@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hardly.Library.Hearthstone {
+﻿namespace Hardly.Library.Hearthstone {
     public class HearthInternalStateOff : HearthInternalState {
         public HearthInternalStateOff(HearthstoneEventObserver eventObserver, bool? weWon = null) : base(eventObserver) {
             eventObserver.Observe(new EndOfGame(eventObserver.currentGame, weWon));

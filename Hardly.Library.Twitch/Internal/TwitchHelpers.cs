@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hardly.Library.Twitch
 {
     internal static class TwitchHelpers
     {
-        internal static string GetAllAsCsv(SqlTwitchUserInChannel[] followers)
+        internal static string GetAllAsCsv(TwitchUserInChannel[] followers)
         {
             string csv = "";
             if (followers != null)

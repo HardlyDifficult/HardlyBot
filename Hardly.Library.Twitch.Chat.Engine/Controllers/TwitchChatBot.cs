@@ -6,20 +6,25 @@ namespace Hardly.Library.Twitch {
 			get;
 			private set;
 		}
+        ITwitchFactory factory;
+
+        public TwitchChatBot(ITwitchFactory factory) {
+            this.factory = factory;
+        }
 		
 		public void Run() {
 			Thread[] ircThreads = null;
 			rooms = null;
 
-			var bots = SqlTwitchBot.GetAll();
+            var bots = factory.GetAllBots();
 			foreach(var bot in bots) {
-				var connections = SqlTwitchConnection.GetAllAutoConnectingConnections(bot);
+				var connections = factory.GetAllAutoConnectingConnections(bot);
 				if(connections != null && connections.Length > 0) {
-					var chatConnection = new TwitchIrcConnection(bot, false);
-					var whisperConnection = new TwitchIrcConnection(bot, true);
+					var chatConnection = new TwitchIrcConnection(factory, bot, false);
+					var whisperConnection = new TwitchIrcConnection(factory, bot, true);
 
 					foreach(var connection in connections) {
-						var room = new TwitchChatRoom(chatConnection, whisperConnection, connection);
+						var room = new TwitchChatRoom(factory, chatConnection, whisperConnection, connection);
 						rooms = rooms.Append(room);
 					}
 

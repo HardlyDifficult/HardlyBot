@@ -103,10 +103,6 @@
       <Project>{57f110ff-a588-47ff-a1dd-f44b684dc42d}</Project>
       <Name>Hardly.Library.Network</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Hardly.Library.Sql\Hardly.Library.Sql.csproj">
-      <Project>{f84e492b-4aa6-4d7e-84a7-5432be992d52}</Project>
-      <Name>Hardly.Library.Sql</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Hardly.Library.Stawpoll\Hardly.Library.Strawpoll.csproj">
       <Project>{6cd0813a-6216-40f4-81ed-b210fb16e9cd}</Project>
       <Name>Hardly.Library.Strawpoll</Name>

@@ -1,45 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hardly.Library.Twitch {
-    public static class Twitch {
-        static Throttle liveFollowersThrottle = new Throttle(TimeSpan.FromMinutes(5)),
+    public class Twitch {
+        Throttle liveFollowersThrottle = new Throttle(TimeSpan.FromMinutes(5)),
             newFollowersThrottle = new Throttle(TimeSpan.FromMinutes(1)),
             refreshAllFollowersThrottle = new Throttle(TimeSpan.FromMinutes(5));
+        ITwitchFactory factory;
+        TwitchApi twitchApi;
 
-        public static SqlTwitchUserInChannel[] GetNewFollowers(SqlTwitchAlert alerts) {
+        public Twitch(ITwitchFactory factory) {
+            this.factory = factory;
+            twitchApi = new TwitchApi(factory);
+        }
+
+        public TwitchUserInChannel[] GetNewFollowers(TwitchAlert alerts) {
             try {
                 if(newFollowersThrottle.ExecuteIfReady(alerts.connection.channel.user.id)) {
-                    TwitchApi.UpdateNewFollowers(alerts.connection, 25, 0);
+                    twitchApi.UpdateNewFollowers(alerts.connection, 25, 0);
                 }
-                return SqlTwitchUserInChannel.GetNew(alerts);
+                return factory.GetNewFollowers(alerts);
             } catch(Exception e) {
                 Log.error("Twitch get new followers", e);
                 return null;
             }
         }
 
-        public static SqlTwitchChannel[] GetLiveFollowers(SqlTwitchConnection connection) {
+        public TwitchChannel[] GetLiveFollowers(TwitchConnection connection) {
             try {
                 if(liveFollowersThrottle.ExecuteIfReady(connection.channel.user.id)) {
-                    SqlTwitchChannel.ClearLiveFollowers(connection.channel);
-                    TwitchApi.UpdateLiveFollowers(connection, 25, 0);
+                    twitchApi.UpdateLiveFollowers(connection, 25, 0);
                 }
-                return SqlTwitchChannel.GetAllLiveFollowers(connection.channel);
+                return factory.GetAllLiveFollowers(connection.channel);
             } catch(Exception e) {
                 Log.error("Twitch live followers", e);
                 return null;
             }
         }
 
-        public static void RefreshAllFollowers(SqlTwitchConnection connection) {
+        public void RefreshAllFollowers(TwitchConnection connection) {
             try {
                 if(refreshAllFollowersThrottle.ExecuteIfReady(connection.channel.user.id)) {
-                    SqlTwitchUserInChannel.ClearAll(connection.channel);
-                    TwitchApi.UpdateNewFollowers(connection, 100, 0, true);
+                    factory.ClearFollowingBitForAllUsers(connection.channel);
+                    twitchApi.UpdateNewFollowers(connection, 100, 0, true);
                 }
             } catch(Exception e) {
                 Log.exception(e);

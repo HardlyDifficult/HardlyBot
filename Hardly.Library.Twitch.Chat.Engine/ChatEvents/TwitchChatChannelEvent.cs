@@ -2,9 +2,9 @@
 
 namespace Hardly.Library.Twitch {
 	public abstract class TwitchChatChannelEvent : TwitchChatEvent {
-		public readonly SqlTwitchChannel channel;
+		public readonly TwitchChannel channel;
 
-		public TwitchChatChannelEvent(SqlTwitchChannel channel) {
+		public TwitchChatChannelEvent(TwitchChannel channel) {
 			this.channel = channel;
 		}
 	}

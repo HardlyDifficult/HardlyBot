@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hardly.Library.Hearthstone {
+﻿namespace Hardly.Library.Hearthstone {
     public abstract class HearthInternalState {
         protected readonly HearthstoneEventObserver eventObserver;
 

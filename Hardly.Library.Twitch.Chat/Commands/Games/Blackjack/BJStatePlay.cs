@@ -35,7 +35,7 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        private void SurrenderCommand(SqlTwitchUser speaker, string arg2) {
+        private void SurrenderCommand(TwitchUser speaker, string arg2) {
             var player = GetPlayer(speaker);
             if(player != null && player.canSurrender) {
                 controller.game.Surrender(player);
@@ -46,7 +46,7 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        private void BuyInsurance(SqlTwitchUser speaker, string arg2) {
+        private void BuyInsurance(TwitchUser speaker, string arg2) {
             var player = GetPlayer(speaker);
             if(player != null) {
                 if(player.BuyInsurance()) {
@@ -106,7 +106,7 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        private void StandCommand(SqlTwitchUser speaker, string message) {
+        private void StandCommand(TwitchUser speaker, string message) {
 			var player = GetPlayer(speaker);
 
 			if(player != null) {
@@ -123,7 +123,7 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		private void SplitCommand(SqlTwitchUser speaker, string message) {
+		private void SplitCommand(TwitchUser speaker, string message) {
 			var player = GetPlayer(speaker);
             if(player != null) {
                 if(player.Split()) {
@@ -138,15 +138,15 @@ namespace Hardly.Library.Twitch {
             }
 		}
 
-		private void DoubleCommand(SqlTwitchUser speaker, string message) {
+		private void DoubleCommand(TwitchUser speaker, string message) {
 			Hit(speaker, message, true);
 		}
 
-		private void HitCommand(SqlTwitchUser speaker, string message) {
+		private void HitCommand(TwitchUser speaker, string message) {
 			Hit(speaker, message);
 		}
 
-		string AnnounceSplitHand(BlackjackPlayer<SqlTwitchUser> player) {
+		string AnnounceSplitHand(BlackjackPlayer<TwitchUser> player) {
 			if(player.ReadyToSwitchHands()) {
 				string chatMessage = "";
 				if(!player.CurrentHandEvaluator.isStanding) {
@@ -159,8 +159,8 @@ namespace Hardly.Library.Twitch {
 			return "";
 		}
 
-		void Hit(SqlTwitchUser speaker, string message, bool doubleDown = false) {
-			BlackjackPlayer<SqlTwitchUser> player = GetPlayer(speaker);
+		void Hit(TwitchUser speaker, string message, bool doubleDown = false) {
+			BlackjackPlayer<TwitchUser> player = GetPlayer(speaker);
 			if(player != null) {
 				string chatMessage = "";
                 if(!player.CurrentHandEvaluator.isDone) {
@@ -226,7 +226,7 @@ namespace Hardly.Library.Twitch {
 			controller.SetState(this, typeof(BJStateDealerPlaying));
 		}
 
-		BlackjackPlayer<SqlTwitchUser> GetPlayer(SqlTwitchUser speaker) {
+		BlackjackPlayer<TwitchUser> GetPlayer(TwitchUser speaker) {
 			var player = controller.game.GetPlayer(speaker);
             if(player == null) {
                 controller.room.SendWhisper(speaker, "Sorry, join the next game.");

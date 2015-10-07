@@ -7,9 +7,9 @@ namespace Hardly.Library.Twitch {
             AddCommand(controller.room, "joinroulette", JoinGame, "Join the Russian Roulette game", null, false);
         }
 
-        private void JoinGame(SqlTwitchUser speaker, string additionalText) {
+        private void JoinGame(TwitchUser speaker, string additionalText) {
             var pointManager = controller.room.pointManager.ForUser(speaker);
-            var player = new RussianRoulettePlayer<SqlTwitchUser>(pointManager, speaker);
+            var player = new RussianRoulettePlayer<TwitchUser>(pointManager, speaker);
             if(controller.game.Join(player)) {
                 controller.room.SendWhisper(speaker, "You're in");
 

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hardly.Library.Twitch {
 	public class ChannelPointManager {
@@ -17,17 +15,19 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		readonly SqlTwitchChannel channel;
+		readonly TwitchChannel channel;
 		readonly PointUnit[] units;
-		Dictionary<SqlTwitchUser, TwitchUserPointManager> userManagers = new Dictionary<SqlTwitchUser, TwitchUserPointManager>();
+		Dictionary<TwitchUser, TwitchUserPointManager> userManagers = new Dictionary<TwitchUser, TwitchUserPointManager>();
+        ITwitchFactory factory;
 
-		public ChannelPointManager(SqlTwitchChannel channel) {
+		public ChannelPointManager(ITwitchFactory factory, TwitchChannel channel) {
+            this.factory = factory;
 			this.channel = channel;
 			units = LoadUnits(channel);			
 		}
 
-		static PointUnit[] LoadUnits(SqlTwitchChannel channel) {
-			SqlTwitchChannelPointScale[] points = SqlTwitchChannelPointScale.ForChannel(channel);
+		PointUnit[] LoadUnits(TwitchChannel channel) {
+			TwitchChannelPointScale[] points =  factory.GetChannelPointScale(channel);
 			if(points != null && points.Length > 0) {
 				PointUnit[] units = new PointUnit[points.Length];
 
@@ -140,10 +140,10 @@ namespace Hardly.Library.Twitch {
 			return value;
 		}
 
-		public TwitchUserPointManager ForUser(SqlTwitchUser user) {
+		public TwitchUserPointManager ForUser(TwitchUser user) {
 			TwitchUserPointManager manager;
 			if(!userManagers.TryGetValue(user, out manager)) {
-				manager = new TwitchUserPointManager(channel, user);
+				manager = factory.GetUserPointManager(channel, user);
 				userManagers.Add(user, manager);
 			}
 

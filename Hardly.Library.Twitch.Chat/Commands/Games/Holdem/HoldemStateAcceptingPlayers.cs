@@ -9,7 +9,7 @@ namespace Hardly.Library.Twitch {
 			AddCommand(controller.room, "cancelplayholdem", CancelPlayCommand, "Cancels a play, if it's not too late.", null, false, null, false);
         }
 
-        private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
+        private void CancelPlayCommand(TwitchUser speaker, string additionalText) {
 			var player = controller.game.GetPlayer(speaker);
 			if(player != null) {
 				TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
@@ -23,17 +23,17 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		private void StartCommand(SqlTwitchUser speaker, string additionalText) {
+		private void StartCommand(TwitchUser speaker, string additionalText) {
 			if(controller.game.isReadyToStart) {
                 StartGame();
 			}
 		}
 
-		private void PlayCommand(SqlTwitchUser speaker, string additionalText) {
+		private void PlayCommand(TwitchUser speaker, string additionalText) {
 			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
 
             if(userPoints.Points > controller.game.bigBlind) {
-				controller.game.Join(new TexasHoldemPlayer<SqlTwitchUser>(userPoints, speaker));
+				controller.game.Join(new TexasHoldemPlayer<TwitchUser>(userPoints, speaker));
 				if(controller.game.isReadyToStart) {
 					MinHit_StartWaitingForAdditionalPlayers();
 				}
@@ -44,7 +44,7 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		void SendJoinMessage(SqlTwitchUser speaker) {
+		void SendJoinMessage(TwitchUser speaker) {
 			string chatMessage = "You're in, sit tight we start ";
 			chatMessage += GetStartingInMessage();
 			controller.room.SendWhisper(speaker, chatMessage);

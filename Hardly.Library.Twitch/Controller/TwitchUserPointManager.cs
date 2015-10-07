@@ -3,10 +3,10 @@ using Hardly.Games;
 
 namespace Hardly.Library.Twitch {
 	public class TwitchUserPointManager : PlayerPointManager {
-		readonly SqlTwitchUserPoints sqlPoints;
+		readonly TwitchUserPoints sqlPoints;
 
-		public TwitchUserPointManager(SqlTwitchChannel channel, SqlTwitchUser user) {
-			sqlPoints = new SqlTwitchUserPoints(user, channel);
+		public TwitchUserPointManager(ITwitchFactory factory, TwitchChannel channel, TwitchUser user) {
+			sqlPoints = factory.GetUserPoints(user, channel);
 		}
     
         public override ulong Points {

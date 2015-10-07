@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchChat.BasicTest", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchChatBotConsole", "TwitchChatBotConsole\TwitchChatBotConsole.csproj", "{6BE277CD-CAD2-4D58-AA94-29126DFFAE8A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardly.Library.Twitch.Sql", "..\Hardly.Library.Twitch.Sql\Hardly.Library.Twitch.Sql.csproj", "{C09AB919-B727-40E8-B2FF-7481256417E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -200,6 +202,14 @@ Global
 		{6BE277CD-CAD2-4D58-AA94-29126DFFAE8A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6BE277CD-CAD2-4D58-AA94-29126DFFAE8A}.Release|x64.ActiveCfg = Release|Any CPU
 		{6BE277CD-CAD2-4D58-AA94-29126DFFAE8A}.Release|x64.Build.0 = Release|Any CPU
+		{C09AB919-B727-40E8-B2FF-7481256417E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C09AB919-B727-40E8-B2FF-7481256417E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C09AB919-B727-40E8-B2FF-7481256417E0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C09AB919-B727-40E8-B2FF-7481256417E0}.Debug|x64.Build.0 = Debug|Any CPU
+		{C09AB919-B727-40E8-B2FF-7481256417E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C09AB919-B727-40E8-B2FF-7481256417E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C09AB919-B727-40E8-B2FF-7481256417E0}.Release|x64.ActiveCfg = Release|Any CPU
+		{C09AB919-B727-40E8-B2FF-7481256417E0}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

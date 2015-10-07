@@ -11,9 +11,9 @@ namespace Hardly.Library.Twitch {
             ChatCommand.Create(room, "awardpoints", AwardPointsCommand, "Gives someone points from the house.", null, true, TimeSpan.FromMinutes(2), true);
         }
 
-        private void AwardPointsCommand(SqlTwitchUser speaker, string additionalText) {
+        private void AwardPointsCommand(TwitchUser speaker, string additionalText) {
             if(additionalText != null) {
-                var otherUser = SqlTwitchUser.GetFromName(additionalText.GetBefore(" "));
+                var otherUser = room.factory.GetUserFromName(additionalText.GetBefore(" "));
                 if(otherUser != null) {
                     var amount = room.pointManager.GetPointsFromString(additionalText.GetAfter(" "));
 
@@ -31,9 +31,9 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        private void GivePointsCommand(SqlTwitchUser speaker, string additionalText) {
+        private void GivePointsCommand(TwitchUser speaker, string additionalText) {
             if(additionalText != null) {
-                var otherUser = SqlTwitchUser.GetFromName(additionalText.GetBefore(" "));
+                var otherUser = room.factory.GetUserFromName(additionalText.GetBefore(" "));
                 if(otherUser != null) {
                     var amount = room.pointManager.GetPointsFromString(additionalText.GetAfter(" "));
 
@@ -55,12 +55,12 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        private void AboutPointsCommand(SqlTwitchUser speaker, string message) {
+        private void AboutPointsCommand(TwitchUser speaker, string message) {
 			room.SendWhisper(speaker, room.pointManager.GetAboutPoints());
 		}
 
-		private void LeaderboardCommand(SqlTwitchUser speaker, string message) {
-			SqlTwitchUserPoints[] leadersPoints = SqlTwitchUserPoints.GetTopUsersForChannel(room.twitchConnection.channel, 5);
+		private void LeaderboardCommand(TwitchUser speaker, string message) {
+			TwitchUserPoints[] leadersPoints = room.factory.GetTopUsers(room.twitchConnection.channel, 5);
 			if(leadersPoints != null) {
 				string chatMessage = "";
 				foreach(var points in leadersPoints) {
@@ -71,7 +71,7 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		private void BragCommand(SqlTwitchUser speaker, string message) {
+		private void BragCommand(TwitchUser speaker, string message) {
 			TwitchUserPointManager yourPoints = room.pointManager.ForUser(speaker);
 			if(yourPoints.Points >= 50) {
 				yourPoints.Award(0, -50);
@@ -82,13 +82,13 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		private void PointCommand(SqlTwitchUser speaker, string message) {
+		private void PointCommand(TwitchUser speaker, string message) {
 			string otherUserName = message.GetBefore(" ");
 			if(otherUserName == null) {
 				otherUserName = message;
 			}
 			otherUserName = otherUserName?.Trim().ToLower();
-			SqlTwitchUser otherUser = SqlTwitchUser.GetFromName(otherUserName);
+			TwitchUser otherUser = room.factory.GetUserFromName(otherUserName);
 
 			TwitchUserPointManager yourPoints = room.pointManager.ForUser(speaker);
 			string chatMessage = "You have ";

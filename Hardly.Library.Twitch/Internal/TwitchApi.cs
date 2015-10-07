@@ -1,8 +1,16 @@
 ﻿namespace Hardly.Library.Twitch {
-    internal static class TwitchApi {
-        internal static SqlTwitchUser GetUser(string username) {
+    public class TwitchApi {
+        ITwitchFactory factory;
+        TwitchJson twitchJson;
+
+        public TwitchApi(ITwitchFactory factory) {
+            this.factory = factory;
+            twitchJson = new TwitchJson(factory);
+        }
+
+        public TwitchUser GetUser(string username) {
             if(username != null && username.Length > 0) {
-                var user = TwitchJson.ParseUser(WebClient.GetHTML("https://api.twitch.tv/kraken/users/" + username));
+                var user = twitchJson.ParseUser(WebClient.GetHTML("https://api.twitch.tv/kraken/users/" + username));
                 user.Save(true);
                 return user;
             } else {
@@ -10,9 +18,9 @@
             }
         }
 
-        internal static void UpdateLiveFollowers(SqlTwitchConnection connection, uint limit, uint offset) {
+        internal void UpdateLiveFollowers(TwitchConnection connection, uint limit, uint offset) {
             string json = GetLiveFollowersJson(connection, limit, offset);
-            SqlTwitchChannel[] liveChannels = TwitchJson.ParseStreams(json);
+            TwitchChannel[] liveChannels = twitchJson.ParseStreams(json);
 
             if(liveChannels.Length >= limit) {
                 Log.info("Live Followers, requesting another page...");
@@ -20,13 +28,13 @@
             }
         }
 
-        internal static void UpdateNewFollowers(SqlTwitchConnection connection, uint limit, uint offset, bool forceNextPage = false) {
+        internal void UpdateNewFollowers(TwitchConnection connection, uint limit, uint offset, bool forceNextPage = false) {
             string json = GetFollowerJson(connection, limit, offset);
-            SqlTwitchUserInChannel[] followers = TwitchJson.ParseFollowers(json);
+            TwitchUserInChannel[] followers = twitchJson.ParseFollowers(json);
 
             if(followers != null && followers.Length > 0) {
                 bool nextPage = forceNextPage;
-                foreach(SqlTwitchUserInChannel follower in followers) {
+                foreach(TwitchUserInChannel follower in followers) {
                     follower.Save(false);
                     nextPage = nextPage || follower.HasChangedDb;
                 }
@@ -38,17 +46,17 @@
             }
         }
 
-        static string GetLiveFollowersJson(SqlTwitchConnection connection, uint limit, uint offset) {
-            SqlTwitchUserInChannel[] followers = SqlTwitchUserInChannel.GetAllWithUsernames(connection.channel);
+        string GetLiveFollowersJson(TwitchConnection connection, uint limit, uint offset) {
+            TwitchUserInChannel[] followers = factory.GetAllUserInChannels(connection.channel);
             return GetJson(connection.bot, limit, offset, "streams/?channel="
                     + TwitchHelpers.GetAllAsCsv(followers));
         }
 
-        static string GetFollowerJson(SqlTwitchConnection connection, uint limit, uint offset) {
+        static string GetFollowerJson(TwitchConnection connection, uint limit, uint offset) {
             return GetJson(connection.bot, limit, offset, "channels/" + connection.channel.user.userName + "/follows?");
         }
 
-        static string GetJson(SqlTwitchBot bot, uint limit, uint offset, string path) {
+        static string GetJson(TwitchBot bot, uint limit, uint offset, string path) {
             return WebClient.GetHTML("https://api.twitch.tv/kraken/" + path + "&oauth_token=" + bot.oauthPassword + "&limit=" + limit
                 + "&offset=" + offset);
         }

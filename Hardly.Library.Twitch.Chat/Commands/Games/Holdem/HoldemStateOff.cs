@@ -11,7 +11,7 @@ namespace Hardly.Library.Twitch {
             controller.game.bigBlind = 2;
         }
 
-        private void HoldemCommand(SqlTwitchUser speaker, string additionalText) {
+        private void HoldemCommand(TwitchUser speaker, string additionalText) {
 			controller.SetState(this, typeof(HoldemStateAcceptingPlayers));
 		}
 	}

@@ -3,15 +3,17 @@
 namespace Hardly.Library.Twitch {
 	public class TwitchChatRoom {
 		readonly TwitchIrcConnection chatIrcConnection, whisperIrcConnection;
-		public readonly SqlTwitchConnection twitchConnection;
+		public readonly TwitchConnection twitchConnection;
         public readonly ChannelPointManager pointManager;
+        public readonly ITwitchFactory factory;
 
-        public TwitchChatRoom(TwitchIrcConnection chatConnection,
-			 TwitchIrcConnection whisperConnection, SqlTwitchConnection twitchConnection) {
+        public TwitchChatRoom(ITwitchFactory factory, TwitchIrcConnection chatConnection,
+			 TwitchIrcConnection whisperConnection, TwitchConnection twitchConnection) {
+            this.factory = factory;
 			this.chatIrcConnection = chatConnection;
 			this.whisperIrcConnection = whisperConnection;
 			this.twitchConnection = twitchConnection;
-            this.pointManager = new ChannelPointManager(twitchConnection.channel);
+            this.pointManager = new ChannelPointManager(factory, twitchConnection.channel);
 
 			chatConnection.Join(this);
 
@@ -27,11 +29,11 @@ namespace Hardly.Library.Twitch {
 			chatIrcConnection.SendChat(twitchConnection, message);
 		}
 
-		public void SendWhisper(SqlTwitchUser speakee, string message) {
+		public void SendWhisper(TwitchUser speakee, string message) {
 			whisperIrcConnection.SendWhisper(speakee, message);
 		}
 
-        public void Timeout(SqlTwitchUser speaker, TimeSpan timeSpan) {
+        public void Timeout(TwitchUser speaker, TimeSpan timeSpan) {
             if(timeSpan.TotalSeconds > 0) {
                 SendChatMessage(".timeout " + speaker.userName + " " + timeSpan.TotalSeconds);
             }

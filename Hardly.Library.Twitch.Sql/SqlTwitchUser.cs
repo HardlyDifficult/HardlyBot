@@ -2,23 +2,9 @@
 using System.Diagnostics;
 
 namespace Hardly.Library.Twitch {
-    public class SqlTwitchUser : SqlRow {
+    public class SqlTwitchUser : SqlRow, TwitchUser {
         public SqlTwitchUser(uint id, string name = null, DateTime created = default(DateTime), string logo = null, string bio = null)
             : base(new object[] { id, name, created, logo, bio }) {
-        }
-
-        public static SqlTwitchUser GetFromName(string username) {
-            try {
-                var user = FromName(username);
-                if(user != null) {
-                    return user;
-                } else {
-                    return TwitchApi.GetUser(username);
-                }
-            } catch(Exception e) {
-                Log.error("Twitch get user from name", e);
-                return null;
-            }
         }
 
         internal static readonly SqlTable _table = new SqlTable("twitch_users");
@@ -71,7 +57,7 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        static SqlTwitchUser FromName(string username) {
+        internal static SqlTwitchUser FromName(string username) {
             try {
                 object[] values = _table.Select(null, null, "Name=?a", new object[] { username }, null);
                 if(values != null && values.Length > 0) {

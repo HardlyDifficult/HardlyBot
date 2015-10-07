@@ -1,7 +1,7 @@
 ﻿namespace Hardly.Library.Twitch {
     public class RRStatePlaying : GameState<TwitchRussianRoulette> {
         Timer turnTimer;
-        SqlTwitchUser lastPlayer = null;
+        TwitchUser lastPlayer = null;
 
         public RRStatePlaying(TwitchRussianRoulette controller) : base(controller) {
             AddCommand(controller.room, "pullthetrigger", PullTrigger, "Points the gun at your head and pulls the trigger.  Good luck fool.", new[] { "pulltrigger" }, false);
@@ -25,7 +25,7 @@
             turnTimer.Stop();
         }
 
-        private void PussyOut(SqlTwitchUser speaker, string arg2) {
+        private void PussyOut(TwitchUser speaker, string arg2) {
             if(CheckPlayer(speaker)) {
                 if(controller.game.PussyOut()) {
                     string chatMessage = speaker.name;
@@ -35,7 +35,7 @@
             }
         }
 
-        private bool CheckPlayer(SqlTwitchUser speaker) {
+        private bool CheckPlayer(TwitchUser speaker) {
             if(speaker.id.Equals(controller.game.currentPlayer?.idObject.id)) {
                 return true;
             } else {
@@ -46,7 +46,7 @@
             }
         }
 
-        private void PullTrigger(SqlTwitchUser speaker, string arg2) {
+        private void PullTrigger(TwitchUser speaker, string arg2) {
             if(CheckPlayer(speaker)) {
                 var player = controller.game.GetPlayer(speaker);
                 controller.game.PullTrigger();

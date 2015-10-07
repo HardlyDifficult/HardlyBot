@@ -9,7 +9,7 @@ namespace Hardly.Library.Twitch {
 			AddCommand(controller.room, "cancelplay", CancelPlayCommand, "Cancels a play, if it's not too late.", new[] { "leave" }, false, null, false);
         }
 
-        private void CancelPlayCommand(SqlTwitchUser speaker, string additionalText) {
+        private void CancelPlayCommand(TwitchUser speaker, string additionalText) {
 			var player = controller.game.GetPlayer(speaker);
 			if(player != null) {
                 controller.game.LeaveGame(speaker);   
@@ -22,13 +22,13 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		void StartCommand(SqlTwitchUser speaker, string additionalText) {
+		void StartCommand(TwitchUser speaker, string additionalText) {
 			if(controller.game.isReadyToStart) {
 				controller.SetState(this, typeof(BJStatePlay));
 			}
 		}
 
-		void PlayCommand(SqlTwitchUser speaker, string betMessage) {
+		void PlayCommand(TwitchUser speaker, string betMessage) {
 			ulong bet = controller.room.pointManager.GetPointsFromString(betMessage);
 			TwitchUserPointManager userPoints = controller.room.pointManager.ForUser(speaker);
             
@@ -48,7 +48,7 @@ namespace Hardly.Library.Twitch {
 			}
 		}
         
-		void SendJoinMessage(SqlTwitchUser speaker, ulong bet = 0) {
+		void SendJoinMessage(TwitchUser speaker, ulong bet = 0) {
 			string chatMessage = "You're in";
 			if(bet > 0) {
 				chatMessage += " for ";

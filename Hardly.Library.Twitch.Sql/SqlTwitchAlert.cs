@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Hardly.Library.Twitch {
-    public class SqlTwitchAlert : SqlRow {
-        public readonly SqlTwitchConnection connection;
-
-        public SqlTwitchAlert(SqlTwitchConnection connection, string alertGuid, DateTime lastFollowerNotification = default(DateTime))
+    public class SqlTwitchAlert : SqlRow, TwitchAlert {
+        public SqlTwitchAlert(TwitchConnection connection, string alertGuid, DateTime lastFollowerNotification = default(DateTime))
             : base(new object[] { connection.bot.user.id, connection.channel.user.id, alertGuid, lastFollowerNotification }) {
             this.connection = connection;
         }
@@ -41,6 +43,11 @@ namespace Hardly.Library.Twitch {
             set {
                 Set(3, value);
             }
+        }
+
+        public TwitchConnection connection {
+            get;
+            private set;
         }
 
         public static SqlTwitchAlert FromGuid(string value) {

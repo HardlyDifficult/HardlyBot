@@ -1,7 +1,5 @@
 ﻿namespace Hardly.Library.Twitch {
-    public class SqlTwitchBot : SqlRow {
-        public readonly SqlTwitchUser user;
-
+    public class SqlTwitchBot : SqlRow, TwitchBot {
         public SqlTwitchBot(SqlTwitchUser user, string oauthPassword = null)
             : base(new object[] { user.id, oauthPassword }) {
             this.user = user;
@@ -29,10 +27,15 @@
             }
         }
 
-        public static SqlTwitchBot[] GetAll() {
+        public TwitchUser user {
+            get;
+            private set;
+        }
+
+        public static TwitchBot[] GetAll() {
             List<object[]> results = _table.Select(null, null, null, null, null, 0);
             if(results != null) {
-                SqlTwitchBot[] bots = new SqlTwitchBot[results.Count];
+                TwitchBot[] bots = new TwitchBot[results.Count];
                 for(int i = 0; i < results.Count; i++) {
                     bots[i] = new SqlTwitchBot(new SqlTwitchUser(results[i][0].FromSql<uint>()), results[i][1].FromSql<string>());
                 }

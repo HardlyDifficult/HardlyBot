@@ -1,12 +1,12 @@
 ﻿using Hardly.Games;
 
 namespace Hardly.Library.Twitch {
-    public class TwitchPickANumber : TwitchGame<PickANumberGame<SqlTwitchUser>> {
+    public class TwitchPickANumber : TwitchGame<PickANumberGame<TwitchUser>> {
         public TwitchPickANumber(TwitchChatRoom room) : base(room) {
             ChatCommand.Create(room, "pick", PickCommand, "Pick a number 1-10... !pick <guess> for <bet amount>.", null, false, TimeSpan.FromSeconds(10), true);
         }
 
-        void PickCommand(SqlTwitchUser speaker, string message) {
+        void PickCommand(TwitchUser speaker, string message) {
             game.Reset();
 
             uint pickedNumber;
@@ -16,7 +16,7 @@ namespace Hardly.Library.Twitch {
             }
 
             if(uint.TryParse(numberString, out pickedNumber)) {
-                var playerObject = new PickANumberPlayer<SqlTwitchUser>(room.pointManager.ForUser(speaker), speaker, pickedNumber);
+                var playerObject = new PickANumberPlayer<TwitchUser>(room.pointManager.ForUser(speaker), speaker, pickedNumber);
                 if(game.Join(playerObject)) {
                     message = message?.GetAfter(" for");
                     ulong bet = 1;

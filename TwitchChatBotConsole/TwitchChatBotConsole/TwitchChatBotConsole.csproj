@@ -62,6 +62,10 @@
       <Project>{0e436bd2-c9d6-479d-9bb6-f58657270c3a}</Project>
       <Name>Hardly.Library.Twitch.Chat</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Hardly.Library.Twitch.Sql\Hardly.Library.Twitch.Sql.csproj">
+      <Project>{c09ab919-b727-40e8-b2ff-7481256417e0}</Project>
+      <Name>Hardly.Library.Twitch.Sql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Hardly.Library.Twitch\Hardly.Library.Twitch.csproj">
       <Project>{7790f780-0088-4def-8a37-041b883c7549}</Project>
       <Name>Hardly.Library.Twitch</Name>

@@ -6,7 +6,7 @@ namespace Hardly.Library.Twitch {
             ChatCommand.Create(room, "commands", ListCommands, "Lists all active commands", null, false, null, false);
         }
 
-        void ListCommands(SqlTwitchUser speaker, string additionalText) {
+        void ListCommands(TwitchUser speaker, string additionalText) {
             var commands = ChatCommand.ForRoom(room);
 
             string chatMessage = "";

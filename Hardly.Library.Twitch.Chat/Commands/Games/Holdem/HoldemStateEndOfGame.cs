@@ -22,7 +22,7 @@ namespace Hardly.Library.Twitch {
                 timer.Start();
             } else {
                 string chatMessage = "Holdem: ";
-                TexasHoldemPlayer<SqlTwitchUser> player;
+                TexasHoldemPlayer<TwitchUser> player;
                 if(iPlayer > controller.game.lastGameEndedInSidepotPlayers.Count - 1) {
                     player = controller.game.lastGameEndedInSeatPlayers[iPlayer - controller.game.lastGameEndedInSidepotPlayers.Count];
                 } else {
@@ -48,7 +48,7 @@ namespace Hardly.Library.Twitch {
             } else {
                 chatMessage += ". Winners: ";
 
-                Dictionary<TexasHoldemPlayer<SqlTwitchUser>, ulong> winners = new Dictionary<TexasHoldemPlayer<SqlTwitchUser>, ulong>();
+                Dictionary<TexasHoldemPlayer<TwitchUser>, ulong> winners = new Dictionary<TexasHoldemPlayer<TwitchUser>, ulong>();
                 AddWinnings(controller.game.lastGameSidepotWinners, ref winners);
                 AddWinnings(controller.game.lastGameWinners, ref winners);
 
@@ -63,7 +63,7 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        private static void AddWinnings(List<Tuple<TexasHoldemPlayer<SqlTwitchUser>, ulong>> winnersList, ref Dictionary<TexasHoldemPlayer<SqlTwitchUser>, ulong> winners) {
+        private static void AddWinnings(List<Tuple<TexasHoldemPlayer<TwitchUser>, ulong>> winnersList, ref Dictionary<TexasHoldemPlayer<TwitchUser>, ulong> winners) {
             for(int i = 0; i < winnersList.Count; i++) {
                 var player = winnersList[i];
                 ulong winnings;
@@ -78,7 +78,7 @@ namespace Hardly.Library.Twitch {
         
         private string PlayerHand() {
             string chatMessage = "Holdem";
-            TexasHoldemPlayer<SqlTwitchUser> player;
+            TexasHoldemPlayer<TwitchUser> player;
             if(iPlayer > controller.game.lastGameEndedInSidepotPlayers.Count - 1) {
                 chatMessage += ": ";
                 player = controller.game.lastGameEndedInSeatPlayers[iPlayer - controller.game.lastGameEndedInSidepotPlayers.Count];

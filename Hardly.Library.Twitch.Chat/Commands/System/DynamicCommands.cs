@@ -3,13 +3,13 @@
 namespace Hardly.Library.Twitch {
     public class DynamicCommands : TwitchCommandController {
         public DynamicCommands(TwitchChatRoom room) : base(room) {
-            var commands = SqlTwitchCommand.GetAll(room.twitchConnection);
+            var commands = room.factory.GetAllCommands(room.twitchConnection);
             foreach(var command in commands) {
-                ChatCommand.Create(room, command.command, ActionWithStaticData<string, SqlTwitchUser, string>.For(DynamicCommandResponse, command.response), command.description, null, command.isModOnly, command.coolDown, false);
+                ChatCommand.Create(room, command.command, ActionWithStaticData<string, TwitchUser, string>.For(DynamicCommandResponse, command.response), command.description, null, command.isModOnly, command.coolDown, false);
             }
         }
 
-        void DynamicCommandResponse(string staticData, SqlTwitchUser speaker, string additionalText) {
+        void DynamicCommandResponse(string staticData, TwitchUser speaker, string additionalText) {
             room.SendChatMessage(staticData);
         }
 

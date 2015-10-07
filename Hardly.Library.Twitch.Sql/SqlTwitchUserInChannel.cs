@@ -1,18 +1,25 @@
 ﻿using System;
 
 namespace Hardly.Library.Twitch {
-	public class SqlTwitchUserInChannel : SqlRow {
-		public readonly SqlTwitchUser user;
-		public readonly SqlTwitchChannel channel;
+	public class SqlTwitchUserInChannel : SqlRow, TwitchUserInChannel {
+		public TwitchUser user {
+            get;
+            private set;
+        }
+		public TwitchChannel channel {
+            get;
+            private set;
+        }
 
-		public SqlTwitchUserInChannel(SqlTwitchUser user, SqlTwitchChannel channel, DateTime created = default(DateTime), bool isCurrentlyFollowing = false, string greetingMessage = null)
+		public SqlTwitchUserInChannel(TwitchUser user, TwitchChannel channel, DateTime created = default(DateTime), bool isCurrentlyFollowing = false, string greetingMessage = null)
 				: base(new object[] { user.id, channel.user.id, created, isCurrentlyFollowing, greetingMessage }) {
 			this.user = user;
 			this.channel = channel;
 		}
 
 		internal static readonly SqlTable _table = new SqlTable("twitch_user_in_channel");
-		public override SqlTable table {
+
+        public override SqlTable table {
 			get {
 				return _table;
 			}
@@ -55,7 +62,7 @@ namespace Hardly.Library.Twitch {
             }
         }
 
-        public static SqlTwitchUserInChannel GetMostRecent(SqlTwitchChannel channel) {
+        public static SqlTwitchUserInChannel GetMostRecent(TwitchChannel channel) {
 			try {
 				object[] results = _table.Select(null, null, "ChannelUserId=?a", new object[] { channel.user.id }, "CreatedAt Desc");
 				if(results != null && results.Length > 0) {
@@ -70,7 +77,7 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		public static SqlTwitchUserInChannel[] GetAllWithUsernames(SqlTwitchChannel channel) {
+		public static SqlTwitchUserInChannel[] GetAllWithUsernames(TwitchChannel channel) {
 			try {
 				List<object[]> results = _table.Select("join twitch_users on id=" + _table.tableName + ".UserId", _table.tableName + ".*, name", "ChannelUserId=?a", new object[] { channel.user.id }, null, 0);
 
@@ -91,11 +98,11 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		public static void ClearAll(SqlTwitchChannel channel) {
+		public static void ClearAll(TwitchChannel channel) {
 			_table.Update(null, "IsCurrentlyFollowing=?a", "ChannelUserId=?b", new object[] { false, channel.user.id });
 		}
 
-		public static SqlTwitchUserInChannel[] GetNew(SqlTwitchAlert twitchAlerts) {
+		public static SqlTwitchUserInChannel[] GetNew(TwitchAlert twitchAlerts) {
 			try {
 				DateTime latestCreatedAt = twitchAlerts.lastFollowerNotification;
 
@@ -125,7 +132,7 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		static SqlTwitchUserInChannel FromSql(SqlTwitchChannel channel, object[] results) {
+		static SqlTwitchUserInChannel FromSql(TwitchChannel channel, object[] results) {
 			if(results != null && results.Length > 0) {
 				if(results.Length > 4) {
 					return new SqlTwitchUserInChannel(new SqlTwitchUser(results[0].FromSql<uint>(), results[4].FromSql<string>()), channel, results[2].FromSql<DateTime>(), results[3].FromSql<bool>());

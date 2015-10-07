@@ -4,13 +4,15 @@ using System.IO;
 
 namespace Hardly.Library.Twitch {
 	public class TwitchIrcConnection {
-		public readonly SqlTwitchBot bot;
+		public readonly TwitchBot bot;
 
 		IrcClient ircClient;
 		static LinkedList<TwitchChatRoom> chatRooms = new LinkedList<TwitchChatRoom>();
 		bool whisperServer;
+        ITwitchFactory factory;
 
-		public TwitchIrcConnection(SqlTwitchBot bot, bool whisperServer) {
+        public TwitchIrcConnection(ITwitchFactory factory, TwitchBot bot, bool whisperServer) {
+            this.factory = factory;
 			this.bot = bot;
 			this.whisperServer = whisperServer;
 
@@ -47,14 +49,14 @@ namespace Hardly.Library.Twitch {
 			}
 		}
 
-		internal void SendChat(SqlTwitchConnection twitchConnection, string message) {
+		internal void SendChat(TwitchConnection twitchConnection, string message) {
 			SendIrcMessage(":" + bot.user.userName
 				 + "!" + bot.user.userName + "@"
 				 + bot.user.userName
 				 + ".tmi.twitch.tv PRIVMSG #" + twitchConnection.channel.user.userName + " :" + message);
 		}
 
-		internal void SendWhisper(SqlTwitchUser speakee, string message) {
+		internal void SendWhisper(TwitchUser speakee, string message) {
 			SendIrcMessage("PRIVMSG #jtv :/w " + speakee.userName + " " + message);
 		}
 		#endregion
@@ -73,7 +75,7 @@ namespace Hardly.Library.Twitch {
 					throw new Exception();
 				}
 			} else {
-				return TwitchChatEvent.Parse(chatEventCommand);
+				return TwitchChatEvent.Parse(factory, chatEventCommand);
 			}
 		}
 

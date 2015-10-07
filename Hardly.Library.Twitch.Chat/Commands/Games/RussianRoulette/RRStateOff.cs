@@ -9,7 +9,7 @@ namespace Hardly.Library.Twitch {
         protected override void OpenState() {
         }
 
-        private void StartGame(SqlTwitchUser speaker, string additionalText) {
+        private void StartGame(TwitchUser speaker, string additionalText) {
             controller.game.Reset();
 
             ulong amount = controller.room.pointManager.GetPointsFromString(additionalText);

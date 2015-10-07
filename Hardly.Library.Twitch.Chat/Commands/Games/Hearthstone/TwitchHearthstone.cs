@@ -3,7 +3,7 @@ using Hardly.Library.Hearthstone;
 using Hardly.Games.Betting;
 
 namespace Hardly.Library.Twitch {
-    public class TwitchHearthstone : TwitchGameStateMachine<ParimutuelBettingGame<SqlTwitchUser>> {
+    public class TwitchHearthstone : TwitchGameStateMachine<ParimutuelBettingGame<TwitchUser>> {
         internal HearthGame hearthstoneGame = null;
         internal EndOfGame lastGameEnding = null;
 
