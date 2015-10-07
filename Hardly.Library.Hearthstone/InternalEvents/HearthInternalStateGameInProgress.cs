@@ -2,8 +2,10 @@
     internal class HearthInternalStateGameInProgress : HearthInternalState {
         string currentEntity = null;
         bool firstCardOfTurn = false;
+        IHearthstoneFactory factory;
 
         public HearthInternalStateGameInProgress(HearthstoneEventObserver eventObserver) : base(eventObserver) {
+            this.factory = eventObserver.factory;
             eventObserver.Observe(new NewGame(eventObserver.currentGame));
         }
 
@@ -25,7 +27,7 @@
                 string cardId = line.GetBetween(" cardId=", " ");
                 string cardName = line.GetBetween("mainEntity=[name=", " id=");
                 if(cardId != null && cardName != null) {
-                    SqlHearthstoneCard card = new SqlHearthstoneCard(cardId, cardName);
+                    HearthstoneCard card = factory.CreateCard(cardId, cardName);
                     card.Save(); // TODO switch to lazy save
                 }
             }
@@ -56,7 +58,7 @@
                     }
 
                     if(myTurn != null) {
-                        SqlHearthstoneCard card = new SqlHearthstoneCard(cardId);
+                        HearthstoneCard card = factory.CreateCard(cardId);
                         eventObserver.Observe(new DrawCard(eventObserver.currentGame, myTurn.Value, card));
                         firstCardOfTurn = false;
                     }

@@ -6,8 +6,10 @@ namespace Hardly.Library.Hearthstone {
         FileObserver fileObserver;
         internal HearthGame currentGame = null;
         HearthInternalState currentState;
+        public readonly IHearthstoneFactory factory;
 
-        public HearthstoneEventObserver() {
+        public HearthstoneEventObserver(IHearthstoneFactory factory) {
+            this.factory = factory;
             currentState = new HearthInternalStateOff(this);
             fileObserver = new FileObserver("C:\\Program Files (x86)\\Hearthstone\\Logs\\Power.log", true);
             new Timer(TimeSpan.FromSeconds(10), DelayedObserving).Start();

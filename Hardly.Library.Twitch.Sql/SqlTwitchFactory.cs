@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hardly.Library.Hearthstone;
 
 namespace Hardly.Library.Twitch {
     public class SqlTwitchFactory : ITwitchFactory {
@@ -104,6 +105,10 @@ namespace Hardly.Library.Twitch {
 
         public TwitchChannel GetChannel(TwitchUser twitchUser) {
             return new SqlTwitchChannel(twitchUser);
+        }
+
+        public IHearthstoneFactory CreateHearthstoneFactory() {
+            return new SqlHearthstoneFactory();
         }
     }
 }

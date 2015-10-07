@@ -81,6 +81,10 @@
       <Project>{64316fb2-3bfa-46e7-868a-faa53ee30261}</Project>
       <Name>Hardly.Games</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Hardly.Library.Hearthstone\Hardly.Library.Hearthstone.csproj">
+      <Project>{6183efa1-7fe4-44c3-b6f3-934ec9ba4357}</Project>
+      <Name>Hardly.Library.Hearthstone</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hardly.Library.Network\Hardly.Library.Network.csproj">
       <Project>{57f110ff-a588-47ff-a1dd-f44b684dc42d}</Project>
       <Name>Hardly.Library.Network</Name>

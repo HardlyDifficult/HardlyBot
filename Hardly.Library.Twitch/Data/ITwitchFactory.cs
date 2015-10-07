@@ -1,4 +1,5 @@
 ﻿using System;
+using Hardly.Library.Hearthstone;
 
 namespace Hardly.Library.Twitch {
     public interface ITwitchFactory {
@@ -13,6 +14,7 @@ namespace Hardly.Library.Twitch {
         // Users
         TwitchUser GetUserForID(uint id);
         TwitchConnection[] GetAllAutoConnectingConnections(TwitchBot bot);
+        IHearthstoneFactory CreateHearthstoneFactory();
         TwitchUser GetUserFromName(string name);
         TwitchUser GetUser(uint id, string name, DateTime created, string logo, string bio);
        

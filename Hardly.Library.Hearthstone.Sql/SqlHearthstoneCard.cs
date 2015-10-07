@@ -1,5 +1,5 @@
 ﻿namespace Hardly.Library.Hearthstone {
-    public class SqlHearthstoneCard : SqlRow {
+    public class SqlHearthstoneCard : SqlRow, HearthstoneCard {
 
         public SqlHearthstoneCard(string cardId, string name = null) : base(new[] { cardId, name }) {
         }

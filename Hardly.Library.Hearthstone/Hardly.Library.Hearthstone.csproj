@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\SqlHearthstoneCard.cs" />
+    <Compile Include="Data\HearthstoneCard.cs" />
+    <Compile Include="Data\IHearthstoneFactory.cs" />
     <Compile Include="Events\DrawCard.cs" />
     <Compile Include="Events\EndOfGame.cs" />
     <Compile Include="Events\HearthGame.cs" />
