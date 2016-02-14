@@ -1,5 +1,9 @@
 ![Hardly (a) BOT](http://i.imgur.com/66sOapV.png)
 
+
+NOT supported.  Abandoned.  Use at your own risk.  Not Maintained.  Old.  Good luck :)
+
+
 This is the gaming chatbot for Twitch.tv made by HardlySober.
 
 Supported games:
